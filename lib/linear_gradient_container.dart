@@ -56,6 +56,20 @@ class _TemperatureRangeSelectorState extends State<TemperatureRangeSelector> {
         gradientColors[index], gradientColors[index + 1], localPosition)!;
   }
 
+  void _addNewStop(TapUpDetails details) {
+    if (!widget.editMode) return;
+
+    final RenderBox box = context.findRenderObject() as RenderBox;
+    final position = box.globalToLocal(details.globalPosition);
+    final newPosition = (position.dx / box.size.width).clamp(0.0, 1.0);
+
+    setState(() {
+      positions.add(newPosition);
+      positions.sort();
+      _notifyChange();
+    });
+  }
+
   void _startDrag(int index, DragStartDetails details) {
     if (!widget.editMode) return;
     final RenderBox box = context.findRenderObject() as RenderBox;
@@ -124,9 +138,12 @@ class _TemperatureRangeSelectorState extends State<TemperatureRangeSelector> {
             left: 0,
             right: 0,
             height: widget.height,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: gradientColors),
+            child: GestureDetector(
+              onTapUp: _addNewStop,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: gradientColors),
+                ),
               ),
             ),
           ),
