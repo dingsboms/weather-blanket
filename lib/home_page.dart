@@ -90,6 +90,14 @@ class _MyHomePageState extends State<MyHomePage> {
       navigationBar: CupertinoNavigationBar(
         backgroundColor: CupertinoColors.systemGrey6,
         middle: Text(widget.title),
+        trailing: IconButton(
+          onPressed: () => setState(() {
+            editMode = !editMode;
+          }),
+          icon: editMode
+              ? const Icon(Icons.list_alt_sharp)
+              : const Icon(Icons.list),
+        ),
       ),
       child: Column(
         children: [
@@ -101,56 +109,115 @@ class _MyHomePageState extends State<MyHomePage> {
                   return const Center(child: CupertinoActivityIndicator());
                 }
 
-                return CustomScrollView(
-                  slivers: [
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          var doc = snapshot.data!.docs[index].data()
-                              as Map<String, dynamic>;
-                          var firstEntry =
-                              doc['data']['properties']['timeseries'][0];
-                          var date = firstEntry['time'];
-                          var parsedDate = DateTime.parse(date);
-                          var localDate = parsedDate.toLocal();
-                          var temperature = firstEntry['data']['instant']
-                              ['details']['air_temperature'];
+                // Hoist the data processing
+                final items = snapshot.data!.docs.map((doc) {
+                  final data = doc.data() as Map<String, dynamic>;
+                  final firstEntry =
+                      data['data']['properties']['timeseries'][0];
+                  final date = firstEntry['time'];
+                  final parsedDate = DateTime.parse(date);
+                  final localDate = parsedDate.toLocal();
+                  final temperature = firstEntry['data']['instant']['details']
+                      ['air_temperature'];
+                  final backgroundColor = temperatureIntervals.isEmpty
+                      ? Colors.transparent
+                      : getColorForTemperature(temperature.toDouble());
 
-                          Color backgroundColor = temperatureIntervals.isEmpty
-                              ? Colors.transparent
-                              : getColorForTemperature(temperature.toDouble());
+                  // Check if it's the first day of a month
+                  final isNewMonth = localDate.day == 1;
 
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: backgroundColor.withOpacity(0.3),
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: CupertinoColors.separator
-                                      .resolveFrom(context),
-                                  width: 0.5,
+                  return (
+                    localDate: localDate,
+                    temperature: temperature,
+                    backgroundColor: backgroundColor,
+                    isNewMonth: isNewMonth,
+                  );
+                }).toList();
+
+                return editMode
+                    ? LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          final double itemHeight =
+                              constraints.maxHeight / items.length;
+
+                          return CustomScrollView(
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final item = items[index];
+
+                                    return Column(
+                                      children: [
+                                        if (item.isNewMonth)
+                                          Divider(
+                                            color: Colors.white,
+                                            thickness: itemHeight *
+                                                0.2, // Make month separator thinner
+                                            height: itemHeight * 0.2,
+                                          ),
+                                        SizedBox(
+                                          height: item.isNewMonth
+                                              ? itemHeight *
+                                                  0.8 // Adjust height for items with separator
+                                              : itemHeight,
+                                          child: Center(
+                                            child: Divider(
+                                              color: item.backgroundColor,
+                                              thickness: itemHeight,
+                                              height: itemHeight,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  childCount: items.length,
                                 ),
                               ),
-                            ),
-                            child: CupertinoListTile(
-                              title: Text(
-                                '${localDate.day}/${localDate.month}-${localDate.year}',
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              subtitle: Text(
-                                '${localDate.hour.toString().padLeft(2, "0")}:${localDate.minute.toString().padLeft(2, "0")}',
-                              ),
-                              trailing: Text(
-                                '$temperature°C',
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ),
+                            ],
                           );
                         },
-                        childCount: snapshot.data!.docs.length,
-                      ),
-                    ),
-                  ],
-                );
+                      )
+                    : CustomScrollView(
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                final item = items[index];
+
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color:
+                                        item.backgroundColor.withOpacity(0.3),
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: CupertinoColors.separator
+                                            .resolveFrom(context),
+                                      ),
+                                    ),
+                                  ),
+                                  child: CupertinoListTile(
+                                    title: Text(
+                                      '${item.localDate.day}/${item.localDate.month}-${item.localDate.year}',
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    subtitle: Text(
+                                      '${item.localDate.hour.toString().padLeft(2, "0")}:${item.localDate.minute.toString().padLeft(2, "0")}',
+                                    ),
+                                    trailing: Text(
+                                      '${item.temperature}°C',
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                );
+                              },
+                              childCount: items.length,
+                            ),
+                          ),
+                        ],
+                      );
               },
             ),
           ),
