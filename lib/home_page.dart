@@ -209,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: CupertinoListTile(
                                     leadingSize: 75,
                                     title: Text(
-                                      '${item.temperature}°C',
+                                      '${item.temperature.round()} °C',
                                     ),
                                     leading: Text(
                                       '${item.localDate.day}/${item.localDate.month}-${item.localDate.year}',
@@ -219,6 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       '${item.localDate.hour.toString().padLeft(2, "0")}:${item.localDate.minute.toString().padLeft(2, "0")}',
                                     ),
                                     trailing: CupertinoCheckbox(
+                                        inactiveColor: Colors.white,
                                         value: item.isKnitted,
                                         onChanged: (val) => {
                                               setState(() {
