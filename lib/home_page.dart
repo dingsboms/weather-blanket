@@ -14,8 +14,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool editMode = false;
 
-  final Stream<QuerySnapshot> stream =
-      FirebaseFirestore.instance.collection("days").snapshots();
+  final Stream<QuerySnapshot> stream = FirebaseFirestore.instance
+      .collection("days")
+      .where("timestamp",
+          isGreaterThan: Timestamp.fromDate(DateTime(2024, 12, 31, 23, 59, 59)))
+      .orderBy("timestamp", descending: true)
+      .snapshots();
 
   @override
   void initState() {
@@ -123,6 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? Colors.transparent
                       : getColorForTemperature(temperature.toDouble());
 
+                  final isKnitted = data['is_knitted'] || false;
+                  final docId = doc.id;
+
                   // Check if it's the first day of a month
                   final isNewMonth = localDate.day == 1;
 
@@ -131,6 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     temperature: temperature,
                     backgroundColor: backgroundColor,
                     isNewMonth: isNewMonth,
+                    isKnitted: isKnitted,
+                    docId: docId
                   );
                 }).toList();
 
@@ -150,13 +159,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                     return Column(
                                       children: [
-                                        if (item.isNewMonth)
-                                          Divider(
-                                            color: Colors.white,
-                                            thickness: itemHeight *
-                                                0.2, // Make month separator thinner
-                                            height: itemHeight * 0.2,
-                                          ),
                                         SizedBox(
                                           height: item.isNewMonth
                                               ? itemHeight *
@@ -170,6 +172,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                             ),
                                           ),
                                         ),
+                                        if (item.isNewMonth)
+                                          Divider(
+                                            color: Colors.white,
+                                            thickness: itemHeight *
+                                                0.2, // Make month separator thinner
+                                            height: itemHeight * 0.2,
+                                          ),
                                       ],
                                     );
                                   },
@@ -189,8 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                 return Container(
                                   decoration: BoxDecoration(
-                                    color:
-                                        item.backgroundColor.withOpacity(0.3),
+                                    color: item.backgroundColor,
                                     border: Border(
                                       bottom: BorderSide(
                                         color: CupertinoColors.separator
@@ -199,17 +207,29 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   child: CupertinoListTile(
+                                    leadingSize: 75,
                                     title: Text(
+                                      '${item.temperature}°C',
+                                    ),
+                                    leading: Text(
                                       '${item.localDate.day}/${item.localDate.month}-${item.localDate.year}',
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                     subtitle: Text(
                                       '${item.localDate.hour.toString().padLeft(2, "0")}:${item.localDate.minute.toString().padLeft(2, "0")}',
                                     ),
-                                    trailing: Text(
-                                      '${item.temperature}°C',
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
+                                    trailing: CupertinoCheckbox(
+                                        value: item.isKnitted,
+                                        onChanged: (val) => {
+                                              setState(() {
+                                                FirebaseFirestore.instance
+                                                    .collection("days")
+                                                    .doc(item.docId)
+                                                    .set({
+                                                  "is_knitted": val
+                                                }, SetOptions(merge: true));
+                                              })
+                                            }),
                                   ),
                                 );
                               },

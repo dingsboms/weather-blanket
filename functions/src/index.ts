@@ -16,6 +16,7 @@ export const dailyApiFetch = onSchedule("every day 12:00", async (event) => {
     await db.collection("days").add({
       data: data,
       timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      is_knitted: false,
     });
 
     console.log("Successfully fetched and stored API data");
