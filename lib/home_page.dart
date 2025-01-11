@@ -147,8 +147,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     ? LayoutBuilder(
                         builder:
                             (BuildContext context, BoxConstraints constraints) {
-                          final double itemHeight =
-                              constraints.maxHeight / items.length;
+                          // Count how many month breaks we have
+                          final numberOfMonthBreaks =
+                              items.where((item) => item.isNewMonth).length;
+
+                          // Calculate height considering both items and month breaks
+                          final double itemHeight = constraints.maxHeight /
+                              (items.length + numberOfMonthBreaks);
 
                           return CustomScrollView(
                             slivers: [
@@ -159,25 +164,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                     return Column(
                                       children: [
-                                        SizedBox(
-                                          height: item.isNewMonth
-                                              ? itemHeight *
-                                                  0.8 // Adjust height for items with separator
-                                              : itemHeight,
-                                          child: Center(
-                                            child: Divider(
+                                        Column(
+                                          children: [
+                                            Container(
+                                              height: itemHeight *
+                                                  0.99, // Slightly reduce height to make room for separator
                                               color: item.backgroundColor,
-                                              thickness: itemHeight,
-                                              height: itemHeight,
                                             ),
-                                          ),
+                                            Container(
+                                              height: itemHeight *
+                                                  0.01, // Thin separator
+                                              color: Colors.white.withOpacity(
+                                                  0.3), // Semi-transparent white
+                                            ),
+                                          ],
                                         ),
                                         if (item.isNewMonth)
                                           Divider(
                                             color: Colors.white,
-                                            thickness: itemHeight *
-                                                0.2, // Make month separator thinner
-                                            height: itemHeight * 0.2,
+                                            thickness: itemHeight,
+                                            height: itemHeight,
                                           ),
                                       ],
                                     );
