@@ -122,7 +122,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   final parsedDate = DateTime.parse(date);
                   final localDate = parsedDate.toLocal();
                   final temperature = firstEntry['data']['instant']['details']
-                      ['air_temperature'];
+                          ['air_temperature']
+                      .round();
                   final backgroundColor = temperatureIntervals.isEmpty
                       ? Colors.transparent
                       : getColorForTemperature(temperature.toDouble());
