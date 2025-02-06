@@ -202,43 +202,53 @@ class _MyHomePageState extends State<MyHomePage> {
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 final item = items[index];
-
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: item.backgroundColor,
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: CupertinoColors.separator
-                                            .resolveFrom(context),
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: item.backgroundColor,
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: CupertinoColors.separator
+                                                .resolveFrom(context),
+                                          ),
+                                        ),
+                                      ),
+                                      child: CupertinoListTile(
+                                        leadingSize: 75,
+                                        title: Text(
+                                          '${item.temperature.round()} °C',
+                                        ),
+                                        leading: Text(
+                                          '${item.localDate.day}/${item.localDate.month}-${item.localDate.year}',
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                        subtitle: Text(
+                                          '${item.localDate.hour.toString().padLeft(2, "0")}:${item.localDate.minute.toString().padLeft(2, "0")}',
+                                        ),
+                                        trailing: CupertinoCheckbox(
+                                          inactiveColor: Colors.white,
+                                          value: item.isKnitted,
+                                          onChanged: (val) => {
+                                            setState(() {
+                                              FirebaseFirestore.instance
+                                                  .collection("days")
+                                                  .doc(item.docId)
+                                                  .set({"is_knitted": val},
+                                                      SetOptions(merge: true));
+                                            })
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  child: CupertinoListTile(
-                                    leadingSize: 75,
-                                    title: Text(
-                                      '${item.temperature.round()} °C',
-                                    ),
-                                    leading: Text(
-                                      '${item.localDate.day}/${item.localDate.month}-${item.localDate.year}',
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    subtitle: Text(
-                                      '${item.localDate.hour.toString().padLeft(2, "0")}:${item.localDate.minute.toString().padLeft(2, "0")}',
-                                    ),
-                                    trailing: CupertinoCheckbox(
-                                        inactiveColor: Colors.white,
-                                        value: item.isKnitted,
-                                        onChanged: (val) => {
-                                              setState(() {
-                                                FirebaseFirestore.instance
-                                                    .collection("days")
-                                                    .doc(item.docId)
-                                                    .set({
-                                                  "is_knitted": val
-                                                }, SetOptions(merge: true));
-                                              })
-                                            }),
-                                  ),
+                                    if (item.isNewMonth)
+                                      const Divider(
+                                        height: 10,
+                                        thickness: 10,
+                                        color: Colors.white,
+                                      ),
+                                  ],
                                 );
                               },
                               childCount: items.length,
