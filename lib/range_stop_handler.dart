@@ -1,5 +1,6 @@
 // lib/range_stop_handler.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RangeStop {
@@ -33,11 +34,11 @@ class RangeStopHandle extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: CupertinoColors.white,
             borderRadius: BorderRadius.circular(4),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: CupertinoColors.black.withOpacity(0.2),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -45,7 +46,7 @@ class RangeStopHandle extends StatelessWidget {
           ),
           child: Text(
             intervalLabel,
-            style: const TextStyle(fontSize: 10, color: Colors.black),
+            style: const TextStyle(fontSize: 10, color: CupertinoColors.black),
           ),
         ),
         if (editMode) // Only show handle in edit mode
@@ -53,12 +54,12 @@ class RangeStopHandle extends StatelessWidget {
             width: 20,
             height: 20,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: CupertinoColors.white,
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.black26),
+              border: Border.all(color: CupertinoColors.black),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: CupertinoColors.black.withOpacity(0.2),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
