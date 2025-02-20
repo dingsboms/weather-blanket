@@ -19,7 +19,7 @@ jobs:
 
       # Flutter commands
       - run: flutter pub get
-      - run: flutter build web --dart-define=envFileName=dotenv
+      - run: flutter build web
 
       # Firebase deploy
       - uses: FirebaseExtended/action-hosting-deploy@v0
