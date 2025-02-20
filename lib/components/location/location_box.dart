@@ -91,11 +91,17 @@ class _LocationBoxState extends State<LocationBox> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Location: "),
+          const Text(
+            "Location: ",
+            style: TextStyle(color: CupertinoColors.white),
+          ),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Latitude"),
+              const Text(
+                "Latitude",
+                style: TextStyle(color: CupertinoColors.white),
+              ),
               LocationTextField(
                 isLatitude: true,
                 controller: lattitudeController,
@@ -105,7 +111,10 @@ class _LocationBoxState extends State<LocationBox> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Longitude"),
+              const Text(
+                "Longitude",
+                style: TextStyle(color: CupertinoColors.white),
+              ),
               LocationTextField(
                 isLatitude: false,
                 controller: longitudeController,
