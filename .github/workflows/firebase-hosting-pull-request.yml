@@ -17,6 +17,11 @@ jobs:
         with:
           flutter-version: "3.x"
 
+      - name: Create environment file
+        run: |
+          mkdir -p assets
+          echo "${{ secrets.OPEN_WEATHER_API_KEY }}" > assets/dotenv
+
       # Flutter commands
       - run: flutter pub get
       - run: flutter build web
