@@ -3,8 +3,10 @@ import 'package:weather_blanket/components/generic/small_text_field.dart';
 import 'package:weather_blanket/components/location/coordinate_formatter.dart';
 
 class LocationTextField extends StatelessWidget {
-  const LocationTextField({super.key, required this.controller});
+  const LocationTextField(
+      {super.key, required this.controller, this.isLatitude});
   final TextEditingController controller;
+  final bool? isLatitude;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class LocationTextField extends StatelessWidget {
       controller: controller,
       keyboardType:
           const TextInputType.numberWithOptions(decimal: true, signed: true),
-      formatters: [CoordinateInputFormatter()],
+      formatters: [CoordinateInputFormatter(isLatitude: isLatitude ?? false)],
     );
   }
 }

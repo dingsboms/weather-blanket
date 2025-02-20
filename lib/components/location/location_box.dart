@@ -97,6 +97,7 @@ class _LocationBoxState extends State<LocationBox> {
             children: [
               const Text("Latitude"),
               LocationTextField(
+                isLatitude: true,
                 controller: lattitudeController,
               )
             ],
@@ -106,6 +107,7 @@ class _LocationBoxState extends State<LocationBox> {
             children: [
               const Text("Longitude"),
               LocationTextField(
+                isLatitude: false,
                 controller: longitudeController,
               )
             ],
