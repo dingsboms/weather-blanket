@@ -4,20 +4,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/components/test/TestOpenWeatherAPIButton.dart';
+import 'package:weather_blanket/components/location/location_text_field.dart';
 import 'package:weather_blanket/home_page.dart';
-import 'package:weather_blanket/http_endpoints/test_endpoint.dart';
 import 'package:weather_blanket/login_page.dart';
-import 'package:weather_blanket/migrations/migrate_days_to_user_kine.dart';
 import 'firebase_options.dart';
 
 late final FirebaseApp app;
 late final FirebaseAuth auth;
 
 void main() async {
-  await dotenv.load(fileName: ".env");
-
   WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: "assets/dotenv");
   app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -50,7 +48,6 @@ class WeatherBlanketApp extends StatelessWidget {
         primaryColor: CupertinoColors.activeBlue,
         scaffoldBackgroundColor: CupertinoColors.darkBackgroundGray,
       ),
-      // home: TestOpenWeatherAPIButton(),
       // // home: MigrateDaysToUserKine(),
       // home: CupertinoButton(
       //     child: Text("Call Endpoint"), onPressed: () => callMyFunction()),

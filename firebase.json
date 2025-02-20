@@ -4,7 +4,7 @@
       "ios": {
         "default": {
           "projectId": "weather-blanket",
-          "appId": "1:88468625362:ios:a308427904ac9ba173da0b",
+          "appId": "1:88468625362:ios:76233ab271396f0273da0b",
           "uploadDebugSymbols": false,
           "fileOutput": "ios/Runner/GoogleService-Info.plist"
         }
@@ -13,9 +13,27 @@
         "lib/firebase_options.dart": {
           "projectId": "weather-blanket",
           "configurations": {
-            "ios": "1:88468625362:ios:a308427904ac9ba173da0b",
-            "web": "1:88468625362:web:2c30fc1d10c55b0973da0b"
+            "android": "1:88468625362:android:8572d594c521a21a73da0b",
+            "ios": "1:88468625362:ios:76233ab271396f0273da0b",
+            "macos": "1:88468625362:ios:ddf9c8dfa9664b5a73da0b",
+            "web": "1:88468625362:web:9c56088542cb9e7173da0b",
+            "windows": "1:88468625362:web:6d0c04c3e9413da973da0b"
           }
+        }
+      },
+      "android": {
+        "default": {
+          "projectId": "weather-blanket",
+          "appId": "1:88468625362:android:8572d594c521a21a73da0b",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "weather-blanket",
+          "appId": "1:88468625362:ios:ddf9c8dfa9664b5a73da0b",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
         }
       }
     }
@@ -31,20 +49,13 @@
         "firebase-debug.*.log",
         "*.local"
       ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ]
+      "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
     }
   ],
   "hosting": {
-    "source": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "frameworksBackend": {
-      "region": "europe-west1"
-    }
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "predeploy": ["flutter build web --dart-define=envFileName=dotenv"],
+    "frameworksBackend": { "region": "europe-west1" },
+    "public": "build/web"
   }
 }

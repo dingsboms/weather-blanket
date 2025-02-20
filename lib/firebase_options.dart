@@ -21,22 +21,13 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -50,8 +41,8 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCQ-ukAX5LTjLkjVn-gFF2yyga2qnYZdR8',
-    appId: '1:88468625362:web:2c30fc1d10c55b0973da0b',
+    apiKey: 'AIzaSyDRnmFt7KLbTPwAvYeFYaUdaElSSFmN4EY',
+    appId: '1:88468625362:web:9c56088542cb9e7173da0b',
     messagingSenderId: '88468625362',
     projectId: 'weather-blanket',
     authDomain: 'weather-blanket.firebaseapp.com',
@@ -60,10 +51,39 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDrs3yIagams5Yi9sZdu5TcC5ZOFh1LPgA',
-    appId: '1:88468625362:ios:a308427904ac9ba173da0b',
+    appId: '1:88468625362:ios:76233ab271396f0273da0b',
     messagingSenderId: '88468625362',
     projectId: 'weather-blanket',
     storageBucket: 'weather-blanket.firebasestorage.app',
+    iosClientId: '88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com',
+    iosBundleId: 'no.rmax.weatherblanket.app',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDrs3yIagams5Yi9sZdu5TcC5ZOFh1LPgA',
+    appId: '1:88468625362:ios:ddf9c8dfa9664b5a73da0b',
+    messagingSenderId: '88468625362',
+    projectId: 'weather-blanket',
+    storageBucket: 'weather-blanket.firebasestorage.app',
+    iosClientId: '88468625362-fb4tg12gm95rcg24643252lvhoc73qai.apps.googleusercontent.com',
     iosBundleId: 'com.example.weatherBlanket',
   );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAERPmyjbTfZW7nUBLMN2jrqMMlG7QpLr4',
+    appId: '1:88468625362:android:8572d594c521a21a73da0b',
+    messagingSenderId: '88468625362',
+    projectId: 'weather-blanket',
+    storageBucket: 'weather-blanket.firebasestorage.app',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyDRnmFt7KLbTPwAvYeFYaUdaElSSFmN4EY',
+    appId: '1:88468625362:web:6d0c04c3e9413da973da0b',
+    messagingSenderId: '88468625362',
+    projectId: 'weather-blanket',
+    authDomain: 'weather-blanket.firebaseapp.com',
+    storageBucket: 'weather-blanket.firebasestorage.app',
+  );
+
 }

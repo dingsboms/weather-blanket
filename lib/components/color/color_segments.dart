@@ -79,14 +79,20 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
                   children: [
                     Visibility(
                         visible: i != 0,
-                        child: Text(!interval.maxTemp.isNegative
-                            ? "+${interval.minTemp}"
-                            : interval.minTemp.toString())),
+                        child: Text(
+                          !interval.maxTemp.isNegative
+                              ? "+${interval.minTemp}"
+                              : interval.minTemp.toString(),
+                          style: const TextStyle(color: CupertinoColors.white),
+                        )),
                     Visibility(
                         visible: i != ranges.length - 1,
-                        child: Text(!interval.maxTemp.isNegative
-                            ? "+${interval.maxTemp}"
-                            : interval.maxTemp.toString()))
+                        child: Text(
+                            !interval.maxTemp.isNegative
+                                ? "+${interval.maxTemp}"
+                                : interval.maxTemp.toString(),
+                            style:
+                                const TextStyle(color: CupertinoColors.white)))
                   ],
                 ),
               ),

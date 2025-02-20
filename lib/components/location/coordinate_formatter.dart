@@ -4,13 +4,16 @@ class CoordinateInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final regEx = RegExp(r'^[-+]?[0-9]*\.?[0-9]*$');
-    final double? newNumber = double.tryParse(newValue.text);
+    final regEx = RegExp(r'^[-+]?[0-9]*[.,]?[0-9]*$');
 
-    // If the new value is empty, allow it (for backspace functionality)
+    // If the new value is empty, allow it
     if (newValue.text.isEmpty) {
       return newValue;
     }
+
+    // Convert comma to dot for parsing
+    String normalizedText = newValue.text.replaceAll(',', '.');
+    final double? newNumber = double.tryParse(normalizedText);
 
     // Check if the input matches regex or is a valid coordinate within range
     if (regEx.hasMatch(newValue.text) &&

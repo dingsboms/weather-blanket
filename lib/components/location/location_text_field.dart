@@ -10,7 +10,8 @@ class LocationTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SmallTextField(
       controller: controller,
-      keyboardType: const TextInputType.numberWithOptions(),
+      keyboardType:
+          const TextInputType.numberWithOptions(decimal: true, signed: true),
       formatters: [CoordinateInputFormatter()],
     );
   }

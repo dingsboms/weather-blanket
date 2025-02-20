@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci
-      - run: flutter build web
+      - run: flutter build web --dart-define=envFileName=dotenv
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
