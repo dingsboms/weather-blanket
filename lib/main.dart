@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/components/location/location_text_field.dart';
 import 'package:weather_blanket/home_page.dart';
 import 'package:weather_blanket/login_page.dart';
 import 'firebase_options.dart';
@@ -48,9 +47,6 @@ class WeatherBlanketApp extends StatelessWidget {
         primaryColor: CupertinoColors.activeBlue,
         scaffoldBackgroundColor: CupertinoColors.darkBackgroundGray,
       ),
-      // // home: MigrateDaysToUserKine(),
-      // home: CupertinoButton(
-      //     child: Text("Call Endpoint"), onPressed: () => callMyFunction()),
       home: StreamBuilder<User?>(
           stream: auth.authStateChanges(),
           builder: (context, snapshot) {
