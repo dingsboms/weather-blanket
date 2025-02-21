@@ -35,9 +35,6 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
         .then((doc) {
       if (doc.exists && doc.data()!.containsKey('colors')) {
         final List<dynamic> colorsData = doc.get('colors') as List<dynamic>;
-        if (colorsData.isEmpty) {
-          fetchDefaultColors();
-        }
         final List<RangeInterval> intervals = colorsData
             .map((data) =>
                 RangeInterval.fromFirestore(data as Map<String, dynamic>))

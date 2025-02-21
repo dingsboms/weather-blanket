@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -31,7 +30,6 @@ class WeatherForecast {
   final String weatherIcon;
   final bool isKnitted;
   final String knittingNote;
-  final Color? backgroundColor;
 
   WeatherForecast({
     required this.lat,
@@ -59,7 +57,6 @@ class WeatherForecast {
     required this.weatherIcon,
     required this.isKnitted,
     required this.knittingNote,
-    required this.backgroundColor,
   });
 
   DateTime get localDate => dt.toLocal();
@@ -144,7 +141,6 @@ class WeatherForecast {
       weatherIcon: weather['icon'] as String,
       isKnitted: false,
       knittingNote: '',
-      backgroundColor: null,
     );
   }
 
@@ -158,14 +154,16 @@ class WeatherForecast {
       dt = DateTime.fromMillisecondsSinceEpoch((data['dt'] as int) * 1000);
     }
 
-    final weahter_data = WeatherForecast(
+    int temp = (data['temp'] as num).toInt();
+
+    final weatherData = WeatherForecast(
       lat: (data['lat'] as num).toDouble(),
       lon: (data['lon'] as num).toDouble(),
       timezone: data['timezone'] as String,
       timezoneOffset: data['timezone_offset'] as int,
       docId: doc.id,
       dt: dt,
-      temp: (data['temp'] as num).toInt(),
+      temp: temp,
       feelsLike: (data['feels_like'] as num).toDouble(),
       pressure: data['pressure'] as int,
       humidity: data['humidity'] as int,
@@ -184,12 +182,9 @@ class WeatherForecast {
       weatherIcon: data['weather_icon'] as String,
       isKnitted: data['is_knitted'] ?? false,
       knittingNote: data['knitting_note'] ?? '',
-      backgroundColor: data['background_color'] is int
-          ? Color(data['background_color'] as int)
-          : null,
     );
 
-    return weahter_data;
+    return weatherData;
   }
 
   Map<String, dynamic> toFirestore() => {
@@ -217,13 +212,12 @@ class WeatherForecast {
         'weather_icon': weatherIcon,
         'is_knitted': isKnitted,
         'knitting_note': knittingNote,
-        'background_color': backgroundColor?.toARGB32(),
       };
 
   @override
   String toString() {
     return 'WeatherForecast(docId: $docId, dt: ${dt.toIso8601String()}, temp: $temp°C, '
         'weather: $weatherMain ($weatherDescription), lat: $lat, lon: $lon, '
-        'isKnitted: $isKnitted, knittingNote: $knittingNote), backgroundColor: $backgroundColor';
+        'isKnitted: $isKnitted, knittingNote: $knittingNote';
   }
 }
