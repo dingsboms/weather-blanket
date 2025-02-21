@@ -28,6 +28,12 @@ class _MyHomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
+    ref.read(colorRangesProvider.future).then((colorRanges) {
+      // Optional: Log or handle the loaded colors if needed
+      print('Color ranges loaded: ${colorRanges.length} ranges');
+    }).catchError((error) {
+      print('Error loading color ranges: $error');
+    });
     container = ProviderContainer();
   }
 
@@ -114,13 +120,11 @@ class _MyHomePageState extends ConsumerState<HomePage> {
 
     final startOf2025 = DateTime(2025, 1, 1);
 
-    final startOf2025unixSeconds = dateTimeToUnixTimeSeconds(startOf2025);
-
     final Stream<QuerySnapshot> stream = FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
         .collection("days")
-        .where("dt", isGreaterThan: startOf2025unixSeconds)
+        .where("dt", isGreaterThan: startOf2025)
         .orderBy("dt", descending: true)
         .snapshots();
 

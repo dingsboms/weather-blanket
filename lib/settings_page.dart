@@ -1,15 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/color/color_segments.dart';
 import 'package:weather_blanket/components/location/location_box.dart';
+import 'package:weather_blanket/functions/color_provider.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key, required this.auth});
   final FirebaseAuth auth;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           leading: CupertinoButton(
@@ -28,7 +30,11 @@ class SettingsPage extends StatelessWidget {
                 const Divider(),
                 CupertinoButton(
                     child: const Text("Sign out"),
-                    onPressed: () => {auth.signOut(), Navigator.pop(context)})
+                    onPressed: () {
+                      auth.signOut();
+                      Navigator.pop(context);
+                      ref.invalidate(colorRangesProvider);
+                    })
               ],
             ),
           ),

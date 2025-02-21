@@ -6,6 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/home_page.dart';
 import 'package:weather_blanket/login_page.dart';
+import 'package:weather_blanket/migrations/cleanup_kine_colrs.dart';
+import 'package:weather_blanket/migrations/migrate_dt_from_int_to_datetime.dart';
 import 'firebase_options.dart';
 
 late final FirebaseApp app;

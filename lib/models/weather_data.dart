@@ -12,7 +12,7 @@ class WeatherForecast {
   final String timezone;
   final int timezoneOffset;
   final String docId;
-  final int dt;
+  final DateTime dt;
   final int temp;
   final double feelsLike;
   final int pressure;
@@ -63,8 +63,7 @@ class WeatherForecast {
     required this.backgroundColor,
   });
 
-  DateTime get localDate =>
-      DateTime.fromMillisecondsSinceEpoch(dt * 1000).toLocal();
+  DateTime get localDate => dt.toLocal();
   bool get isNewMonth => localDate.day == 1;
 
   static Future<WeatherForecast?> fromOpenWeatherAPI({
@@ -120,7 +119,7 @@ class WeatherForecast {
       timezone: json['timezone'] as String,
       timezoneOffset: json['timezone_offset'] as int,
       docId: docId,
-      dt: data['dt'] as int,
+      dt: DateTime.fromMillisecondsSinceEpoch((data['dt'] as int) * 1000),
       temp: (data['temp'] as num).toInt(),
       feelsLike: (data['feels_like'] as num).toDouble(),
       pressure: (data['pressure'] as num).round(),
@@ -153,13 +152,20 @@ class WeatherForecast {
   factory WeatherForecast.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
 
-    return WeatherForecast(
+    DateTime dt;
+    try {
+      dt = (data['dt'] as Timestamp).toDate();
+    } catch (e) {
+      dt = DateTime.fromMillisecondsSinceEpoch((data['dt'] as int) * 1000);
+    }
+
+    final weahter_data = WeatherForecast(
       lat: (data['lat'] as num).toDouble(),
       lon: (data['lon'] as num).toDouble(),
       timezone: data['timezone'] as String,
       timezoneOffset: data['timezone_offset'] as int,
       docId: doc.id,
-      dt: data['dt'] as int,
+      dt: dt,
       temp: (data['temp'] as num).toInt(),
       feelsLike: (data['feels_like'] as num).toDouble(),
       pressure: data['pressure'] as int,
@@ -179,9 +185,12 @@ class WeatherForecast {
       weatherIcon: data['weather_icon'] as String,
       isKnitted: data['is_knitted'] ?? false,
       knittingNote: data['knitting_note'] ?? '',
-      backgroundColor: Color(data['background_color'] as int? ??
-          CupertinoColors.transparent.value),
+      backgroundColor: data['background_color'] is int
+          ? Color(data['background_color'] as int)
+          : null,
     );
+
+    return weahter_data;
   }
 
   Map<String, dynamic> toFirestore() => {
@@ -209,7 +218,7 @@ class WeatherForecast {
         'weather_icon': weatherIcon,
         'is_knitted': isKnitted,
         'knitting_note': knittingNote,
-        'background_color': backgroundColor?.value,
+        'background_color': backgroundColor?.toARGB32(),
       };
 
   factory WeatherForecast.fromTemperatureEntry(TemperatureEntry entry) {
@@ -219,7 +228,8 @@ class WeatherForecast {
       timezone: 'Europe/Oslo',
       timezoneOffset: 3600,
       docId: entry.docId,
-      dt: entry.localDate.millisecondsSinceEpoch ~/ 1000,
+      dt: DateTime.fromMillisecondsSinceEpoch(
+          entry.localDate.millisecondsSinceEpoch ~/ 1000),
       temp: entry.temperature.toInt(),
       feelsLike: entry.temperature.toDouble(),
       pressure: 0,
@@ -241,5 +251,12 @@ class WeatherForecast {
       knittingNote: entry.knittingNote,
       backgroundColor: entry.backgroundColor,
     );
+  }
+
+  @override
+  String toString() {
+    return 'WeatherForecast(docId: $docId, dt: ${dt.toIso8601String()}, temp: $temp°C, '
+        'weather: $weatherMain ($weatherDescription), lat: $lat, lon: $lon, '
+        'isKnitted: $isKnitted, knittingNote: $knittingNote), backgroundColor: $backgroundColor';
   }
 }
