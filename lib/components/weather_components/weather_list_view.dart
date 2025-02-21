@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/weather_components/weather_list_item.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
-class WeatherListView extends StatelessWidget {
+class WeatherListView extends StatefulWidget {
   final String userId;
   final List<WeatherForecast> items;
   final WidgetRef ref;
@@ -17,17 +17,22 @@ class WeatherListView extends StatelessWidget {
   });
 
   @override
+  State<WeatherListView> createState() => _WeatherListViewState();
+}
+
+class _WeatherListViewState extends State<WeatherListView> {
+  @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) => WeatherListItem(
-              userId: userId,
-              item: items[index],
-              ref: ref,
+              userId: widget.userId,
+              item: widget.items[index],
+              ref: widget.ref,
             ),
-            childCount: items.length,
+            childCount: widget.items.length,
           ),
         ),
       ],
