@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:weather_blanket/migrations/migrate_kine_colors_to_default_colors.dart';
+import 'package:weather_blanket/components/color/get_default_clors.dart';
 
 class LoginPage extends StatefulWidget {
   final FirebaseAuth auth;
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
             'createdAt': FieldValue.serverTimestamp(),
             'lastLogin': FieldValue.serverTimestamp(),
             // Add your default values here
-            'colors': getDefualtFirestoreColors(),
+            'colors': getDefaultColors(),
             'temperature_location': const GeoPoint(59.9139, 10.7522)
           });
         } else {

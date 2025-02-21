@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:weather_blanket/models/temperature_entry.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -220,38 +219,6 @@ class WeatherForecast {
         'knitting_note': knittingNote,
         'background_color': backgroundColor?.toARGB32(),
       };
-
-  factory WeatherForecast.fromTemperatureEntry(TemperatureEntry entry) {
-    return WeatherForecast(
-      lat: 59.9139,
-      lon: 10.7522,
-      timezone: 'Europe/Oslo',
-      timezoneOffset: 3600,
-      docId: entry.docId,
-      dt: DateTime.fromMillisecondsSinceEpoch(
-          entry.localDate.millisecondsSinceEpoch ~/ 1000),
-      temp: entry.temperature.toInt(),
-      feelsLike: entry.temperature.toDouble(),
-      pressure: 0,
-      humidity: 0,
-      dewPoint: 0,
-      uvi: 0,
-      clouds: 0,
-      visibility: 10000,
-      windSpeed: 0,
-      windDeg: 0,
-      windGust: 0,
-      sunrise: 0,
-      sunset: 0,
-      weatherId: 800,
-      weatherMain: "Temperature",
-      weatherDescription: "${entry.temperature}°C",
-      weatherIcon: "01d",
-      isKnitted: entry.isKnitted,
-      knittingNote: entry.knittingNote,
-      backgroundColor: entry.backgroundColor,
-    );
-  }
 
   @override
   String toString() {

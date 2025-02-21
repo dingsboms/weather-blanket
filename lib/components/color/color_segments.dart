@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/color/add_new_color_button.dart';
 import 'package:weather_blanket/components/color/color_picker_box.dart';
 import 'package:weather_blanket/components/color/color_picker_dialog.dart';
+import 'package:weather_blanket/components/color/get_default_clors.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
 import 'package:weather_blanket/models/range_interval.dart';
 
@@ -35,7 +36,7 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
       if (doc.exists && doc.data()!.containsKey('colors')) {
         final List<dynamic> colorsData = doc.get('colors') as List<dynamic>;
         if (colorsData.isEmpty) {
-          _fetchDefaultColors();
+          fetchDefaultColors();
         }
         final List<RangeInterval> intervals = colorsData
             .map((data) =>
@@ -49,29 +50,19 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
           isLoading = false;
         });
       } else {
-        _fetchDefaultColors();
+        fetchDefaultColors();
       }
     });
   }
 
-  _fetchDefaultColors() {
-    return FirebaseFirestore.instance
-        .collection("default_colors")
-        .doc("bjS853oVmBtaa0NHwDqL")
-        .get()
-        .then((doc) {
-      final List<dynamic> colorsData = doc.get('colors') as List<dynamic>;
-      final List<RangeInterval> intervals = colorsData
-          .map((data) =>
-              RangeInterval.fromFirestore(data as Map<String, dynamic>))
-          .toList();
+  fetchDefaultColors() async {
+    List<RangeInterval> intervals = await getDefaultColors();
 
-      setState(() {
-        ranges = intervals;
-        isLoading = false;
-      });
-      updateColors(widget.userId, ranges);
+    setState(() {
+      ranges = intervals;
+      isLoading = false;
     });
+    await updateColors(widget.userId, ranges);
   }
 
   @override

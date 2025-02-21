@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/home_page.dart';
-import 'package:weather_blanket/login_page.dart';
+import 'package:weather_blanket/pages/home_page/new_home_page.dart';
+import 'package:weather_blanket/pages/login_page.dart';
 import 'firebase_options.dart';
 
 late final FirebaseApp app;

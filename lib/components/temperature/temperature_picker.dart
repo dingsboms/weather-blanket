@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/components/generic/small_text_field.dart';
+import 'package:weather_blanket/components/text_field/small_text_field.dart';
 
 class TemperaturePicker extends StatelessWidget {
   const TemperaturePicker(
