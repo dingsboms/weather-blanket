@@ -18,7 +18,7 @@ jobs:
       - name: Create environment file
         run: |
           mkdir -p assets
-          echo "${{ secrets.OPEN_WEATHER_API_KEY }}" > assets/dotenv
+          echo "OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}" > assets/dotenv
 
       # Flutter commands
       - run: flutter pub get
