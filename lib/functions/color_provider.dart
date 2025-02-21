@@ -29,6 +29,13 @@ final colorForTemperatureProvider =
 
   return colorRangesAsync.when(
     data: (ranges) {
+      if (ranges.isNotEmpty && temperature <= ranges.first.minTemp) {
+        return ranges.first.color;
+      }
+      if (ranges.isNotEmpty && temperature >= ranges.last.maxTemp) {
+        return ranges.last.color;
+      }
+
       for (var interval in ranges) {
         if (interval.minTemp <= temperature &&
             temperature <= interval.maxTemp) {

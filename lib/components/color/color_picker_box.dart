@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:weather_blanket/components/temperature/temperature_picker.dart';
+import 'package:weather_blanket/components/color/color_picker_dialog.dart';
 import 'package:weather_blanket/models/range_interval.dart';
 
+// Updated original widget
 class ColorPickerBox extends StatefulWidget {
-  const ColorPickerBox(
-      {super.key, required this.rangeInterval, required this.onUpdate});
+  const ColorPickerBox({
+    super.key,
+    required this.rangeInterval,
+    required this.onUpdate,
+    required this.onDelete,
+    required this.intervalsOverlap,
+  });
+
   final RangeInterval rangeInterval;
   final Future<void> Function(Color pickedColor) onUpdate;
+  final Future<void> Function() onDelete;
+  final bool Function() intervalsOverlap;
 
   @override
   State<ColorPickerBox> createState() => _ColorPickerBoxState();
 }
 
 class _ColorPickerBoxState extends State<ColorPickerBox> {
-  late Color pickerColor = widget.rangeInterval.color;
   late Color currentColor = widget.rangeInterval.color;
-  late RangeInterval rangeInterval = widget.rangeInterval;
-
-  void changeColor(Color color) {
-    setState(() => pickerColor = color);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,34 +31,17 @@ class _ColorPickerBoxState extends State<ColorPickerBox> {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Pick a color!'),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TemperaturePicker(
-                      fromController: rangeInterval.minTempController,
-                      toController: rangeInterval.maxTempController,
-                    ),
-                    ColorPicker(
-                      pickerColor: pickerColor,
-                      onColorChanged: changeColor,
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                ElevatedButton(
-                  child: const Text('Update'),
-                  onPressed: () async {
-                    setState(() {
-                      currentColor = pickerColor;
-                    });
-                    Navigator.of(context).pop();
-                    await widget.onUpdate(pickerColor);
-                  },
-                ),
-              ],
+            return ColorPickerDialog(
+              initialColor: currentColor,
+              rangeInterval: widget.rangeInterval,
+              onUpdate: (pickedColor) async {
+                setState(() {
+                  currentColor = pickedColor;
+                });
+                await widget.onUpdate(pickedColor);
+              },
+              onDelete: widget.onDelete,
+              intervalsOverlap: widget.intervalsOverlap,
             );
           },
         );
