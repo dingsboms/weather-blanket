@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class WeatherForecast {
-  final double lat;
-  final double lon;
+  final GeoPoint temperatureLocation;
   final String timezone;
   final int timezoneOffset;
   final String docId;
@@ -32,8 +31,7 @@ class WeatherForecast {
   final String knittingNote;
 
   WeatherForecast({
-    required this.lat,
-    required this.lon,
+    required this.temperatureLocation,
     required this.timezone,
     required this.timezoneOffset,
     required this.docId,
@@ -62,10 +60,10 @@ class WeatherForecast {
   DateTime get localDate => dt.toLocal();
   bool get isNewMonth => localDate.day == 1;
 
-  static Future<WeatherForecast?> fromOpenWeatherAPI({
-    required DateTime dateTime,
-    required String docId,
-  }) async {
+  static Future<WeatherForecast?> fromOpenWeatherAPI(
+      {required DateTime dateTime,
+      required String docId,
+      GeoPoint? location}) async {
     final apiKey = dotenv.env['OPEN_WEATHER_API_KEY'];
     if (apiKey == null) {
       throw Exception('OpenWeather API key not found in environment variables');
@@ -79,9 +77,11 @@ class WeatherForecast {
         .doc(user.uid)
         .get();
 
-    final GeoPoint location =
-        temperatureLocationDoc.get("temperature_location");
+    location ??= temperatureLocationDoc.get("temperature_location");
 
+    if (location == null) {
+      throw Exception("Failed to get location");
+    }
     final lat = location.latitude;
     final lon = location.longitude;
 
@@ -109,39 +109,48 @@ class WeatherForecast {
     final data = json['data'][0] as Map<String, dynamic>;
     final weather = data['weather'][0] as Map<String, dynamic>;
 
-    return WeatherForecast(
-      lat: (json['lat'] as num).toDouble(),
-      lon: (json['lon'] as num).toDouble(),
-      timezone: json['timezone'] as String,
-      timezoneOffset: json['timezone_offset'] as int,
-      docId: docId,
-      dt: DateTime.fromMillisecondsSinceEpoch((data['dt'] as int) * 1000),
-      temp: (data['temp'] as num).toInt(),
-      feelsLike: (data['feels_like'] as num).toDouble(),
-      pressure: (data['pressure'] as num).round(),
-      humidity: (data['humidity'] as num).round(),
-      dewPoint: (data['dew_point'] as num).toDouble(),
-      uvi: data.containsKey('uvi')
-          ? (data['uvi'] as num).round()
-          : 0, // UVI might not be present
-      clouds: (data['clouds'] as num).round(),
-      visibility: data.containsKey('visibility')
-          ? (data['visibility'] as num).round()
-          : 10000, // visibility might not be in this response
-      windSpeed: (data['wind_speed'] as num).toDouble(),
-      windDeg: (data['wind_deg'] as num).round(),
-      windGust: data.containsKey('wind_gust')
-          ? (data['wind_gust'] as num).toDouble()
-          : 0.0, // wind_gust might not be present
-      sunrise: data['sunrise'] as int,
-      sunset: data['sunset'] as int,
-      weatherId: (weather['id'] as num).round(),
-      weatherMain: weather['main'] as String,
-      weatherDescription: weather['description'] as String,
-      weatherIcon: weather['icon'] as String,
-      isKnitted: false,
-      knittingNote: '',
-    );
+    double lat = (json['lat'] as num).toDouble();
+    double lon = (json['lon'] as num).toDouble();
+
+    GeoPoint temperatureLocation = GeoPoint(lat, lon);
+    try {
+      final result = WeatherForecast(
+        temperatureLocation: temperatureLocation,
+        timezone: json['timezone'] as String,
+        timezoneOffset: json['timezone_offset'] as int,
+        docId: docId,
+        dt: DateTime.fromMillisecondsSinceEpoch((data['dt'] as int) * 1000),
+        temp: (data['temp'] as num).toInt(),
+        feelsLike: (data['feels_like'] as num).toDouble(),
+        pressure: (data['pressure'] as num).round(),
+        humidity: (data['humidity'] as num).round(),
+        dewPoint: (data['dew_point'] as num).toDouble(),
+        uvi: data.containsKey('uvi')
+            ? (data['uvi'] as num).round()
+            : 0, // UVI might not be present
+        clouds: (data['clouds'] as num).round(),
+        visibility: data.containsKey('visibility')
+            ? (data['visibility'] as num).round()
+            : 10000, // visibility might not be in this response
+        windSpeed: (data['wind_speed'] as num).toDouble(),
+        windDeg: (data['wind_deg'] as num).round(),
+        windGust: data.containsKey('wind_gust')
+            ? (data['wind_gust'] as num).toDouble()
+            : 0.0, // wind_gust might not be present
+        sunrise: data['sunrise'] as int,
+        sunset: data['sunset'] as int,
+        weatherId: (weather['id'] as num).round(),
+        weatherMain: weather['main'] as String,
+        weatherDescription: weather['description'] as String,
+        weatherIcon: weather['icon'] as String,
+        isKnitted: false,
+        knittingNote: '',
+      );
+      return result;
+    } catch (e) {
+      print("Failed to parse data: $e");
+      throw Exception(e);
+    }
   }
 
   factory WeatherForecast.fromFirestore(DocumentSnapshot doc) {
@@ -157,8 +166,7 @@ class WeatherForecast {
     int temp = (data['temp'] as num).toInt();
 
     final weatherData = WeatherForecast(
-      lat: (data['lat'] as num).toDouble(),
-      lon: (data['lon'] as num).toDouble(),
+      temperatureLocation: data['temperature_location'] as GeoPoint,
       timezone: data['timezone'] as String,
       timezoneOffset: data['timezone_offset'] as int,
       docId: doc.id,
@@ -188,8 +196,7 @@ class WeatherForecast {
   }
 
   Map<String, dynamic> toFirestore() => {
-        'lat': lat,
-        'lon': lon,
+        'temperature_location': temperatureLocation,
         'timezone': timezone,
         'timezone_offset': timezoneOffset,
         'dt': dt,
@@ -217,7 +224,7 @@ class WeatherForecast {
   @override
   String toString() {
     return 'WeatherForecast(docId: $docId, dt: ${dt.toIso8601String()}, temp: $temp°C, '
-        'weather: $weatherMain ($weatherDescription), lat: $lat, lon: $lon, '
+        'weather: $weatherMain ($weatherDescription), lat: ${temperatureLocation.latitude}, lon: ${temperatureLocation.longitude}, '
         'isKnitted: $isKnitted, knittingNote: $knittingNote';
   }
 }

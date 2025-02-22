@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_blanket/components/location/location_text_field.dart';
+import 'package:weather_blanket/models/weather_data.dart';
 
 class LocationBox extends StatefulWidget {
-  const LocationBox({super.key, required this.userId});
+  const LocationBox({super.key, required this.userId, this.weatherItem});
   final String userId;
+  final WeatherForecast? weatherItem;
 
   @override
   State<LocationBox> createState() => _LocationBoxState();
@@ -13,17 +15,40 @@ class LocationBox extends StatefulWidget {
 class _LocationBoxState extends State<LocationBox> {
   final longitudeController = TextEditingController();
   final lattitudeController = TextEditingController();
-  bool showButton = false; // Initialize showButton here
-  double originalLattitudeValue = 59.972175;
-  double originalLongitudeValue = 10.775647;
+  bool showButton = false;
+  late double lattitudeBeforeUpdate;
+  late double longitudeBeforeUpdate;
   bool isLoading = false;
+  late Future<GeoPoint> _locationFuture;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserData();
+    // Initialize the future in initState
+    _locationFuture = _initializeLocation();
     longitudeController.addListener(_onTextChanged);
     lattitudeController.addListener(_onTextChanged);
+  }
+
+  Future<GeoPoint> _initializeLocation() async {
+    if (widget.weatherItem != null) {
+      GeoPoint location = widget.weatherItem!.temperatureLocation;
+      _updateLattitudeAndLongitudeBeforeUpdate(location);
+      return location;
+    } else {
+      final fetchedLocation = await _fetchUserData();
+      if (fetchedLocation == null) {
+        throw Exception("Failed to fetch user data location");
+      }
+      return fetchedLocation;
+    }
+  }
+
+  _updateLattitudeAndLongitudeBeforeUpdate(GeoPoint location) {
+    lattitudeBeforeUpdate = location.latitude;
+    longitudeBeforeUpdate = location.longitude;
+    lattitudeController.text = location.latitude.toString();
+    longitudeController.text = location.longitude.toString();
   }
 
   @override
@@ -33,29 +58,26 @@ class _LocationBoxState extends State<LocationBox> {
     super.dispose();
   }
 
-  void _fetchUserData() {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget.userId)
-        .get()
-        .then(
-      (doc) {
-        GeoPoint geoPoint;
-        if (doc.exists && doc.data()!.containsKey('temperature_location')) {
-          geoPoint = doc.get('temperature_location') as GeoPoint;
-        } else {
-          geoPoint = GeoPoint(originalLattitudeValue, originalLongitudeValue);
-        }
+  Future<GeoPoint?> _fetchUserData() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(widget.userId)
+          .get();
 
+      if (doc.exists && doc.data()!.containsKey('temperature_location')) {
+        final geoPoint = doc.get('temperature_location') as GeoPoint;
         setState(() {
-          originalLattitudeValue = geoPoint.latitude;
-          lattitudeController.text = geoPoint.latitude.toStringAsFixed(4);
-          originalLongitudeValue = geoPoint.longitude;
-          longitudeController.text = geoPoint.longitude.toStringAsFixed(4);
+          _updateLattitudeAndLongitudeBeforeUpdate(geoPoint);
         });
-      },
-      onError: (e) => print("Error completing: $e"),
-    );
+        return geoPoint;
+      } else {
+        throw Exception(
+            "Failed getting userData Location: doc does not exist or does not contain key temperature_location");
+      }
+    } catch (e) {
+      throw Exception("Failed getting userData Location: $e");
+    }
   }
 
   void _onTextChanged() {
@@ -63,89 +85,164 @@ class _LocationBoxState extends State<LocationBox> {
     bool longitudeChanged = false;
 
     try {
-      // Parse the current text to double for comparison
       final currentLatitude = double.parse(lattitudeController.text);
       final currentLongitude = double.parse(longitudeController.text);
 
-      // Check if latitude has changed with precision
-      latitudeChanged = (currentLatitude - originalLattitudeValue).abs() > 0e-5;
-
-      // Check if longitude has changed with precision
+      latitudeChanged = (currentLatitude - lattitudeBeforeUpdate).abs() > 0e-5;
       longitudeChanged =
-          (currentLongitude - originalLongitudeValue).abs() > 0e-5;
+          (currentLongitude - longitudeBeforeUpdate).abs() > 0e-5;
     } catch (e) {
-      // If parsing fails, we assume something has changed or there's invalid input
       latitudeChanged = true;
       longitudeChanged = true;
     }
 
-    // Update showButton based on changes
-    setState(() {
-      showButton = latitudeChanged || longitudeChanged;
-    });
+    if (mounted) {
+      setState(() {
+        showButton = latitudeChanged || longitudeChanged;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            "Location: ",
-            style: TextStyle(color: CupertinoColors.white),
-          ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
+    bool workingOnDefaultLocation = widget.weatherItem == null;
+
+    return FutureBuilder<GeoPoint>(
+      future: _locationFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CupertinoActivityIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData) {
+          return const Center(child: Text('No location data available'));
+        }
+
+        return Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Latitude",
-                style: TextStyle(color: CupertinoColors.white),
+              // Pin emoji column
+              const Column(
+                children: [
+                  SizedBox(
+                    height: 30,
+                    width: 40,
+                  ), // Align with labels
+                  Text(
+                    "📍",
+                    style: TextStyle(color: CupertinoColors.white),
+                  ),
+                ],
               ),
-              LocationTextField(
-                isLatitude: true,
-                controller: lattitudeController,
-              )
+              // Latitude column
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      "Latitude",
+                      style: TextStyle(color: CupertinoColors.white),
+                    ),
+                  ),
+                  LocationTextField(
+                    isLatitude: true,
+                    controller: lattitudeController,
+                  ),
+                ],
+              ),
+              const SizedBox(width: 16), // Space between fields
+              // Longitude column
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      "Longitude",
+                      style: TextStyle(color: CupertinoColors.white),
+                    ),
+                  ),
+                  LocationTextField(
+                    isLatitude: false,
+                    controller: longitudeController,
+                  ),
+                ],
+              ),
+              // Button column
+              Column(
+                children: [
+                  const SizedBox(height: 20), // Align with labels
+                  CupertinoButton(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                    onPressed: showButton
+                        ? workingOnDefaultLocation
+                            ? () async {
+                                setState(() => isLoading = true);
+                                final newPosition = GeoPoint(
+                                    double.parse(lattitudeController.text),
+                                    double.parse(longitudeController.text));
+                                await updateDefaultPosition(
+                                    widget.userId, newPosition);
+                                await _fetchUserData();
+                                setState(() => isLoading = false);
+                              }
+                            : () async {
+                                setState(() => isLoading = true);
+                                final newPosition = GeoPoint(
+                                    double.parse(lattitudeController.text),
+                                    double.parse(longitudeController.text));
+                                await updateItemLocation(
+                                    widget.userId,
+                                    widget.weatherItem!.docId,
+                                    newPosition,
+                                    widget.weatherItem!.dt);
+
+                                setState(() {
+                                  isLoading = false;
+                                  _updateLattitudeAndLongitudeBeforeUpdate(
+                                      newPosition);
+                                });
+                              }
+                        : null,
+                    child: isLoading
+                        ? const CupertinoActivityIndicator()
+                        : const Text("🔄"),
+                  ),
+                ],
+              ),
             ],
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "Longitude",
-                style: TextStyle(color: CupertinoColors.white),
-              ),
-              LocationTextField(
-                isLatitude: false,
-                controller: longitudeController,
-              )
-            ],
-          ),
-          CupertinoButton(
-            onPressed: showButton
-                ? () async {
-                    await updatePosition(
-                      widget.userId,
-                      GeoPoint(
-                        double.parse(lattitudeController.text),
-                        double.parse(longitudeController.text),
-                      ),
-                    );
-                    _fetchUserData(); // Refresh the data after update
-                    setState(() {}); // Trigger a rebuild to update the UI
-                  }
-                : null,
-            child: const Text("Update"),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
-}
 
-Future<void> updatePosition(String userId, GeoPoint newGeoPoint) async {
-  await FirebaseFirestore.instance
-      .collection("users")
-      .doc(userId)
-      .set({"temperature_location": newGeoPoint}, SetOptions(merge: true));
+  Future<void> updateItemLocation(String userId, String docId,
+      GeoPoint newGeoPoint, DateTime dateTime) async {
+    final updatedDoc = await WeatherForecast.fromOpenWeatherAPI(
+        dateTime: dateTime, docId: docId, location: newGeoPoint);
+    if (updatedDoc == null) {
+      throw Exception("Failed to get updatedDoc fomr OpenWeatherAPI");
+    }
+
+    print("Got updated doc: $updatedDoc");
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("days")
+        .doc(docId)
+        .set(updatedDoc.toFirestore(), SetOptions(merge: true));
+  }
+
+  Future<void> updateDefaultPosition(
+      String userId, GeoPoint newGeoPoint) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .set({"temperature_location": newGeoPoint}, SetOptions(merge: true));
+  }
 }

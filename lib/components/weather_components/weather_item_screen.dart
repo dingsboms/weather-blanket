@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_blanket/components/location/location_box.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
@@ -28,6 +29,8 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
     super.initState();
   }
 
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
@@ -35,6 +38,7 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
           "Date: ${forecast.dt.day} / ${forecast.dt.month} - ${forecast.dt.year}"),
       content: Column(
         children: [
+          Text("Temperature: ${forecast.temp}"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -95,6 +99,7 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                       "${"${forecast.dt.hour}".padLeft(2, "0")} : ${"${forecast.dt.minute}".padLeft(2, "0")}")),
             ],
           ),
+          LocationBox(userId: userId, weatherItem: widget.item),
           SizedBox(
             width: 100,
             height: 100,
