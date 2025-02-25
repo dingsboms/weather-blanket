@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
 class WeatherForecast {
   final GeoPoint temperatureLocation;
@@ -59,47 +58,54 @@ class WeatherForecast {
 
   DateTime get localDate => dt.toLocal();
   bool get isNewMonth => localDate.day == 1;
-
   static Future<WeatherForecast?> fromOpenWeatherAPI(
       {required DateTime dateTime,
       required String docId,
       GeoPoint? location}) async {
-    final apiKey = dotenv.env['OPEN_WEATHER_API_KEY'];
-    if (apiKey == null) {
-      throw Exception('OpenWeather API key not found in environment variables');
-    }
+    // Get the current user
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       throw Exception("Error user not logged in");
     }
-    final temperatureLocationDoc = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user.uid)
-        .get();
 
-    location ??= temperatureLocationDoc.get("temperature_location");
-
+    // Get location from Firestore if not provided
     if (location == null) {
-      throw Exception("Failed to get location");
+      final temperatureLocationDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid)
+          .get();
+
+      location = temperatureLocationDoc.get("temperature_location");
+
+      if (location == null) {
+        throw Exception("Failed to get location");
+      }
     }
+
+    // Prepare parameters for the cloud function
     final lat = location.latitude;
     final lon = location.longitude;
-
     final dateUtc = dateTime.toUtc().millisecondsSinceEpoch ~/ 1000;
-    final url =
-        Uri.parse('https://api.openweathermap.org/data/3.0/onecall/timemachine'
-            '?lat=$lat'
-            '&lon=$lon'
-            '&dt=$dateUtc'
-            '&appid=$apiKey'
-            '&units=metric');
 
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
-      return WeatherForecast._fromAPIResponse(json, docId);
-    } else {
-      throw Exception('Failed to load weather data: ${response.statusCode}');
+    try {
+      // Call the Firebase Cloud Function instead of direct API call
+      final functions = FirebaseFunctions.instance;
+      final result =
+          await functions.httpsCallable('fetchOpenWeatherData').call({
+        'date': dateUtc,
+        'lat': lat,
+        'lon': lon,
+      });
+
+      // Parse the response
+      if (result.data != null) {
+        return WeatherForecast._fromAPIResponse(result.data, docId);
+      } else {
+        throw Exception('Weather data is null');
+      }
+    } catch (e) {
+      debugPrint('WeatherForecast.fromOpenWeatherAPI: ${e.toString()}');
+      throw Exception('Failed to load weather data: $e');
     }
   }
 

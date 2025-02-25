@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/pages/home_page/home_page.dart';
@@ -14,7 +13,6 @@ late final FirebaseAuth auth;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: "assets/dotenv");
   app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
