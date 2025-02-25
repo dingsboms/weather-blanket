@@ -1,7 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_blanket/places_auto_complete/model/place_details.dart';
-import 'package:weather_blanket/places_auto_complete/model/prediction.dart';
+import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/model/place_details.dart';
+import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/model/prediction.dart';
 
 class GooglePlacesApi {
   Future<PlacesAutocompleteResponse?> getSuggestionsForInput({

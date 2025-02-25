@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/components/location/location_text_field.dart';
+import 'package:weather_blanket/components/location_and_coordinates/location/location_text_field.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
 class LocationBox extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:weather_blanket/components/text_field/small_text_field.dart';
-import 'package:weather_blanket/components/location/coordinate_formatter.dart';
+import 'package:weather_blanket/components/location_and_coordinates/location/coordinate_formatter.dart';
 
 class LocationTextField extends StatelessWidget {
   const LocationTextField(

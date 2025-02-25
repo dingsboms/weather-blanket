@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/color/color_segments.dart';
-import 'package:weather_blanket/components/location/location_box.dart';
+import 'package:weather_blanket/components/location_and_coordinates/location/location_box.dart';
+import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
-import 'package:weather_blanket/places_auto_complete/my_google_autocomplete_text_field.dart';
+import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/my_google_autocomplete_text_field.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key, required this.auth});
@@ -23,8 +24,7 @@ class SettingsPage extends ConsumerWidget {
           child: Center(
             child: Column(
               children: [
-                MyGoogleAutocompleteTextField(),
-                LocationBox(userId: auth.currentUser!.uid),
+                LocationAndAutocomplete(),
                 const Divider(),
                 ColorSegments(
                   userId: auth.currentUser!.uid,
