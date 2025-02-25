@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/color/color_segments.dart';
 import 'package:weather_blanket/components/location/location_box.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
+import 'package:weather_blanket/places_auto_complete/my_google_autocomplete_text_field.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key, required this.auth});
@@ -22,6 +23,7 @@ class SettingsPage extends ConsumerWidget {
           child: Center(
             child: Column(
               children: [
+                MyGoogleAutocompleteTextField(),
                 LocationBox(userId: auth.currentUser!.uid),
                 const Divider(),
                 ColorSegments(
