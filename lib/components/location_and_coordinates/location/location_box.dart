@@ -34,10 +34,9 @@ class _LocationBoxState extends State<LocationBox> {
   @override
   void initState() {
     super.initState();
-    // Initialize the future in initState
-    _locationFuture = _initializeLocation();
     lattitudeController = widget.lattitudeController ?? TextEditingController();
     longitudeController = widget.longitudeController ?? TextEditingController();
+    _locationFuture = _initializeLocation();
     longitudeController.addListener(_onTextChanged);
     lattitudeController.addListener(_onTextChanged);
   }
