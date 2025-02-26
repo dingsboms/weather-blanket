@@ -1,20 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location/location_text_field.dart';
+import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
 class LocationBox extends StatefulWidget {
-  const LocationBox({super.key, required this.userId, this.weatherItem});
+  const LocationBox(
+      {super.key,
+      required this.userId,
+      this.weatherItem,
+      this.lattitudeController,
+      this.longitudeController,
+      this.onUpdate});
   final String userId;
   final WeatherForecast? weatherItem;
+  final TextEditingController? lattitudeController;
+  final TextEditingController? longitudeController;
+  final Function(GeoPoint)? onUpdate;
 
   @override
   State<LocationBox> createState() => _LocationBoxState();
 }
 
 class _LocationBoxState extends State<LocationBox> {
-  final longitudeController = TextEditingController();
-  final lattitudeController = TextEditingController();
+  late TextEditingController longitudeController;
+  late TextEditingController lattitudeController;
   bool showButton = false;
   late double lattitudeBeforeUpdate;
   late double longitudeBeforeUpdate;
@@ -26,6 +36,8 @@ class _LocationBoxState extends State<LocationBox> {
     super.initState();
     // Initialize the future in initState
     _locationFuture = _initializeLocation();
+    lattitudeController = widget.lattitudeController ?? TextEditingController();
+    longitudeController = widget.longitudeController ?? TextEditingController();
     longitudeController.addListener(_onTextChanged);
     lattitudeController.addListener(_onTextChanged);
   }
@@ -53,8 +65,11 @@ class _LocationBoxState extends State<LocationBox> {
 
   @override
   void dispose() {
-    longitudeController.dispose();
-    lattitudeController.dispose();
+    if (widget.lattitudeController == null) {
+      longitudeController.dispose();
+      lattitudeController.dispose();
+    }
+
     super.dispose();
   }
 
@@ -185,9 +200,11 @@ class _LocationBoxState extends State<LocationBox> {
                                 final newPosition = GeoPoint(
                                     double.parse(lattitudeController.text),
                                     double.parse(longitudeController.text));
+
                                 await updateDefaultPosition(
                                     widget.userId, newPosition);
                                 await _fetchUserData();
+                                widget.onUpdate?.call(newPosition);
                                 setState(() => isLoading = false);
                               }
                             : () async {
@@ -244,5 +261,11 @@ class _LocationBoxState extends State<LocationBox> {
         .collection("users")
         .doc(userId)
         .set({"temperature_location": newGeoPoint}, SetOptions(merge: true));
+
+    fetchAddressFromGeoLocation(newGeoPoint).then((address) => FirebaseFirestore
+        .instance
+        .collection("users")
+        .doc(userId)
+        .set({"temperature_location_name": address}, SetOptions(merge: true)));
   }
 }

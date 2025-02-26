@@ -73,6 +73,21 @@ exports.getGeoLocationFromAddress = onCall(async (request) => {
     return geocode_data;
 });
 
+exports.getAddressFromGeoLocation = onCall(async (request) => {
+    const lat = request.data.lat;
+    const lon = request.data.lon;
+
+    const geocode_api_key = process.env.GOOGLE_GEOCODING_KEY;
+
+    const reverse_geocoding_endpoint =
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${geocode_api_key}`;
+
+    const response = await fetch(reverse_geocoding_endpoint);
+    const result = await response.json();
+
+    return result;
+});
+
 exports.fetchOpenWeatherData = onCall(async (request) => {
     let date_utc = request.data.date;
     let lat = request.data.lat;

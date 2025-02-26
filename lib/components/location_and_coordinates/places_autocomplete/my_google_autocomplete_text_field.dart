@@ -4,7 +4,14 @@ import 'package:weather_blanket/components/location_and_coordinates/places_autoc
 import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/widgets/google_places_autocomplete_text_field.dart';
 
 class MyGoogleAutocompleteTextField extends StatefulWidget {
-  const MyGoogleAutocompleteTextField({super.key});
+  const MyGoogleAutocompleteTextField(
+      {super.key,
+      required this.controller,
+      required this.onSuggestionClicked,
+      this.initialText});
+  final TextEditingController controller;
+  final Function(Prediction predicton) onSuggestionClicked;
+  final String? initialText;
 
   @override
   State<MyGoogleAutocompleteTextField> createState() =>
@@ -12,9 +19,8 @@ class MyGoogleAutocompleteTextField extends StatefulWidget {
 }
 
 class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
-  final TextEditingController _controller = TextEditingController();
+  late TextEditingController _controller;
   String? _selectedPlace;
-  String? _coordinates;
   String? _sessionToken;
 
   @override
@@ -22,17 +28,13 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
     super.initState();
     // Generate a session token when the search screen initializes
     _refreshSessionToken();
+    _controller = widget.controller;
+    _controller.text = widget.initialText ?? _controller.text;
   }
 
   void _refreshSessionToken() {
     // Create a unique session token using the uuid package
     _sessionToken = const Uuid().v4();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -48,7 +50,6 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
               sessionToken: _sessionToken,
               debounceTime: 500,
               minInputLength: 2,
-              languageCode: 'en',
               style: const TextStyle(
                 color: CupertinoColors.black,
                 fontSize: 16,
@@ -67,9 +68,9 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
               },
               onPlaceDetailsWithCoordinatesReceived: (Prediction prediction) {
                 setState(() {
-                  _coordinates = '${prediction.lat}, ${prediction.lng}';
                   _refreshSessionToken();
                 });
+                widget.onSuggestionClicked(prediction);
               },
               onError: (error) {
                 // Show Cupertino-style alert
@@ -104,29 +105,6 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
                 child: child,
               ),
             ),
-            const SizedBox(height: 20),
-            if (_selectedPlace != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  'Selected Place: $_selectedPlace',
-                  style: const TextStyle(
-                    color: CupertinoColors.black,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            if (_coordinates != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  'Coordinates: $_coordinates',
-                  style: const TextStyle(
-                    color: CupertinoColors.black,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
           ],
         ),
       ),
