@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/components/location_and_coordinates/location/location_box.dart';
+import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
@@ -99,7 +99,9 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                       "${"${forecast.dt.hour}".padLeft(2, "0")} : ${"${forecast.dt.minute}".padLeft(2, "0")}")),
             ],
           ),
-          LocationBox(userId: userId, weatherItem: widget.item),
+          LocationAndAutocomplete(
+            weatherItem: widget.item,
+          ),
           SizedBox(
             width: 100,
             height: 100,

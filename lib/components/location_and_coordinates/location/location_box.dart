@@ -217,6 +217,8 @@ class _LocationBoxState extends State<LocationBox> {
                                     newPosition,
                                     widget.weatherItem!.dt);
 
+                                widget.onUpdate?.call(newPosition);
+
                                 setState(() {
                                   isLoading = false;
                                   _updateLattitudeAndLongitudeBeforeUpdate(
@@ -244,27 +246,23 @@ class _LocationBoxState extends State<LocationBox> {
     if (updatedDoc == null) {
       throw Exception("Failed to get updatedDoc fomr OpenWeatherAPI");
     }
-
-    print("Got updated doc: $updatedDoc");
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId)
-        .collection("days")
-        .doc(docId)
-        .set(updatedDoc.toFirestore(), SetOptions(merge: true));
+    fetchAddressFromGeoLocation(newGeoPoint).then((address) async {
+      updatedDoc.temperatureLocationName = address;
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .collection("days")
+          .doc(docId)
+          .set(updatedDoc.toFirestore(), SetOptions(merge: true));
+    });
   }
 
   Future<void> updateDefaultPosition(
       String userId, GeoPoint newGeoPoint) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId)
-        .set({"temperature_location": newGeoPoint}, SetOptions(merge: true));
-
-    fetchAddressFromGeoLocation(newGeoPoint).then((address) => FirebaseFirestore
-        .instance
-        .collection("users")
-        .doc(userId)
-        .set({"temperature_location_name": address}, SetOptions(merge: true)));
+    fetchAddressFromGeoLocation(newGeoPoint).then((address) =>
+        FirebaseFirestore.instance.collection("users").doc(userId).set({
+          "temperature_location_name": address,
+          "temperature_location": newGeoPoint
+        }, SetOptions(merge: true)));
   }
 }

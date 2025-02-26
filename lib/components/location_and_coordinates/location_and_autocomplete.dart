@@ -5,9 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location/location_box.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location/reverse_geo_code.dart';
 import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/my_google_autocomplete_text_field.dart';
+import 'package:weather_blanket/models/weather_data.dart';
 
 class LocationAndAutocomplete extends StatefulWidget {
-  const LocationAndAutocomplete({super.key});
+  const LocationAndAutocomplete({super.key, this.weatherItem});
+  final WeatherForecast? weatherItem;
 
   @override
   State<LocationAndAutocomplete> createState() =>
@@ -20,6 +22,7 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
   final _longitudeController = TextEditingController();
   final _autoCompleteController = TextEditingController();
   String initialLocationName = "";
+  late bool isWeatherItemLocationBox;
 
   @override
   void dispose() {
@@ -31,12 +34,17 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
 
   @override
   void initState() {
+    isWeatherItemLocationBox = widget.weatherItem != null;
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("users").doc(userId);
+
+    if (isWeatherItemLocationBox) {
+      documentReference =
+          documentReference.collection("days").doc(widget.weatherItem!.docId);
+    }
+
     try {
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(userId)
-          .get()
-          .then((doc) {
+      documentReference.get().then((doc) {
         fetchTemperatureLocationName(doc).then((locName) => setState(() {
               initialLocationName = locName;
             }));
@@ -74,6 +82,7 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
           userId: userId,
           lattitudeController: _lattitudeController,
           longitudeController: _longitudeController,
+          weatherItem: widget.weatherItem,
           onUpdate: (location) async {
             String address = await fetchAddressFromGeoLocation(location);
             setState(() {
@@ -95,7 +104,7 @@ Future<String> fetchTemperatureLocationName(DocumentSnapshot doc) async {
     try {
       GeoPoint location = doc.get("temperature_location");
       locationName = await fetchAddressFromGeoLocation(location);
-      FirebaseFirestore.instance.collection("users").doc(doc.id).set(
+      doc.reference.set(
           {"temperature_location_name": locationName}, SetOptions(merge: true));
     } catch (e) {
       print("Failed getting reverse_geocode locationName");

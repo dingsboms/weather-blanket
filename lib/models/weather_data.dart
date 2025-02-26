@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 
 class WeatherForecast {
   final GeoPoint temperatureLocation;
+  String? temperatureLocationName;
   final String timezone;
   final int timezoneOffset;
   final String docId;
@@ -30,6 +31,7 @@ class WeatherForecast {
   final String knittingNote;
 
   WeatherForecast({
+    this.temperatureLocationName,
     required this.temperatureLocation,
     required this.timezone,
     required this.timezoneOffset,
@@ -173,6 +175,7 @@ class WeatherForecast {
 
     final weatherData = WeatherForecast(
       temperatureLocation: data['temperature_location'] as GeoPoint,
+      temperatureLocationName: data['temperature_location_name'],
       timezone: data['timezone'] as String,
       timezoneOffset: data['timezone_offset'] as int,
       docId: doc.id,
@@ -203,6 +206,7 @@ class WeatherForecast {
 
   Map<String, dynamic> toFirestore() => {
         'temperature_location': temperatureLocation,
+        'temperature_location_name': temperatureLocationName,
         'timezone': timezone,
         'timezone_offset': timezoneOffset,
         'dt': dt,
