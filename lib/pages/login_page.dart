@@ -100,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  double heghtWidth = 250;
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -107,30 +108,96 @@ class _LoginPageState extends State<LoginPage> {
         middle: Text('Login'),
       ),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (_errorMessage != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Text(
-                      _errorMessage!,
-                      style: const TextStyle(
-                          color: CupertinoColors.destructiveRed),
-                      textAlign: TextAlign.center,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Create a Weather-Blanket!",
+                    style: TextStyle(fontSize: 32),
+                  ),
+                  if (_errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 64),
+                      child: Text(
+                        _errorMessage!,
+                        style: const TextStyle(
+                            color: CupertinoColors.destructiveRed),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
+                  if (_isLoading)
+                    const CupertinoActivityIndicator()
+                  else
+                    CupertinoButton(
+                      onPressed: _loginWithGoogle,
+                      child: const Text('Login with Google'),
+                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/1HomeScreen.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      ),
+                      Image.asset(
+                        "assets/images/2EditDate.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      )
+                    ],
                   ),
-                if (_isLoading)
-                  const CupertinoActivityIndicator()
-                else
-                  CupertinoButton(
-                    onPressed: _loginWithGoogle,
-                    child: const Text('Login with Google'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/3EditDateAutocomplete.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      ),
+                      Image.asset(
+                        "assets/images/4EditTime.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      )
+                    ],
                   ),
-              ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/5MakeANote.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      ),
+                      Image.asset(
+                        "assets/images/6Intervals.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/7EditColor.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      ),
+                      Image.asset(
+                        "assets/images/8FullView.png",
+                        width: heghtWidth,
+                        height: heghtWidth,
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
