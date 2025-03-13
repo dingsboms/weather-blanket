@@ -58,8 +58,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '88468625362',
     projectId: 'weather-blanket',
     storageBucket: 'weather-blanket.firebasestorage.app',
-    iosClientId:
-        '88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com',
+    iosClientId: '88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com',
     iosBundleId: 'no.rmax.weatherblanket.app',
   );
+
 }
