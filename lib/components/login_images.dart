@@ -5,69 +5,43 @@ class LoginImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double heghtWidth = 250;
+    const double heghtWidth = 250;
+    String filePrefix = "assets/images/";
 
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/1HomeScreen.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          ),
-          Image.asset(
-            "assets/images/2EditDate.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          )
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/3EditDateAutocomplete.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          ),
-          Image.asset(
-            "assets/images/4EditTime.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          )
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/5MakeANote.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          ),
-          Image.asset(
-            "assets/images/6Intervals.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          )
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/images/7EditColor.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          ),
-          Image.asset(
-            "assets/images/8FullView.png",
-            width: heghtWidth,
-            height: heghtWidth,
-          )
-        ],
-      )
-    ]);
+    const imageFileNames = [
+      "1HomeScreen.png",
+      "2EditDate.png",
+      "3EditDateAutocomplete.png",
+      "4EditTime.png",
+      "5MakeANote.png",
+      "6Intervals.png",
+      "7EditColor.png",
+      "8FullView.png"
+    ];
+
+    List<Widget> widgetChildren = [];
+    List<Widget> rowChildren = [];
+
+    for (int i = 0; i < imageFileNames.length; i++) {
+      var imageFileName = imageFileNames[i];
+      var imageFilePath = filePrefix + imageFileName;
+
+      rowChildren.add(Image.asset(
+        imageFilePath,
+        width: heghtWidth,
+        height: heghtWidth,
+      ));
+
+      if (i % 2 != 0) {
+        widgetChildren.add(Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: rowChildren,
+        ));
+        rowChildren = [];
+      }
+    }
+
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center, children: widgetChildren);
   }
 }
