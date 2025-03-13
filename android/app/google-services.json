@@ -4,43 +4,6 @@
     "project_id": "weather-blanket",
     "storage_bucket": "weather-blanket.firebasestorage.app"
   },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:88468625362:android:8572d594c521a21a73da0b",
-        "android_client_info": {
-          "package_name": "com.example.weather_blanket"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "88468625362-tat400641fh3pnep52la34ar76kq9u0k.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAERPmyjbTfZW7nUBLMN2jrqMMlG7QpLr4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "88468625362-tat400641fh3pnep52la34ar76kq9u0k.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "no.rmax.weatherblanket.app"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "client": [],
   "configuration_version": "1"
 }
