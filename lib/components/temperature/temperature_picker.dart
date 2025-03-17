@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/components/text_field/small_text_field.dart';
+import 'package:weather_blanket/components/location_and_coordinates/location/location_text_field.dart';
 
 class TemperaturePicker extends StatelessWidget {
   const TemperaturePicker(
@@ -14,21 +14,15 @@ class TemperaturePicker extends StatelessWidget {
         Column(
           children: [
             const Text("From Temperature"),
-            SmallTextField(
-              controller: fromController,
-              keyboardType: const TextInputType.numberWithOptions(),
-              formatters: [],
-            ),
+            LocationTextField(controller: fromController)
           ],
         ),
         Column(
           children: [
             const Text("To Temperature"),
-            SmallTextField(
+            LocationTextField(
               controller: toController,
-              keyboardType: const TextInputType.numberWithOptions(),
-              formatters: [],
-            ),
+            )
           ],
         )
       ],

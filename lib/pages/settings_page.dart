@@ -22,7 +22,7 @@ class SettingsPage extends ConsumerWidget {
           child: Center(
             child: Column(
               children: [
-                LocationAndAutocomplete(),
+                const LocationAndAutocomplete(),
                 const Divider(),
                 ColorSegments(
                   userId: auth.currentUser!.uid,

@@ -5,7 +5,7 @@ class LoginImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double heghtWidth = 250;
+    const double heghtWidth = 160;
     String filePrefix = "assets/images/";
 
     const imageFileNames = [

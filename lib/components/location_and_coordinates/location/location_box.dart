@@ -143,7 +143,7 @@ class _LocationBoxState extends State<LocationBox> {
                   SizedBox(
                     height: 30,
                     width: 40,
-                  ), // Align with labels
+                  ),
                   Text(
                     "📍",
                     style: TextStyle(color: CupertinoColors.white),
@@ -167,7 +167,7 @@ class _LocationBoxState extends State<LocationBox> {
                   ),
                 ],
               ),
-              const SizedBox(width: 16), // Space between fields
+              const SizedBox(width: 16),
               // Longitude column
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +188,7 @@ class _LocationBoxState extends State<LocationBox> {
               // Button column
               Column(
                 children: [
-                  const SizedBox(height: 20), // Align with labels
+                  const SizedBox(height: 20),
                   CupertinoButton(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
