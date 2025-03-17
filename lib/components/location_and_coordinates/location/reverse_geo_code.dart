@@ -16,18 +16,15 @@ class ReverseGeocode {
 
   /// Create a ReverseGeocode object from a JSON map
   factory ReverseGeocode.fromJson(Map<String, dynamic> json) {
-    // Extract plus_code
     final plusCodeJson = json['plus_code'];
     final PlusCode? plusCode =
         plusCodeJson != null ? PlusCode.fromJson(plusCodeJson) : null;
 
-    // Extract results
     final List<dynamic> resultsJson = json['results'] ?? [];
     final List<GeocodingResult> results = resultsJson
         .map((resultJson) => GeocodingResult.fromJson(resultJson))
         .toList();
 
-    // Extract status and error message
     final String status = json['status'] ?? '';
     final String? errorMessage = json['error_message'];
 
@@ -45,27 +42,20 @@ class ReverseGeocode {
     return ReverseGeocode.fromJson(json);
   }
 
-  /// Check if the geocoding request was successful
   bool get isSuccess => status == 'OK';
 
-  /// Get the formatted address (usually from the first result)
   String? get formattedAddress =>
       results.isNotEmpty ? results[0].formattedAddress : null;
 
-  /// Get the locality (city/town) from the results
   String? get locality => _findAddressComponent('locality');
 
-  /// Get the administrative area (state/province) from the results
   String? get administrativeArea =>
       _findAddressComponent('administrative_area_level_1');
 
-  /// Get the country from the results
   String? get country => _findAddressComponent('country');
 
-  /// Get the postal code from the results
   String? get postalCode => _findAddressComponent('postal_code');
 
-  /// Find an address component by type from the results
   String? _findAddressComponent(String type) {
     if (results.isEmpty) return null;
 
@@ -99,28 +89,22 @@ class GeocodingResult {
   });
 
   factory GeocodingResult.fromJson(Map<String, dynamic> json) {
-    // Extract address components
     final List<dynamic> componentsJson = json['address_components'] ?? [];
     final List<AddressComponent> addressComponents = componentsJson
         .map((componentJson) => AddressComponent.fromJson(componentJson))
         .toList();
 
-    // Extract formatted address
     final String formattedAddress = json['formatted_address'] ?? '';
 
-    // Extract geometry
     final geometryJson = json['geometry'] ?? {};
     final Geometry geometry = Geometry.fromJson(geometryJson);
 
-    // Extract place_id
     final String placeId = json['place_id'] ?? '';
 
-    // Extract plus_code
     final plusCodeJson = json['plus_code'];
     final PlusCode? plusCode =
         plusCodeJson != null ? PlusCode.fromJson(plusCodeJson) : null;
 
-    // Extract types
     final List<dynamic> typesJson = json['types'] ?? [];
     final List<String> types = typesJson.cast<String>();
 
@@ -176,19 +160,15 @@ class Geometry {
   });
 
   factory Geometry.fromJson(Map<String, dynamic> json) {
-    // Extract bounds
     final boundsJson = json['bounds'];
     final Bounds? bounds =
         boundsJson != null ? Bounds.fromJson(boundsJson) : null;
 
-    // Extract location
     final locationJson = json['location'] ?? {};
     final Location location = Location.fromJson(locationJson);
 
-    // Extract locationType
     final String locationType = json['location_type'] ?? '';
 
-    // Extract viewport
     final viewportJson = json['viewport'] ?? {};
     final Viewport viewport = Viewport.fromJson(viewportJson);
 

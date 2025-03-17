@@ -1,4 +1,3 @@
-// List View for Normal Mode
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/weather_components/weather_list_item.dart';

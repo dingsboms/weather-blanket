@@ -19,7 +19,6 @@ class GooglePlacesAutoCompleteTextFormField extends StatefulWidget {
     this.sessionToken,
     this.initialValue,
     this.fetchSuggestionsForInitialValue = false,
-    // Standard TextFormField properties
     this.focusNode,
     this.style,
     this.maxHeight = 200,

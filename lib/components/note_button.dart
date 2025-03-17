@@ -28,7 +28,6 @@ class NoteButton extends StatelessWidget {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
-        // Text editing controllers to manage input
         final TextEditingController noteController = TextEditingController();
 
         noteController.text = item.knittingNote;
@@ -37,7 +36,7 @@ class NoteButton extends StatelessWidget {
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
-            height: 400, // Increased height to accommodate form
+            height: 400,
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
               color: CupertinoColors.systemBackground,
@@ -57,10 +56,10 @@ class NoteButton extends StatelessWidget {
                 CupertinoTextField(
                   controller: noteController,
                   padding: const EdgeInsets.all(12),
-                  minLines: 5, // This will make it 5 lines tall minimum
-                  maxLines: 10, // This allows it to grow up to 10 lines
+                  minLines: 5,
+                  maxLines: 10,
                   style: const TextStyle(
-                    color: CupertinoColors.black, // This fixes the text color
+                    color: CupertinoColors.black,
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(color: CupertinoColors.systemGrey),

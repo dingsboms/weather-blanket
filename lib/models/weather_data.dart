@@ -84,13 +84,11 @@ class WeatherForecast {
       }
     }
 
-    // Prepare parameters for the cloud function
     final lat = location.latitude;
     final lon = location.longitude;
     final dateUtc = dateTime.toUtc().millisecondsSinceEpoch ~/ 1000;
 
     try {
-      // Call the Firebase Cloud Function instead of direct API call
       final functions = FirebaseFunctions.instance;
       final result =
           await functions.httpsCallable('fetchOpenWeatherData').call({
@@ -111,7 +109,6 @@ class WeatherForecast {
     }
   }
 
-  // Private constructor for API response
   factory WeatherForecast._fromAPIResponse(
       Map<String, dynamic> json, String docId) {
     final data = json['data'][0] as Map<String, dynamic>;

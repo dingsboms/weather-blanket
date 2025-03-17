@@ -25,7 +25,6 @@ class GooglePlacesApi {
     }
   }
 
-  /// Fetches the place details for the given [prediction]
   Future<Prediction?> fetchCoordinatesForPrediction({
     required Prediction prediction,
     String? sessionToken,

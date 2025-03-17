@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:weather_blanket/components/color/get_default_clors.dart';
 import 'package:weather_blanket/components/login_images.dart';
@@ -29,8 +30,9 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn(
-          clientId:
-              '88468625362-tat400641fh3pnep52la34ar76kq9u0k.apps.googleusercontent.com');
+          clientId: kIsWeb
+              ? "88468625362-tat400641fh3pnep52la34ar76kq9u0k.apps.googleusercontent.com"
+              : null);
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
@@ -67,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
             'photoURL': userCredential.user!.photoURL,
             'createdAt': FieldValue.serverTimestamp(),
             'lastLogin': FieldValue.serverTimestamp(),
-            // Add your default values here
             'colors': getDefaultColors(),
             'temperature_location': const GeoPoint(59.9139, 10.7522)
           });
@@ -78,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
           });
         }
       } catch (e) {
-        print('Authentication error: $e'); // This will help debug
+        print('Authentication error: $e');
         if (mounted) {
           setState(() {
             _errorMessage = 'Authentication failed: ${e.toString()}';
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     } catch (e) {
-      print('Google sign in error: $e'); // This will help debug
+      print('Google sign in error: $e');
       if (mounted) {
         setState(() {
           _errorMessage = 'Google sign in failed: ${e.toString()}';
@@ -118,7 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text(
                     "Create a Weather-Blanket!",
-                    style: TextStyle(fontSize: 32),
+                    style:
+                        TextStyle(fontSize: 32, color: CupertinoColors.white),
                   ),
                   if (_errorMessage != null)
                     Padding(

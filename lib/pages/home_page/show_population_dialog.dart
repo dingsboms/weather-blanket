@@ -13,7 +13,6 @@ void showPopulationDialog(List<WeatherForecast> items, String userId,
           builder: (context, setState) {
             return CupertinoAlertDialog(
               content: FutureBuilder<int>(
-                // Change return type to int
                 future: items.isEmpty
                     ? populateFirestoreFrom(startOf2025, userId)
                     : populateFirestoreFrom(

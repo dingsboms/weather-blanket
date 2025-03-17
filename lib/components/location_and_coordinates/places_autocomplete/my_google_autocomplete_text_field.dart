@@ -73,7 +73,6 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
                 widget.onSuggestionClicked(prediction);
               },
               onError: (error) {
-                // Show Cupertino-style alert
                 showCupertinoDialog(
                   context: context,
                   builder: (context) => CupertinoAlertDialog(
@@ -88,7 +87,6 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
                   ),
                 );
               },
-              // Override with Cupertino-style container if needed
               overlayContainerBuilder: (child) => Container(
                 decoration: BoxDecoration(
                   color: CupertinoColors.white,

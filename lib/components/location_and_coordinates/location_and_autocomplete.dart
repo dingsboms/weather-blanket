@@ -123,8 +123,6 @@ Future<String> fetchAddressFromGeoLocation(GeoPoint location) async {
 
   final reverseGeocode = ReverseGeocode.fromJson(res.data);
   if (reverseGeocode.isSuccess) {
-    // Access location details
-
     // Access location coordinates
     if (reverseGeocode.results.isNotEmpty) {
       final location = reverseGeocode.results[0].geometry.location;
