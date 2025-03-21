@@ -18,6 +18,8 @@ void main() async {
   );
   auth = FirebaseAuth.instanceFor(app: app);
 
+  await setPersistanceToLocal();
+
   runApp(ProviderScope(
     child: WeatherBlanketApp(
       auth: auth,
@@ -59,5 +61,14 @@ class WeatherBlanketApp extends StatelessWidget {
             );
           }),
     );
+  }
+}
+
+setPersistanceToLocal() async {
+  try {
+    await auth.setPersistence(Persistence.LOCAL);
+    print('Persistence set to LOCAL');
+  } catch (e) {
+    print('Persistence error: $e');
   }
 }
