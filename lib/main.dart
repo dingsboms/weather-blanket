@@ -47,11 +47,11 @@ class WeatherBlanketApp extends StatelessWidget {
           stream: auth.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return HomePage(
+              return const HomePage(
                 title: 'Weather Blanket',
               );
             }
-            return LoginPage();
+            return const LoginPage();
           }),
     );
   }

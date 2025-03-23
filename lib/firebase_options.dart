@@ -48,7 +48,8 @@ class DefaultFirebaseOptions {
     appId: '1:88468625362:web:8975cd9c51631ef973da0b',
     messagingSenderId: '88468625362',
     projectId: 'weather-blanket',
-    authDomain: 'weather-blanket.firebaseapp.com',
+    // authDomain: 'weather-blanket.firebaseapp.com',
+    authDomain: 'weather-blanket.web.app',
     storageBucket: 'weather-blanket.firebasestorage.app',
   );
 
@@ -58,8 +59,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '88468625362',
     projectId: 'weather-blanket',
     storageBucket: 'weather-blanket.firebasestorage.app',
-    iosClientId: '88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com',
+    iosClientId:
+        '88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com',
     iosBundleId: 'no.rmax.weatherblanket.app',
   );
-
 }
