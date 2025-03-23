@@ -23,29 +23,26 @@ class _LoginPageState extends State<LoginPage> {
   String? _errorMessage;
 
   Future<void> _loginWithGoogle() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+    initiateLoading();
 
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn(
           clientId: kIsWeb
+              // In Web GoogleSignIn needs clientId
               ? "88468625362-tat400641fh3pnep52la34ar76kq9u0k.apps.googleusercontent.com"
               : null);
+
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
-        setState(() {
-          _errorMessage = 'Google sign in was cancelled';
-          _isLoading = false;
-        });
+        setGoogleSignInError();
         return;
       }
 
       try {
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
+
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
@@ -61,45 +58,71 @@ class _LoginPageState extends State<LoginPage> {
         final docSnapshot = await userDoc.get();
 
         if (!docSnapshot.exists) {
-          // Create new user document with defaults
-          await userDoc.set({
-            'uid': userId,
-            'email': userCredential.user!.email,
-            'displayName': userCredential.user!.displayName,
-            'photoURL': userCredential.user!.photoURL,
-            'createdAt': FieldValue.serverTimestamp(),
-            'lastLogin': FieldValue.serverTimestamp(),
-            'colors': getDefaultColors(),
-            'temperature_location': const GeoPoint(59.9139, 10.7522)
-          });
+          await createNewUserDocumentWithDefaults(userDoc, userCredential);
         } else {
-          // Update lastLogin for existing user
-          await userDoc.update({
-            'lastLogin': FieldValue.serverTimestamp(),
-          });
+          await updateLastLogin(userDoc);
         }
       } catch (e) {
         print('Authentication error: $e');
         if (mounted) {
-          setState(() {
-            _errorMessage = 'Authentication failed: ${e.toString()}';
-          });
+          setError('Authentication failed: ${e.toString()}');
         }
       }
     } catch (e) {
       print('Google sign in error: $e');
       if (mounted) {
-        setState(() {
-          _errorMessage = 'Google sign in failed: ${e.toString()}';
-        });
+        setError('Google sign in failed: ${e.toString()}');
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
+        endLoading();
       }
     }
+  }
+
+  createNewUserDocumentWithDefaults(
+      DocumentReference userDoc, UserCredential userCredential) async {
+    String userId = userCredential.user!.uid;
+    await userDoc.set({
+      'uid': userId,
+      'email': userCredential.user!.email,
+      'displayName': userCredential.user!.displayName,
+      'photoURL': userCredential.user!.photoURL,
+      'createdAt': FieldValue.serverTimestamp(),
+      'lastLogin': FieldValue.serverTimestamp(),
+      'colors': getDefaultColors(),
+      'temperature_location': const GeoPoint(59.9139, 10.7522)
+    });
+  }
+
+  updateLastLogin(DocumentReference userDoc) async {
+    await userDoc.update({
+      'lastLogin': FieldValue.serverTimestamp(),
+    });
+  }
+
+  setError(String errorMessage) {
+    setState(() {
+      _errorMessage = errorMessage;
+      _isLoading = false;
+    });
+  }
+
+  setGoogleSignInError() {
+    setError('Google sign in was cancelled');
+  }
+
+  initiateLoading() {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+  }
+
+  endLoading() {
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   double heghtWidth = 250;
