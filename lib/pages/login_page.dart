@@ -26,8 +26,11 @@ class _LoginPageState extends State<LoginPage> {
       final GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
       if (kIsWeb) {
+        print("kiSWeb true");
         await FirebaseAuth.instance.signInWithPopup(googleProvider);
       } else {
+        print("kiSWeb is not true");
+
         final GoogleSignIn googleSignIn = GoogleSignIn();
         final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
