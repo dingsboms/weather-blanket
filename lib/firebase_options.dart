@@ -48,8 +48,7 @@ class DefaultFirebaseOptions {
     appId: '1:88468625362:web:8975cd9c51631ef973da0b',
     messagingSenderId: '88468625362',
     projectId: 'weather-blanket',
-    // authDomain: 'weather-blanket.firebaseapp.com',
-    authDomain: 'weather-blanket.web.app',
+    authDomain: 'weather-blanket.firebaseapp.com',
     storageBucket: 'weather-blanket.firebasestorage.app',
   );
 
