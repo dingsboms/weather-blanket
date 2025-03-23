@@ -20,25 +20,22 @@ class _LoginPageState extends State<LoginPage> {
   String? _errorMessage;
 
   FirebaseAuth auth = FirebaseAuth.instance;
-
   Future<void> _loginWithGoogle() async {
     initiateLoading();
-
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-          clientId: kIsWeb
-              // In Web GoogleSignIn needs clientId
-              ? "88468625362-tat400641fh3pnep52la34ar76kq9u0k.apps.googleusercontent.com"
-              : null);
+      final GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (kIsWeb) {
+        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      } else {
+        final GoogleSignIn googleSignIn = GoogleSignIn();
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      if (googleUser == null) {
-        setGoogleSignInError();
-        return;
-      }
+        if (googleUser == null) {
+          setGoogleSignInError();
+          return;
+        }
 
-      try {
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
 
@@ -47,30 +44,12 @@ class _LoginPageState extends State<LoginPage> {
           idToken: googleAuth.idToken,
         );
 
-        final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
-
-        final String userId = userCredential.user!.uid;
-        final userDoc =
-            FirebaseFirestore.instance.collection('users').doc(userId);
-
-        final docSnapshot = await userDoc.get();
-
-        if (!docSnapshot.exists) {
-          await createNewUserDocumentWithDefaults(userDoc, userCredential);
-        } else {
-          await updateLastLogin(userDoc);
-        }
-      } catch (e) {
-        print('Authentication error: $e');
-        if (mounted) {
-          setError('Authentication failed: ${e.toString()}');
-        }
+        await FirebaseAuth.instance.signInWithCredential(credential);
       }
     } catch (e) {
-      print('Google sign in error: $e');
+      print('Google sign-in error: $e');
       if (mounted) {
-        setError('Google sign in failed: ${e.toString()}');
+        setError('Google sign-in failed: ${e.toString()}');
       }
     } finally {
       if (mounted) {
