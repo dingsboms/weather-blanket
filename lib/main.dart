@@ -20,19 +20,15 @@ void main() async {
 
   await setPersistanceToLocal();
 
-  runApp(ProviderScope(
-    child: WeatherBlanketApp(
-      auth: auth,
-    ),
+  runApp(const ProviderScope(
+    child: WeatherBlanketApp(),
   ));
 }
 
 class WeatherBlanketApp extends StatelessWidget {
   const WeatherBlanketApp({
     super.key,
-    required this.auth,
   });
-  final FirebaseAuth auth;
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +49,9 @@ class WeatherBlanketApp extends StatelessWidget {
             if (snapshot.hasData) {
               return HomePage(
                 title: 'Weather Blanket',
-                auth: auth,
               );
             }
-            return LoginPage(
-              auth: auth,
-            );
+            return LoginPage();
           }),
     );
   }

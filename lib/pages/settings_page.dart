@@ -7,11 +7,12 @@ import 'package:weather_blanket/components/location_and_coordinates/location_and
 import 'package:weather_blanket/functions/color_provider.dart';
 
 class SettingsPage extends ConsumerWidget {
-  const SettingsPage({super.key, required this.auth});
-  final FirebaseAuth auth;
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = FirebaseAuth.instance;
+
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           leading: CupertinoButton(

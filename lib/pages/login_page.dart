@@ -7,11 +7,8 @@ import 'package:weather_blanket/components/color/get_default_clors.dart';
 import 'package:weather_blanket/components/login_images.dart';
 
 class LoginPage extends StatefulWidget {
-  final FirebaseAuth auth;
-
   const LoginPage({
     super.key,
-    required this.auth,
   });
 
   @override
@@ -21,6 +18,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String? _errorMessage;
+
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> _loginWithGoogle() async {
     initiateLoading();
@@ -49,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         final UserCredential userCredential =
-            await widget.auth.signInWithCredential(credential);
+            await auth.signInWithCredential(credential);
 
         final String userId = userCredential.user!.uid;
         final userDoc =

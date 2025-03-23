@@ -13,9 +13,8 @@ import 'package:weather_blanket/pages/settings_page.dart';
 
 // Main HomePage widget
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key, required this.title, required this.auth});
+  const HomePage({super.key, required this.title});
   final String title;
-  final FirebaseAuth auth;
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -44,7 +43,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = widget.auth.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return ErrorWidget(const Text("User is null"));
     }
@@ -73,8 +72,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       middle: Text(widget.title),
       trailing: IconButton(
         onPressed: () => Navigator.of(context).push(
-          CupertinoPageRoute(
-              builder: (context) => SettingsPage(auth: widget.auth)),
+          CupertinoPageRoute(builder: (context) => SettingsPage()),
         ),
         icon: const Icon(Icons.settings),
       ),
