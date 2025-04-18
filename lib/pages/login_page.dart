@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (kIsWeb) {
         print("kiSWeb true");
-        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        await FirebaseAuth.instance.signInWithRedirect(googleProvider);
       } else {
         print("kiSWeb is not true");
 
