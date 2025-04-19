@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/color/add_new_color_button.dart';
 import 'package:weather_blanket/components/color/color_picker_box.dart';
 import 'package:weather_blanket/components/color/color_picker_dialog.dart';
-import 'package:weather_blanket/components/color/get_default_clors.dart';
+import 'package:weather_blanket/components/color/get_default_colors.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
 import 'package:weather_blanket/models/range_interval.dart';
 

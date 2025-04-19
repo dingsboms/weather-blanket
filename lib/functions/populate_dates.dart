@@ -32,7 +32,7 @@ Future<int> populateFirestoreFrom(DateTime fromDate, String userId) async {
 
       dateCounter = dateCounter.add(oneDay);
     } catch (e) {
-      throw Exception('Failed to populate weather data for ${dateCounter}: $e');
+      throw Exception('Failed to populate weather data for $dateCounter: $e');
     }
   }
   return daysPopulated;

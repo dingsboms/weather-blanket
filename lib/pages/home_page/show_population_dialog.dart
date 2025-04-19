@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:weather_blanket/functions/populate_dates.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
-void showPopulationDialog(List<WeatherForecast> items, String userId,
-    DateTime startOf2025, BuildContext context) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    showCupertinoDialog(
+Future<void> showPopulationDialog(List<WeatherForecast> items, String userId,
+    DateTime startOf2025, BuildContext context) async {
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    await showCupertinoDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
@@ -16,7 +16,9 @@ void showPopulationDialog(List<WeatherForecast> items, String userId,
                 future: items.isEmpty
                     ? populateFirestoreFrom(startOf2025, userId)
                     : populateFirestoreFrom(
-                        items[0].localDate.add(const Duration(days: 1)),
+                        items.isNotEmpty
+                            ? items.first.localDate.add(const Duration(days: 1))
+                            : startOf2025,
                         userId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {

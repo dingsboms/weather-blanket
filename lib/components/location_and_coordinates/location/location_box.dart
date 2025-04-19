@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location/location_text_field.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
+import 'package:weather_blanket/functions/get_user_doc.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
 class LocationBox extends StatefulWidget {
@@ -74,10 +75,7 @@ class _LocationBoxState extends State<LocationBox> {
 
   Future<GeoPoint?> _fetchUserData() async {
     try {
-      final doc = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(widget.userId)
-          .get();
+      final doc = await getUserDoc();
 
       if (doc.exists && doc.data()!.containsKey('temperature_location')) {
         final geoPoint = doc.get('temperature_location') as GeoPoint;

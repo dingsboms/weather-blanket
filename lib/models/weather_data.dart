@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:weather_blanket/functions/get_user_doc.dart';
 
 class WeatherForecast {
   final GeoPoint temperatureLocation;
@@ -64,18 +64,9 @@ class WeatherForecast {
       {required DateTime dateTime,
       required String docId,
       GeoPoint? location}) async {
-    // Get the current user
-    final User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      throw Exception("Error user not logged in");
-    }
-
     // Get location from Firestore if not provided
     if (location == null) {
-      final temperatureLocationDoc = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(user.uid)
-          .get();
+      final temperatureLocationDoc = await getUserDoc();
 
       location = temperatureLocationDoc.get("temperature_location");
 

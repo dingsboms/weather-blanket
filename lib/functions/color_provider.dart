@@ -1,20 +1,11 @@
 // lib/functions/color_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:weather_blanket/functions/get_user_doc.dart';
 import '../models/range_interval.dart';
 
 final colorRangesProvider = FutureProvider<List<RangeInterval>>((ref) async {
-  final auth = FirebaseAuth.instance;
-  final user = auth.currentUser;
-
-  if (user == null) {
-    throw Exception('User not authenticated');
-  }
-
-  final doc =
-      await FirebaseFirestore.instance.collection("users").doc(user.uid).get();
+  final doc = await getUserDoc();
 
   final colorsData = doc.get("colors") as List<dynamic>;
   return colorsData
