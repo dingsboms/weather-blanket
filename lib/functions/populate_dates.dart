@@ -19,7 +19,7 @@ Future<int> populateFirestoreFrom(DateTime fromDate, String userId) async {
     try {
       String docId = dateCounter.millisecondsSinceEpoch.toString();
       final res = await WeatherForecast.fromOpenWeatherAPI(
-          dateTime: dateCounter, docId: docId);
+          dateTime: dateCounter.toLocal(), docId: docId);
 
       if (res != null) {
         await FirebaseFirestore.instance
