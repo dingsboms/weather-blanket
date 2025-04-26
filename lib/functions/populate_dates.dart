@@ -22,12 +22,7 @@ Future<int> populateFirestoreFrom(DateTime fromDate, String userId) async {
           dateTime: dateCounter.toLocal(), docId: docId);
 
       if (res != null) {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(userId)
-            .collection("days")
-            .doc(docId)
-            .set(res.toFirestore());
+        await res.updateFirestoreUserDoc();
       }
 
       dateCounter = dateCounter.add(oneDay);

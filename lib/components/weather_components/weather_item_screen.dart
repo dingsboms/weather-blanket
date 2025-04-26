@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,20 +71,16 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                                 );
                               });
                         } else {
-                          String userId =
-                              FirebaseAuth.instance.currentUser!.uid;
                           try {
                             final updatedItem =
                                 await WeatherForecast.fromOpenWeatherAPI(
                                     dateTime: chosenDateTime,
                                     docId: forecast.docId);
-                            await FirebaseFirestore.instance
-                                .collection("users")
-                                .doc(userId)
-                                .collection("days")
-                                .doc(forecast.docId)
-                                .set(updatedItem!.toFirestore(),
-                                    SetOptions(merge: true));
+                            if (updatedItem == null) {
+                              throw Exception(
+                                  "Failed to get updatetItem fromOpenWeatherApi");
+                            }
+                            await updatedItem.updateFirestoreUserDoc();
 
                             setState(() {
                               forecast = updatedItem;
@@ -108,11 +103,14 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
             width: 100,
             height: 100,
             child: GestureDetector(
-              onLongPress: () => showDialog(
+              onTap: () => showDialog(
                 context: context,
-                builder: (context) => const AlertDialog(
-                  content: Flexible(
-                    child: ColorSegmentsListTile(),
+                builder: (context) => AlertDialog(
+                  content: ColorSegmentsListTile(
+                    weatherItem: widget.item,
+                    onSegmentPicked: (pickedColor) => setState(() {
+                      _color = pickedColor;
+                    }),
                   ),
                 ),
               ),

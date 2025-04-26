@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:weather_blanket/functions/get_user_doc.dart';
 
@@ -10,7 +11,7 @@ class WeatherForecast {
   final int timezoneOffset;
   final String docId;
   final DateTime dt;
-  final int temp;
+  int temp;
   final double feelsLike;
   final int pressure;
   final int humidity;
@@ -224,5 +225,16 @@ class WeatherForecast {
     return 'WeatherForecast(docId: $docId, dt: ${dt.toIso8601String()}, temp: $temp°C, '
         'weather: $weatherMain ($weatherDescription), lat: ${temperatureLocation.latitude}, lon: ${temperatureLocation.longitude}, '
         'isKnitted: $isKnitted, knittingNote: $knittingNote';
+  }
+
+  updateFirestoreUserDoc() async {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("days")
+        .doc(docId)
+        .set(toFirestore(), SetOptions(merge: true));
   }
 }

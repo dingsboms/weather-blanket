@@ -31,16 +31,11 @@ class _MigrateDtFromIntToDatetimeState
           .doc(userId)
           .collection("days")
           .get()
-          .then((collection) {
+          .then((collection) async {
         for (var doc in collection.docs) {
           final weatherData = WeatherForecast.fromFirestore(doc);
 
-          FirebaseFirestore.instance
-              .collection("users")
-              .doc(userId)
-              .collection("days")
-              .doc(doc.id)
-              .set(weatherData.toFirestore(), SetOptions(merge: true));
+          await weatherData.updateFirestoreUserDoc();
         }
       });
     }

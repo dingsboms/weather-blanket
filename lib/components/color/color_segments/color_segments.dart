@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/color/add_new_color_button.dart';
@@ -11,9 +12,7 @@ import 'package:weather_blanket/components/color/get_default_colors.dart';
 import 'package:weather_blanket/models/range_interval.dart';
 
 class ColorSegments extends ConsumerStatefulWidget {
-  const ColorSegments(
-      {super.key, required this.userId, required this.segmentBuilder});
-  final String userId;
+  const ColorSegments({super.key, required this.segmentBuilder});
   final Widget Function(
       BuildContext context,
       RangeInterval interval,
@@ -25,6 +24,7 @@ class ColorSegments extends ConsumerStatefulWidget {
 }
 
 class _ColorSegmentsState extends ConsumerState<ColorSegments> {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
   // Define the list of range intervals
   List<RangeInterval> ranges = [];
   bool isLoading = true;
@@ -37,7 +37,7 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
   Future<void> _fetchColorRanges() {
     return FirebaseFirestore.instance
         .collection("users")
-        .doc(widget.userId)
+        .doc(userId)
         .get()
         .then((doc) {
       if (doc.exists && doc.data()!.containsKey('colors')) {
@@ -118,7 +118,7 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
               widget.segmentBuilder(
                   context,
                   interval,
-                  () => _handleUpdateRangeIntevalCallBack(interval),
+                  () => _handleUpdateRangeIntevalCallBack(),
                   () => _deleteInterval(interval),
                   () => intervalsOverlap(ranges)),
             ],
@@ -160,8 +160,7 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
     );
   }
 
-  Future<void> _handleUpdateRangeIntevalCallBack(
-      RangeInterval intervalToUpdate) async {
+  Future<void> _handleUpdateRangeIntevalCallBack() async {
     setState(() async {
       await updateColors(ranges, ref);
     });

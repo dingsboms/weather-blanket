@@ -246,12 +246,7 @@ class _LocationBoxState extends State<LocationBox> {
     }
     fetchAddressFromGeoLocation(newGeoPoint).then((address) async {
       updatedDoc.temperatureLocationName = address;
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(userId)
-          .collection("days")
-          .doc(docId)
-          .set(updatedDoc.toFirestore(), SetOptions(merge: true));
+      await updatedDoc.updateFirestoreUserDoc();
     });
   }
 
