@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_blanket/components/color/color_segments/color_segments_list_tile.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
 import 'package:weather_blanket/models/weather_data.dart';
@@ -33,6 +34,7 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color _color = widget.ref.watch(colorForTemperatureProvider(forecast.temp));
     return CupertinoAlertDialog(
       title: Text(
           "Date: ${forecast.dt.day} / ${forecast.dt.month} - ${forecast.dt.year}"),
@@ -89,7 +91,7 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                               forecast = updatedItem;
                             });
                           } catch (e) {
-                            Text("Failed to updated tile: ${e}");
+                            Text("Failed to updated tile: $e");
                           }
                         }
                       }
@@ -105,12 +107,22 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
           SizedBox(
             width: 100,
             height: 100,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: widget.ref
-                      .watch(colorForTemperatureProvider(forecast.temp))),
+            child: GestureDetector(
+              onLongPress: () => showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                  content: Flexible(
+                    child: ColorSegmentsListTile(),
+                  ),
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: _color,
+                ),
+              ),
             ),
-          ),
+          )
         ],
       ),
     );

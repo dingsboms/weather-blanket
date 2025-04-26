@@ -5,14 +5,14 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:weather_blanket/components/temperature/temperature_picker.dart';
 import 'package:weather_blanket/models/range_interval.dart';
 
-class ColorPickerDialog extends StatefulWidget {
+class ColorAndTemperaturePickerDialog extends StatefulWidget {
   final Color initialColor;
   final RangeInterval rangeInterval;
   final Future<void> Function(Color pickedColor) onUpdate;
   final Future<void> Function() onDelete;
   final bool Function() intervalsOverlap;
 
-  const ColorPickerDialog({
+  const ColorAndTemperaturePickerDialog({
     super.key,
     required this.initialColor,
     required this.rangeInterval,
@@ -22,10 +22,11 @@ class ColorPickerDialog extends StatefulWidget {
   });
 
   @override
-  State<ColorPickerDialog> createState() => _ColorPickerDialogState();
+  State<ColorAndTemperaturePickerDialog> createState() =>
+      _ColorPickerDialogState();
 }
 
-class _ColorPickerDialogState extends State<ColorPickerDialog> {
+class _ColorPickerDialogState extends State<ColorAndTemperaturePickerDialog> {
   late Color pickerColor;
 
   @override

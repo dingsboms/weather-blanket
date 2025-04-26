@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:weather_blanket/components/color/color_picker_dialog.dart';
+import 'package:weather_blanket/components/color/color_and_temperature_picker_dialog.dart';
+import 'package:weather_blanket/components/color/color_box.dart';
 import 'package:weather_blanket/models/range_interval.dart';
 
-// Updated original widget
 class ColorPickerBox extends StatefulWidget {
   const ColorPickerBox({
     super.key,
@@ -31,13 +31,10 @@ class _ColorPickerBoxState extends State<ColorPickerBox> {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return ColorPickerDialog(
+            return ColorAndTemperaturePickerDialog(
               initialColor: currentColor,
               rangeInterval: widget.rangeInterval,
               onUpdate: (pickedColor) async {
-                setState(() {
-                  currentColor = pickedColor;
-                });
                 await widget.onUpdate(pickedColor);
               },
               onDelete: widget.onDelete,
@@ -46,15 +43,7 @@ class _ColorPickerBoxState extends State<ColorPickerBox> {
           },
         );
       },
-      child: Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(
-          color: currentColor,
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
+      child: ColorBox(currentColor: currentColor),
     );
   }
 }
