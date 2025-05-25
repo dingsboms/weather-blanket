@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/weather_components/weather_grid_view.dart';
 import 'package:weather_blanket/components/weather_components/weather_list_view.dart';
@@ -73,8 +74,12 @@ class WeatherDataDisplay extends ConsumerWidget {
       });
     }
 
-    return editMode
-        ? WeatherGridView(items: items, ref: ref)
-        : WeatherListView(userId: userId, items: items, ref: ref);
+    return RefreshIndicator(
+      onRefresh: () async => await onPopulateDialog(
+          List.from(items), userId, DateTime(2025, 1, 1), context),
+      child: editMode
+          ? WeatherGridView(items: items, ref: ref)
+          : WeatherListView(userId: userId, items: items, ref: ref),
+    );
   }
 }

@@ -21,7 +21,7 @@ void main() async {
   FirebaseUIAuth.configureProviders([
     GoogleProvider(
         clientId:
-            "88468625362-tat400641fh3pnep52la34ar76kq9u0k.apps.googleusercontent.com"),
+            "88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com"),
     EmailAuthProvider()
   ]);
   auth = FirebaseAuth.instanceFor(app: app);
