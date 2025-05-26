@@ -103,8 +103,8 @@ class WeatherForecast {
 
   factory WeatherForecast._fromAPIResponse(
       Map<String, dynamic> json, String docId) {
-    final data = json['data'][0] as Map<String, dynamic>;
-    final weather = data['weather'][0] as Map<String, dynamic>;
+    final data = Map<String, dynamic>.from(json['data'][0]);
+    final weather = Map<String, dynamic>.from(data['weather'][0]);
 
     double lat = (json['lat'] as num).toDouble();
     double lon = (json['lon'] as num).toDouble();
@@ -145,7 +145,7 @@ class WeatherForecast {
       );
       return result;
     } catch (e) {
-      print("Failed to parse data: $e");
+      debugPrint("Failed to parse data: $e");
       throw Exception(e);
     }
   }
