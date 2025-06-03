@@ -50,7 +50,8 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
             }));
       });
     } catch (e) {
-      print("Failed $e");
+      // Handle document fetch error silently in production
+      // Consider logging to a proper logging service
     }
 
     super.initState();
@@ -73,7 +74,8 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
                 _longitudeController.text = lng.toStringAsFixed(4);
               });
             } catch (e) {
-              print("Failed to set prediciton.lat or lng to double");
+              // Handle coordinate parsing error silently in production
+              // Consider logging to a proper logging service
             }
           }
         },
@@ -99,7 +101,8 @@ Future<String> fetchTemperatureLocationName(DocumentSnapshot doc) async {
   try {
     locationName = await doc.get("temperature_location_name");
   } catch (e) {
-    print("Failed getting temperature_location_name from firestore");
+    // Handle temperature location name fetch error silently in production
+    // Consider logging to a proper logging service
 
     try {
       GeoPoint location = doc.get("temperature_location");
@@ -107,7 +110,8 @@ Future<String> fetchTemperatureLocationName(DocumentSnapshot doc) async {
       doc.reference.set(
           {"temperature_location_name": locationName}, SetOptions(merge: true));
     } catch (e) {
-      print("Failed getting reverse_geocode locationName");
+      // Handle reverse geocoding error silently in production
+      // Consider logging to a proper logging service
     }
   }
 
@@ -123,14 +127,13 @@ Future<String> fetchAddressFromGeoLocation(GeoPoint location) async {
 
   final reverseGeocode = ReverseGeocode.fromJson(res.data);
   if (reverseGeocode.isSuccess) {
-    // Access location coordinates
-    if (reverseGeocode.results.isNotEmpty) {
-      final location = reverseGeocode.results[0].geometry.location;
-    }
+    // Location coordinates available if needed
+    // final location = reverseGeocode.results[0].geometry.location;
 
     return reverseGeocode.formattedAddress!;
   } else {
-    print('Error: ${reverseGeocode.errorMessage}');
+    // Handle geocoding error silently in production
+    // Consider logging to a proper logging service
   }
   throw Exception(reverseGeocode.errorMessage);
 }

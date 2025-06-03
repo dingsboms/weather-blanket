@@ -33,7 +33,8 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color _color = widget.ref.watch(colorForTemperatureProvider(forecast.temp));
+    Color currentColor =
+        widget.ref.watch(colorForTemperatureProvider(forecast.temp));
     return CupertinoAlertDialog(
       title: Text(
           "Date: ${forecast.dt.day} / ${forecast.dt.month} - ${forecast.dt.year}"),
@@ -59,7 +60,7 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                           chosenTime.minute);
 
                       final now = DateTime.now();
-                      if (mounted) {
+                      if (context.mounted) {
                         if (chosenDateTime.isAfter(now)) {
                           showDialog(
                               context: context,
@@ -109,14 +110,14 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                   content: ColorSegmentsListTile(
                     weatherItem: widget.item,
                     onSegmentPicked: (pickedColor) => setState(() {
-                      _color = pickedColor;
+                      currentColor = pickedColor;
                     }),
                   ),
                 ),
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  color: _color,
+                  color: currentColor,
                 ),
               ),
             ),

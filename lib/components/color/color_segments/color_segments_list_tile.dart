@@ -23,7 +23,7 @@ class _ColorSegmentsListTileState extends State<ColorSegmentsListTile> {
             widget.weatherItem.temp = interval.minTemp;
             await widget.weatherItem.updateFirestoreUserDoc();
             widget.onSegmentPicked(interval.color);
-            if (mounted) {
+            if (context.mounted) {
               Navigator.of(context).pop();
             }
           },

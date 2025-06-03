@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
 Future<int> populateFirestoreFrom(DateTime fromDate, String userId) async {

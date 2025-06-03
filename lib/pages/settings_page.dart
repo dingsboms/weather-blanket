@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/color/color_segments/color_segments_settings.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
+import 'package:weather_blanket/theme/gradient_background.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -13,8 +14,9 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = FirebaseAuth.instance;
 
-    return CupertinoPageScaffold(
+    return GradientScaffold(
         navigationBar: CupertinoNavigationBar(
+          backgroundColor: CupertinoColors.systemBackground.withOpacity(0.8),
           leading: CupertinoButton(
               child: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context)),

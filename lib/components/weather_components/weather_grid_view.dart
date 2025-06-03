@@ -43,7 +43,7 @@ class WeatherGridView extends StatelessWidget {
         ),
         Container(
           height: itemHeight * 0.01,
-          color: CupertinoColors.white.withOpacity(0.3),
+          color: CupertinoColors.white.withValues(alpha: 0.3),
         ),
         if (item.isNewMonth)
           Divider(

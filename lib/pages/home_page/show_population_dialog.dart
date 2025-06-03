@@ -30,7 +30,8 @@ Future<void> showPopulationDialog(List<WeatherForecast> items, String userId,
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    print(snapshot.error);
+                    // Handle population error silently in production
+                    // Consider logging to a proper logging service
                     return Column(
                       children: [
                         Text('Error: ${snapshot.error}'),

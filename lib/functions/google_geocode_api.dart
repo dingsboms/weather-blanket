@@ -36,7 +36,7 @@ Future<List<GeoCodeGoogleData>> getGeopointFromAddress(String address) async {
       .get()
       .then((hits) async {
     if (hits.docs.isEmpty) {
-      print("No hits, trying the external API");
+      // No cached hits, using external API
       return await getGeoPointExternally(address);
     }
 
@@ -112,9 +112,7 @@ class _TestGeopointFromAdressEndpointState
   }
 
   onPressed(String address) async {
-    final geoCodes = await getGeopointFromAddress(address);
-    for (var code in geoCodes) {
-      print(code);
-    }
+    await getGeopointFromAddress(address);
+    // Geocodes processed successfully
   }
 }

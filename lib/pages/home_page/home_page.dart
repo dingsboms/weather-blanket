@@ -7,6 +7,7 @@ import 'package:weather_blanket/functions/color_provider.dart';
 import 'package:weather_blanket/pages/home_page/show_population_dialog.dart';
 import 'package:weather_blanket/pages/home_page/weather_data_display.dart';
 import 'package:weather_blanket/pages/settings_page.dart';
+import 'package:weather_blanket/theme/gradient_background.dart';
 
 // StateProvider to track if the population dialog has been shown this session
 final populationDialogShownProvider =
@@ -31,9 +32,10 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _initializeColorRanges() {
     ref.read(colorRangesProvider.future).then((colorRanges) {
-      print('Color ranges loaded: ${colorRanges.length} ranges');
+      // Color ranges loaded successfully
     }).catchError((error) {
-      print('Error loading color ranges: $error');
+      // Handle color ranges loading error silently in production
+      // Consider logging to a proper logging service
     });
   }
 
@@ -44,7 +46,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       return ErrorWidget(const Text("User is null"));
     }
 
-    return CupertinoPageScaffold(
+    return GradientScaffold(
       navigationBar: _buildNavigationBar(),
       child: SafeArea(
         child: WeatherDataDisplay(
@@ -58,7 +60,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   CupertinoNavigationBar _buildNavigationBar() {
     return CupertinoNavigationBar(
-      backgroundColor: CupertinoColors.systemGrey6,
+      backgroundColor: CupertinoColors.systemBackground.withOpacity(0.8),
       leading: ToggleHomePageButton(
         editMode: editMode,
         onToggle: () {

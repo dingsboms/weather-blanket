@@ -17,7 +17,8 @@ Future<List<RangeInterval>> getDefaultColors() async {
 
     return intervals;
   } catch (e) {
-    print("Failed to get default colors: $e");
+    // Failed to get default colors - handle silently in production
+    // Consider logging to a proper logging service
     return [];
   }
 }

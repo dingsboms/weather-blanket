@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 
 final BoxDecoration textFieldDecoration = BoxDecoration(
   color: CupertinoColors.white,
-  border: Border.all(color: CupertinoColors.black.withOpacity(0.5), width: 1.0),
+  border: Border.all(
+      color: CupertinoColors.black.withValues(alpha: 0.5), width: 1.0),
   borderRadius: BorderRadius.circular(5.0),
 );
 

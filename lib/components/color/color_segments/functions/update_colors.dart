@@ -10,7 +10,7 @@ import 'package:weather_blanket/models/range_interval.dart';
 Future<bool> updateColors(List<RangeInterval> colors, WidgetRef ref) async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   if (intervalsOverlap(colors)) {
-    print('Intervals overlap detected');
+    // Intervals overlap detected - handle silently in production
     return false;
   }
   final intervalsFirestoreList =
@@ -21,11 +21,12 @@ Future<bool> updateColors(List<RangeInterval> colors, WidgetRef ref) async {
         .collection("users")
         .doc(userId)
         .set({"colors": intervalsFirestoreList}, SetOptions(merge: true));
-    print('Firestore update successful');
+    // Firestore update successful
     ref.invalidate(colorRangesProvider);
     return true;
   } catch (e) {
-    print('Error updating Firestore: $e');
+    // Handle Firestore error silently in production
+    // Consider logging to a proper logging service
     return false;
   }
 }

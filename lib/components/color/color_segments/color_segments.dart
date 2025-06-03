@@ -127,6 +127,12 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
       );
     }
 
+    if (widgetChildren.isEmpty) {
+      widgetChildren.add(CupertinoButton.filled(
+          onPressed: () async => await fetchDefaultColors(),
+          child: const Text("Fetch Default Colors")));
+    }
+
     widgetChildren.add(AddNewColorButton(
       onPressed: () async {
         ranges = await addNewRangeInterval(ranges, context);
