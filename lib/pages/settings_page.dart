@@ -16,6 +16,7 @@ class SettingsPage extends ConsumerWidget {
 
     return GradientScaffold(
         navigationBar: CupertinoNavigationBar(
+          enableBackgroundFilterBlur: false,
           backgroundColor: CupertinoColors.systemBackground.withOpacity(0.8),
           leading: CupertinoButton(
               child: const Icon(Icons.arrow_back),

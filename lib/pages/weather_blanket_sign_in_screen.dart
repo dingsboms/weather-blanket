@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:weather_blanket/theme/app_colors.dart';
+import 'package:weather_blanket/theme/app_theme.dart';
 
 class WeatherBlanketSignInScreen extends StatelessWidget {
   const WeatherBlanketSignInScreen({super.key});
@@ -28,16 +29,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    AppColors.warmOrange,
-                    AppColors.brightPink,
-                    AppColors.royalPurple,
-                  ],
-                  stops: [0.0, 0.5, 1.0],
-                ),
+                gradient: AppTheme.signInGradient,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
@@ -62,7 +54,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
       sideBuilder: (context, constraints) => Padding(
         padding: const EdgeInsets.all(20),
         child: Center(
-          child: Container(
+          child: SizedBox(
             width: constraints.maxWidth * 0.6,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -71,17 +63,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
                   height: 200,
                   width: 200,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.skyBlue,
-                        AppColors.warmOrange,
-                        AppColors.brightPink,
-                        AppColors.royalPurple,
-                      ],
-                      stops: [0.0, 0.3, 0.7, 1.0],
-                    ),
+                    gradient: AppTheme.signInGradient,
                     borderRadius: BorderRadius.circular(28),
                     boxShadow: [
                       BoxShadow(
@@ -106,15 +88,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        AppColors.warmOrange.withValues(alpha: 0.1),
-                        AppColors.brightPink.withValues(alpha: 0.1),
-                        AppColors.royalPurple.withValues(alpha: 0.1),
-                      ],
-                    ),
+                    gradient: AppTheme.signInGradient,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: AppColors.warmOrange.withValues(alpha: 0.3),

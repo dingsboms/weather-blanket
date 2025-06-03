@@ -39,57 +39,55 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        width: 200,
-        child: Column(
-          children: [
-            const Text("Location"),
-            GooglePlacesAutoCompleteTextFormField(
-              textEditingController: _controller,
-              sessionToken: _sessionToken,
-              debounceTime: 500,
-              minInputLength: 2,
-              style: const TextStyle(
-                color: CupertinoColors.black,
-                fontSize: 16,
-              ),
-              predictionsStyle: const TextStyle(
-                color: CupertinoColors.black,
-                fontSize: 14,
-              ),
-              onSuggestionClicked: (Prediction prediction) {
-                setState(() {
-                  _selectedPlace = prediction.description;
-                  if (_selectedPlace != null) {
-                    _controller.text = _selectedPlace!;
-                  }
-                });
-              },
-              onPlaceDetailsWithCoordinatesReceived: (Prediction prediction) {
-                setState(() {
-                  _refreshSessionToken();
-                });
-                widget.onSuggestionClicked(prediction);
-              },
-              onError: (error) {
-                showCupertinoDialog(
-                  context: context,
-                  builder: (context) => CupertinoAlertDialog(
-                    title: const Text('Error'),
-                    content: Text('$error'),
-                    actions: [
-                      CupertinoDialogAction(
-                        child: const Text('OK'),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
-                );
-              },
+    return SizedBox(
+      width: 200,
+      child: Column(
+        children: [
+          const Text("Location"),
+          GooglePlacesAutoCompleteTextFormField(
+            textEditingController: _controller,
+            sessionToken: _sessionToken,
+            debounceTime: 500,
+            minInputLength: 2,
+            style: const TextStyle(
+              color: CupertinoColors.black,
+              fontSize: 16,
             ),
-          ],
-        ),
+            predictionsStyle: const TextStyle(
+              color: CupertinoColors.black,
+              fontSize: 14,
+            ),
+            onSuggestionClicked: (Prediction prediction) {
+              setState(() {
+                _selectedPlace = prediction.description;
+                if (_selectedPlace != null) {
+                  _controller.text = _selectedPlace!;
+                }
+              });
+            },
+            onPlaceDetailsWithCoordinatesReceived: (Prediction prediction) {
+              setState(() {
+                _refreshSessionToken();
+              });
+              widget.onSuggestionClicked(prediction);
+            },
+            onError: (error) {
+              showCupertinoDialog(
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text('Error'),
+                  content: Text('$error'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text('OK'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

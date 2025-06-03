@@ -17,18 +17,6 @@ class AppTheme {
     stops: [0.0, 0.3, 0.7, 1.0],
   );
 
-  static const LinearGradient lightGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [
-      AppColors.lightBackground,
-      AppColors.skyBlue,
-      AppColors.warmOrange,
-      AppColors.goldenYellow,
-    ],
-    stops: [0.0, 0.3, 0.7, 1.0],
-  );
-
   static const LinearGradient warmGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -75,25 +63,6 @@ class AppTheme {
             color: AppColors.primaryText,
             fontSize: 34,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-
-  /// Light theme variant
-  static CupertinoThemeData get light => const CupertinoThemeData(
-        primaryColor: AppColors.deepBlue,
-        scaffoldBackgroundColor: AppColors.lightBackground,
-        barBackgroundColor: CupertinoColors.systemBackground,
-        textTheme: CupertinoTextThemeData(
-          primaryColor: AppColors.darkBackground,
-          textStyle: TextStyle(
-            color: AppColors.darkBackground,
-            fontFamily: '.SF Pro Text',
-          ),
-          navTitleTextStyle: TextStyle(
-            color: AppColors.darkBackground,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
           ),
         ),
       );
