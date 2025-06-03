@@ -87,21 +87,6 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
                   ),
                 );
               },
-              overlayContainerBuilder: (child) => Container(
-                decoration: BoxDecoration(
-                  color: CupertinoColors.white,
-                  border: Border.all(color: CupertinoColors.systemGrey5),
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: CupertinoColors.systemGrey.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: child,
-              ),
             ),
           ],
         ),

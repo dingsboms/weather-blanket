@@ -60,7 +60,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   CupertinoNavigationBar _buildNavigationBar() {
     return CupertinoNavigationBar(
-      backgroundColor: CupertinoColors.systemBackground.withOpacity(0.8),
+      backgroundColor: CupertinoColors.systemBackground.withOpacity(0),
       leading: ToggleHomePageButton(
         editMode: editMode,
         onToggle: () {

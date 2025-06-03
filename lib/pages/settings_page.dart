@@ -21,22 +21,26 @@ class SettingsPage extends ConsumerWidget {
               child: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context)),
         ),
-        child: SafeArea(
-          child: Center(
-            child: Column(
-              children: [
-                const LocationAndAutocomplete(),
-                const Divider(),
-                const ColorSegmentsSettings(),
-                const Divider(),
-                CupertinoButton(
-                    child: const Text("Sign out"),
-                    onPressed: () {
-                      auth.signOut();
-                      Navigator.pop(context);
-                      ref.invalidate(colorRangesProvider);
-                    })
-              ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SafeArea(
+            child: Center(
+              child: Column(
+                children: [
+                  const LocationAndAutocomplete(),
+                  const Divider(),
+                  const ColorSegmentsSettings(),
+                  const Divider(),
+                  const Spacer(),
+                  CupertinoButton.filled(
+                      child: const Text("Sign out"),
+                      onPressed: () {
+                        auth.signOut();
+                        Navigator.pop(context);
+                        ref.invalidate(colorRangesProvider);
+                      })
+                ],
+              ),
             ),
           ),
         ));
