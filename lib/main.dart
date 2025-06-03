@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
-import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,7 +8,6 @@ import 'package:weather_blanket/pages/home_page/home_page.dart';
 import 'package:weather_blanket/pages/weather_blanket_sign_in_screen.dart';
 import 'package:weather_blanket/theme/app_theme.dart';
 import 'firebase_options.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 late final FirebaseApp app;
 late final FirebaseAuth auth;
@@ -19,12 +18,7 @@ void main() async {
   app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseUIAuth.configureProviders([
-    GoogleProvider(
-        clientId:
-            "88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com"),
-    EmailAuthProvider()
-  ]);
+
   auth = FirebaseAuth.instanceFor(app: app);
 
   await setPersistanceToLocal();
@@ -61,6 +55,13 @@ class WeatherBlanketApp extends StatelessWidget {
             }
             return const HomePage(
               title: 'Weather Blanket',
+            );
+            // TODO : Implement a proper profile screen
+            return ProfileScreen(
+              auth: auth,
+              actions: [
+                SignedOutAction((context) => Navigator.of(context).pop())
+              ],
             );
           }),
     );
