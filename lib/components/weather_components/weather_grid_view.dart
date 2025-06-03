@@ -35,20 +35,34 @@ class WeatherGridView extends StatelessWidget {
   }
 
   Widget _buildGridItem(WeatherForecast item, double itemHeight) {
+    Color currentColor = ref.watch(colorForTemperatureProvider(item.temp));
     return Column(
       children: [
         Container(
           height: itemHeight * 0.99,
-          color: ref.watch(colorForTemperatureProvider(item.temp)),
-        ),
-        Container(
-          height: itemHeight * 0.01,
-          color: CupertinoColors.white.withValues(alpha: 0.3),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                currentColor.withValues(alpha: 0.9),
+                currentColor,
+                currentColor.withValues(alpha: 0.9),
+              ],
+            ),
+          ),
         ),
         if (item.isNewMonth)
-          Divider(
-            color: CupertinoColors.white,
-            thickness: itemHeight,
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                CupertinoColors.white.withValues(alpha: 0.9),
+                CupertinoColors.white,
+                CupertinoColors.white.withValues(alpha: 0.9),
+              ]),
+              borderRadius: BorderRadius.circular(10),
+            ),
             height: itemHeight,
           ),
       ],

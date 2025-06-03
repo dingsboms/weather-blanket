@@ -21,6 +21,7 @@ class WeatherListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color currentColor = ref.watch(colorForTemperatureProvider(item.temp));
     return GestureDetector(
       onLongPress: () => showDialog(
           context: context,
@@ -35,7 +36,17 @@ class WeatherListItem extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: ref.watch(colorForTemperatureProvider(item.temp)),
+              borderRadius: BorderRadius.circular(10),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  currentColor.withValues(alpha: 0.65),
+                  currentColor,
+                  currentColor,
+                  currentColor.withValues(alpha: 0.65),
+                ],
+              ),
               border: const Border(bottom: BorderSide()),
             ),
             child: CupertinoListTile(
@@ -53,8 +64,19 @@ class WeatherListItem extends StatelessWidget {
             ),
           ),
           if (item.isNewMonth)
-            const Divider(
-                height: 10, thickness: 10, color: CupertinoColors.white),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        CupertinoColors.white.withValues(alpha: 0.7),
+                        CupertinoColors.white,
+                        CupertinoColors.white.withValues(alpha: 0.7),
+                      ])),
+              height: 10,
+            )
         ],
       ),
     );

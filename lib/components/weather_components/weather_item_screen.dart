@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_blanket/components/color/color_box.dart';
 import 'package:weather_blanket/components/color/color_segments/color_segments_list_tile.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
@@ -115,10 +116,8 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                   ),
                 ),
               ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: currentColor,
-                ),
+              child: ColorBox(
+                currentColor: currentColor,
               ),
             ),
           )

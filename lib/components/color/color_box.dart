@@ -14,7 +14,15 @@ class ColorBox extends StatelessWidget {
       width: 100,
       height: 100,
       decoration: BoxDecoration(
-        color: currentColor,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            currentColor.withValues(alpha: 0.69),
+            currentColor,
+            currentColor.withValues(alpha: 0.69),
+          ],
+        ),
         border: Border.all(color: CupertinoColors.black),
         borderRadius: BorderRadius.circular(8),
       ),
