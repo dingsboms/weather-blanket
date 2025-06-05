@@ -9,7 +9,7 @@ class AddNewColorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoButton(
       onPressed: onPressed,
-      color: CupertinoColors.quaternarySystemFill,
+      color: CupertinoColors.systemCyan.withAlpha(150),
       child: const Icon(Icons.add),
     );
   }

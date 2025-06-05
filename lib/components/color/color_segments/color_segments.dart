@@ -143,10 +143,15 @@ class _ColorSegmentsState extends ConsumerState<ColorSegments> {
 
     final (isGap, gap, from, to) = gapInIntervals(ranges);
 
-    return SingleChildScrollView(
+    return Container(
+      decoration: BoxDecoration(
+          color: CupertinoTheme.of(context).scaffoldBackgroundColor,
+          border: Border.all(
+              color: CupertinoColors.systemGrey.withValues(alpha: 0.8))),
       child: Column(
         children: [
           SingleChildScrollView(
+            padding: const EdgeInsets.all(4.0),
             scrollDirection: Axis.horizontal,
             child: Row(
               children: widgetChildren

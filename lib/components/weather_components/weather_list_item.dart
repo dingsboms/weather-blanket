@@ -38,13 +38,12 @@ class WeatherListItem extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
                 colors: [
-                  currentColor.withValues(alpha: 0.65),
                   currentColor,
+                  Color.lerp(currentColor, Colors.white, 0.15)!,
                   currentColor,
-                  currentColor.withValues(alpha: 0.65),
                 ],
               ),
               border: const Border(bottom: BorderSide()),

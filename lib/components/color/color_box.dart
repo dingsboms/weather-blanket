@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ColorBox extends StatelessWidget {
   const ColorBox({
@@ -18,10 +19,12 @@ class ColorBox extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            currentColor.withValues(alpha: 0.69),
+            Color.lerp(currentColor, Colors.white, 0.15)!,
             currentColor,
-            currentColor.withValues(alpha: 0.69),
+            currentColor,
+            Color.lerp(currentColor, Colors.white, 0.15)!,
           ],
+          stops: const [0.0, 0.2, 0.8, 1.0],
         ),
         border: Border.all(color: CupertinoColors.black),
         borderRadius: BorderRadius.circular(8),

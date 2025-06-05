@@ -108,11 +108,13 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
               onTap: () => showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  content: ColorSegmentsListTile(
-                    weatherItem: widget.item,
-                    onSegmentPicked: (pickedColor) => setState(() {
-                      currentColor = pickedColor;
-                    }),
+                  content: SingleChildScrollView(
+                    child: ColorSegmentsListTile(
+                      weatherItem: widget.item,
+                      onSegmentPicked: (pickedColor) => setState(() {
+                        currentColor = pickedColor;
+                      }),
+                    ),
                   ),
                 ),
               ),

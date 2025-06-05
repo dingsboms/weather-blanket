@@ -29,9 +29,7 @@ class SettingsPage extends ConsumerWidget {
               child: Column(
                 children: [
                   const LocationAndAutocomplete(),
-                  const Divider(),
                   const ColorSegmentsSettings(),
-                  const Divider(),
                   const Spacer(),
                   CupertinoButton.filled(
                       child: const Text("Sign out"),
