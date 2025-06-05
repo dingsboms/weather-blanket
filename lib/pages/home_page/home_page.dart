@@ -31,7 +31,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _initializeColorRanges() {
-    ref.read(colorRangesProvider.future).then((colorRanges) {
+    ref.refresh(colorRangesProvider.future).then((colorRanges) {
       // Color ranges loaded successfully
     }).catchError((error) {
       // Handle color ranges loading error silently in production

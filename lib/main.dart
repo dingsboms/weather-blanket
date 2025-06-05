@@ -56,13 +56,6 @@ class WeatherBlanketApp extends StatelessWidget {
             return const HomePage(
               title: 'Weather Blanket',
             );
-            // TODO : Implement a proper profile screen
-            return ProfileScreen(
-              auth: auth,
-              actions: [
-                SignedOutAction((context) => Navigator.of(context).pop())
-              ],
-            );
           }),
     );
   }

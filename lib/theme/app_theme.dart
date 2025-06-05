@@ -20,25 +20,8 @@ class AppTheme {
 
   /// Main app theme (dark theme with yarn colors)
   static CupertinoThemeData get main => const CupertinoThemeData(
-        primaryColor: AppColors.warmOrange,
-        scaffoldBackgroundColor: AppColors.darkBackground,
-        barBackgroundColor: AppColors.cardBackground,
-        textTheme: CupertinoTextThemeData(
-          primaryColor: AppColors.primaryText,
-          textStyle: TextStyle(
-            color: AppColors.primaryText,
-            fontFamily: '.SF Pro Text',
-          ),
-          navTitleTextStyle: TextStyle(
-            color: AppColors.primaryText,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
-          navLargeTitleTextStyle: TextStyle(
-            color: AppColors.primaryText,
-            fontSize: 34,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
+      primaryColor: AppColors.warmOrange,
+      scaffoldBackgroundColor: AppColors.darkBackground,
+      barBackgroundColor: AppColors.cardBackground,
+      brightness: Brightness.dark);
 }
