@@ -1,6 +1,9 @@
 // import { onSchedule } from "firebase-functions/v2/scheduler";
 import * as admin from "firebase-admin";
+import { Timestamp } from "firebase-admin/firestore";
 import { onCall } from "firebase-functions/https";
+import { beforeUserSignedIn } from "firebase-functions/identity";
+import { logger } from "firebase-functions/v2";
 const { getFirestore } = require("firebase-admin/firestore");
 
 admin.initializeApp();
@@ -106,6 +109,27 @@ export const fetchOpenWeatherData = onCall(async (request) => {
     //     .add(weatherdata);
 
     return weatherdata;
+});
+
+export const updateLastLogin = beforeUserSignedIn(async (authBlockingEvent) => {
+  let uid = authBlockingEvent.data?.uid;
+
+  if (!uid) {
+    logger.error("No UID found");
+    logger.error(authBlockingEvent);
+    return;
+  }
+
+  let firestore = getFirestore();
+
+  await firestore.collection("users").doc(uid).set(
+    {
+      lastLogin: Timestamp.now(),
+    },
+    { merge: true }
+  );
+
+  logger.log(`User ${uid} last login updated in Firestore`);
 });
 
 // exports.dailyApiFetch = onSchedule("every day 12:00", async (event) => {
