@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:weather_blanket/components/color/get_default_colors.dart';
-import 'package:weather_blanket/models/range_interval.dart';
 
 Future<DocumentSnapshot<Map<String, dynamic>>> getUserDoc() async {
   User? user = FirebaseAuth.instance.currentUser;
@@ -12,6 +10,8 @@ Future<DocumentSnapshot<Map<String, dynamic>>> getUserDoc() async {
 
   final doc = await docRef.get();
 
+  // Fail-safe, this shouldnt occur as firebase functions should create the user document on sign up
+  // but in case it does, we create a new user document with default values
   if (!doc.exists) {
     await createNewUserDocumentWithDefaults(docRef, user);
     return await docRef.get();
@@ -23,9 +23,6 @@ Future<DocumentSnapshot<Map<String, dynamic>>> getUserDoc() async {
 Future<void> createNewUserDocumentWithDefaults(
     DocumentReference userDoc, User user) async {
   String userId = user.uid;
-  List<RangeInterval> colors = await getDefaultColors();
-
-  List<dynamic> colorsFirestore = colors.map((e) => e.toFiretore()).toList();
 
   await userDoc.set({
     'uid': userId,
@@ -34,7 +31,5 @@ Future<void> createNewUserDocumentWithDefaults(
     'photoURL': user.photoURL,
     'createdAt': FieldValue.serverTimestamp(),
     'lastLogin': FieldValue.serverTimestamp(),
-    'colors': colorsFirestore,
-    'temperature_location': const GeoPoint(59.9139, 10.7522)
   });
 }

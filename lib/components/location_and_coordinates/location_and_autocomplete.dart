@@ -45,9 +45,13 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
 
     try {
       documentReference.get().then((doc) {
-        fetchTemperatureLocationName(doc).then((locName) => setState(() {
+        fetchTemperatureLocationName(doc).then((locName) {
+          if (mounted) {
+            setState(() {
               initialLocationName = locName;
-            }));
+            });
+          }
+        });
       });
     } catch (e) {
       // Handle document fetch error silently in production
@@ -87,9 +91,11 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
           weatherItem: widget.weatherItem,
           onUpdate: (location) async {
             String address = await fetchAddressFromGeoLocation(location);
-            setState(() {
-              _autoCompleteController.text = address;
-            });
+            if (mounted) {
+              setState(() {
+                _autoCompleteController.text = address;
+              });
+            }
           })
     ]);
   }

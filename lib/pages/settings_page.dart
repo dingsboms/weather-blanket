@@ -3,6 +3,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_blanket/components/color/color_segments/color_segments_settings.dart';
 import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:weather_blanket/functions/color_provider.dart';
@@ -20,16 +21,18 @@ class SettingsPage extends ConsumerWidget {
         backgroundColor: CupertinoColors.transparent,
         leading: CupertinoButton(
             child: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context)),
+            onPressed: () => context.pop()),
       ),
       auth: auth,
       actions: [
         SignedOutAction((context) {
           ref.invalidate(colorRangesProvider);
-          Navigator.pop(context);
+          context.go("/login");
         }),
-        AuthStateChangeAction<SignedIn>(
-          (context, state) {},
+        AccountDeletedAction(
+          (context, state) {
+            print("Account deleted: ${state.uid}");
+          },
         )
       ],
       showUnlinkConfirmationDialog: true,

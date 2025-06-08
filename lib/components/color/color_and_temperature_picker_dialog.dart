@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_blanket/components/temperature/temperature_picker.dart';
 import 'package:weather_blanket/models/range_interval.dart';
 
@@ -74,7 +75,7 @@ class _ColorPickerDialogState extends State<ColorAndTemperaturePickerDialog> {
             if (intervalsOverlap) {
               showErrorDialog();
             } else {
-              Navigator.of(context).pop();
+              context.pop();
               await widget.onUpdate(pickerColor);
             }
           },
@@ -92,13 +93,13 @@ class _ColorPickerDialogState extends State<ColorAndTemperaturePickerDialog> {
           title: const Text("Sure you want to delete?"),
           actions: [
             ElevatedButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
               child: const Text("No"),
             ),
             ElevatedButton(
               onPressed: () async {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                context.pop();
+                context.pop();
                 await onDelete();
               },
               child: const Text(
@@ -124,7 +125,7 @@ class _ColorPickerDialogState extends State<ColorAndTemperaturePickerDialog> {
                 "Interval is overlapping with other intervals, pick a valid range"),
             actions: [
               CupertinoButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text("Ok"),
               )
             ],

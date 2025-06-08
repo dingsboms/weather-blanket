@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_blanket/functions/populate_dates.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
@@ -37,7 +38,7 @@ Future<void> showPopulationDialog(List<WeatherForecast> items, String userId,
                         Text('Error: ${snapshot.error}'),
                         CupertinoDialogAction(
                           child: const Text('OK'),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () => context.pop(),
                         ),
                       ],
                     );
@@ -50,7 +51,7 @@ Future<void> showPopulationDialog(List<WeatherForecast> items, String userId,
                           Text("Populated $daysPopulated new days"),
                           CupertinoDialogAction(
                             child: const Text('OK'),
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () => context.pop(),
                           ),
                         ],
                       );
@@ -60,7 +61,7 @@ Future<void> showPopulationDialog(List<WeatherForecast> items, String userId,
                           const Text("No new days to populate"),
                           CupertinoDialogAction(
                             child: const Text('OK'),
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () => context.pop(),
                           ),
                         ],
                       );

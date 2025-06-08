@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 
 class NoteButton extends StatelessWidget {
@@ -72,7 +73,7 @@ class NoteButton extends StatelessWidget {
                   children: [
                     CupertinoButton(
                       child: const Text('Cancel'),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.pop(),
                     ),
                     CupertinoButton.filled(
                       child: const Text('Submit'),
@@ -85,7 +86,7 @@ class NoteButton extends StatelessWidget {
                             .set({"knitting_note": noteController.text},
                                 SetOptions(merge: true));
 
-                        Navigator.pop(context);
+                        context.pop();
                       },
                     ),
                   ],

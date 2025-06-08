@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_blanket/components/weather_components/weather_grid_view.dart';
 import 'package:weather_blanket/components/weather_components/weather_list_view.dart';
+import 'package:weather_blanket/functions/color_provider.dart';
 import 'package:weather_blanket/models/weather_data.dart';
 import 'package:weather_blanket/pages/home_page/home_page.dart';
 
@@ -23,6 +24,7 @@ class WeatherDataDisplay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.invalidate(colorRangesProvider);
     final stream = _getWeatherStream(userId);
     final dialogShown = ref.watch(populationDialogShownProvider);
 

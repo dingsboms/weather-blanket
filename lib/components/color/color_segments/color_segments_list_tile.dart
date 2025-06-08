@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:weather_blanket/components/color/color_box.dart';
 import 'package:weather_blanket/components/color/color_segments/color_segments.dart';
 import 'package:weather_blanket/models/weather_data.dart';
@@ -24,7 +25,7 @@ class _ColorSegmentsListTileState extends State<ColorSegmentsListTile> {
             await widget.weatherItem.updateFirestoreUserDoc();
             widget.onSegmentPicked(interval.color);
             if (context.mounted) {
-              Navigator.of(context).pop();
+              context.pop();
             }
           },
           child: ColorBox(currentColor: interval.color));
