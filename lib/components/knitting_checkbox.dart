@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_blanket/models/weather_data.dart';
+import 'package:weather_blanket/theme/app_colors.dart';
 
 // Knitting Checkbox Widget
 class KnittingCheckbox extends StatefulWidget {
@@ -16,14 +17,21 @@ class KnittingCheckbox extends StatefulWidget {
 class _KnittingCheckboxState extends State<KnittingCheckbox> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoCheckbox(
-      checkColor: CupertinoColors.black,
-      fillColor:
-          WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-        return CupertinoColors.white;
-      }),
-      value: widget.item.isKnitted,
-      onChanged: (val) => _updateKnittingStatus(val),
+    return CupertinoTheme(
+      data: const CupertinoThemeData(brightness: Brightness.light),
+      child: CupertinoCheckbox(
+        checkColor: AppColors.darkBackground,
+        fillColor:
+            WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primaryText;
+          }
+
+          return AppColors.primaryText;
+        }),
+        value: widget.item.isKnitted,
+        onChanged: (val) => _updateKnittingStatus(val),
+      ),
     );
   }
 
