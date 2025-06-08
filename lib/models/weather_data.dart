@@ -69,10 +69,15 @@ class WeatherForecast {
     if (location == null) {
       final temperatureLocationDoc = await getUserDoc();
 
-      location = temperatureLocationDoc.get("temperature_location");
-
-      if (location == null) {
-        throw Exception("Failed to get location");
+      // Safely check if the field exists and has a value
+      if (temperatureLocationDoc.exists &&
+          temperatureLocationDoc.data()!.containsKey('temperature_location')) {
+        location =
+            temperatureLocationDoc.get('temperature_location') as GeoPoint;
+      } else {
+        debugPrint(
+            'Get temperature_location returned null or field does not exist');
+        return null;
       }
     }
 

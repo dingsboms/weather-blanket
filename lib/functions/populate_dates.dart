@@ -1,6 +1,6 @@
 import 'package:weather_blanket/models/weather_data.dart';
 
-Future<int> populateFirestoreFrom(DateTime fromDate, String userId) async {
+Future<int> populateFirestoreFrom(DateTime fromDate) async {
   final today = DateTime.now();
   var dateCounter = fromDate;
   dateCounter =
@@ -22,9 +22,10 @@ Future<int> populateFirestoreFrom(DateTime fromDate, String userId) async {
 
       if (res != null) {
         await res.updateFirestoreUserDoc();
+        dateCounter = dateCounter.add(oneDay);
+      } else {
+        return -1;
       }
-
-      dateCounter = dateCounter.add(oneDay);
     } catch (e) {
       throw Exception('Failed to populate weather data for $dateCounter: $e');
     }

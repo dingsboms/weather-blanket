@@ -26,7 +26,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
         ),
         AuthStateChangeAction<UserCreated>(
           (context, state) {
-            print("User created: ${state.credential.user?.uid}");
+            context.go("/configure_new_user");
           },
         ),
       ],

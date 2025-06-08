@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:weather_blanket/pages/configure_new_user_page.dart';
 import 'package:weather_blanket/pages/home_page/home_page.dart';
 import 'package:weather_blanket/pages/settings_page.dart';
 import 'package:weather_blanket/pages/weather_blanket_sign_in_screen.dart';
@@ -48,9 +49,13 @@ void main() async {
                 builder: (context, state) {
                   return const SettingsPage();
                 }),
+            GoRoute(
+              path: "configure_new_user",
+              builder: (context, state) => const ConfigureNewUserPage(),
+            )
           ])
     ],
-    redirect: (context, state) {
+    redirect: (context, state) async {
       final user = FirebaseAuth.instance.currentUser;
       final isLoggedIn = user != null;
 
@@ -61,11 +66,11 @@ void main() async {
         return null;
       }
 
-      if (!isLoggedIn && state.fullPath != '/login') {
+      if (state.fullPath != '/login' && !isLoggedIn) {
+        // If the user is not logged in and trying to access a page other than login, redirect to login
         return '/login';
-      } else if (isLoggedIn && state.fullPath == '/login') {
-        return '/';
       }
+
       return null;
     },
   );
