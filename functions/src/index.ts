@@ -7,7 +7,7 @@ admin.initializeApp();
 
 // TODO add CORS
 
-exports.getPlaceDetails = onCall(async (request) => {
+export const getPlaceDetails = onCall(async (request) => {
     const sessionToken: string = request.data.sessionToken || "";
     const placeId: string = request.data.placeId;
 
@@ -22,7 +22,7 @@ exports.getPlaceDetails = onCall(async (request) => {
     return result;
 });
 
-exports.getPlacesSuggestions = onCall(async (request) => {
+export const getPlacesSuggestions = onCall(async (request) => {
     const input: string = request.data.input;
     const languageCode: string = request.data.languageCode || "";
     const sessionToken: string = request.data.sessionToken || "";
@@ -38,14 +38,14 @@ exports.getPlacesSuggestions = onCall(async (request) => {
     return result;
 });
 
-exports.getGeoLocationFromAddress = onCall(async (request) => {
+export const getGeoLocationFromAddress = onCall(async (request) => {
     const address = request.data.address;
     const geocode_api_key = process.env.GOOGLE_GEOCODING_KEY;
     const geocode_endpoint =
         `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${geocode_api_key}`;
 
     const response = await fetch(geocode_endpoint);
-    const geocode_data = await response.json();
+    const geocode_data = await response.json() as any;
 
     const status = geocode_data["status"];
     const results = geocode_data["results"];
@@ -73,7 +73,7 @@ exports.getGeoLocationFromAddress = onCall(async (request) => {
     return geocode_data;
 });
 
-exports.getAddressFromGeoLocation = onCall(async (request) => {
+export const getAddressFromGeoLocation = onCall(async (request) => {
     const lat = request.data.lat;
     const lon = request.data.lon;
 
@@ -88,7 +88,7 @@ exports.getAddressFromGeoLocation = onCall(async (request) => {
     return result;
 });
 
-exports.fetchOpenWeatherData = onCall(async (request) => {
+export const fetchOpenWeatherData = onCall(async (request) => {
     let date_utc = request.data.date;
     let lat = request.data.lat;
     let lon = request.data.lon;
