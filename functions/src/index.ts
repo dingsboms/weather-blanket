@@ -2,7 +2,7 @@
 import * as admin from "firebase-admin";
 import { Timestamp } from "firebase-admin/firestore";
 import { onCall } from "firebase-functions/https";
-import { beforeUserSignedIn } from "firebase-functions/identity";
+import { beforeUserCreated, beforeUserSignedIn } from "firebase-functions/identity";
 import { logger } from "firebase-functions/v2";
 const { getFirestore } = require("firebase-admin/firestore");
 
@@ -130,6 +130,38 @@ export const updateLastLogin = beforeUserSignedIn(async (authBlockingEvent) => {
   );
 
   logger.log(`User ${uid} last login updated in Firestore`);
+});
+
+
+
+export const createNewUser = beforeUserCreated(async (authBlockingEvent) => {
+  const eventData = authBlockingEvent.data;
+
+  if (!eventData || !eventData.uid) {
+    logger.error("User data or UID is missing in beforeUserCreated event.", { authBlockingEvent });
+    return; 
+  }
+
+  const { uid, email, displayName, photoURL } = eventData;
+
+
+  const firestore = getFirestore();
+  const userDocRef = firestore.collection("users").doc(uid);
+
+
+  try {
+    await userDocRef.set({
+      'uid': uid,
+      'email': email || null, 
+      'displayName': displayName || null,
+      'photoURL': photoURL || null, 
+      'createdAt': Timestamp.now(), 
+      'lastLogin': Timestamp.now(),
+    });
+    logger.log(`New user document created in Firestore for UID: ${uid}`);
+  } catch (error) {
+    logger.error(`Failed to create user document in Firestore for UID: ${uid}`, error);
+  }
 });
 
 // exports.dailyApiFetch = onSchedule("every day 12:00", async (event) => {
