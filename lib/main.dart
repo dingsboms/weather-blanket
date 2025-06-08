@@ -25,8 +25,6 @@ void main() async {
 
   auth = FirebaseAuth.instanceFor(app: app);
 
-  await auth.setPersistence(Persistence.LOCAL);
-
   configureUrlStrategy();
 
   // Makes sure that the URL's are updated in the browser when navigating
