@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/theme/app_gradients.dart';
+import 'package:tempestry/theme/app_gradients.dart';
 
 /// A reusable gradient background widget for consistent theming
 class GradientBackground extends StatelessWidget {

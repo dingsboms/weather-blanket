@@ -1,4 +1,4 @@
-# weather_blanket
+# Tempestry
 
 Build IPA:
 flutter build ipa --release --export-method=ad-hoc

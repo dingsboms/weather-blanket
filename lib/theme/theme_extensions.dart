@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'app_colors.dart';
 
 /// Extension methods for easy access to themed widgets and styles
-extension WeatherBlanketTheme on BuildContext {
+extension TempestryTheme on BuildContext {
   /// Quick access to theme colors
   AppColors get colors => AppColors();
 

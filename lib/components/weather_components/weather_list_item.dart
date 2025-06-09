@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/components/knitting_checkbox.dart';
-import 'package:weather_blanket/components/note_button.dart';
-import 'package:weather_blanket/components/weather_components/weather_item_screen.dart';
-import 'package:weather_blanket/functions/color_provider.dart';
-import 'package:weather_blanket/models/weather_data.dart';
+import 'package:tempestry/components/knitting_checkbox.dart';
+import 'package:tempestry/components/note_button.dart';
+import 'package:tempestry/components/weather_components/weather_item_screen.dart';
+import 'package:tempestry/functions/color_provider.dart';
+import 'package:tempestry/models/weather_data.dart';
 
 class WeatherListItem extends StatelessWidget {
   final String userId;

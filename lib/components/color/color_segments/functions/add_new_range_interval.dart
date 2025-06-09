@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_blanket/components/color/color_and_temperature_picker_dialog.dart';
-import 'package:weather_blanket/components/color/color_segments/functions/intervals_overlap.dart';
-import 'package:weather_blanket/models/range_interval.dart';
+import 'package:tempestry/components/color/color_and_temperature_picker_dialog.dart';
+import 'package:tempestry/components/color/color_segments/functions/intervals_overlap.dart';
+import 'package:tempestry/models/range_interval.dart';
 
 Future<List<RangeInterval>> addNewRangeInterval(
     List<RangeInterval> ranges, BuildContext context) async {

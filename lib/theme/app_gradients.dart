@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'app_colors.dart';
 
-/// Weather Blanket App Gradients
+/// Tempestry App Gradients
 /// Beautiful gradient combinations inspired by yarn colors
 class AppGradients {
   /// Main app background gradient - subtle and elegant

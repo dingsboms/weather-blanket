@@ -1,4 +1,4 @@
-import 'package:weather_blanket/models/weather_data.dart';
+import 'package:tempestry/models/weather_data.dart';
 
 Future<int> populateFirestoreFrom(DateTime fromDate) async {
   final today = DateTime.now();

@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_blanket/components/toggle/toggle_home_page_button.dart';
-import 'package:weather_blanket/pages/home_page/show_population_dialog.dart';
-import 'package:weather_blanket/pages/home_page/weather_data_display.dart';
-import 'package:weather_blanket/theme/gradient_background.dart';
+import 'package:tempestry/components/toggle/toggle_home_page_button.dart';
+import 'package:tempestry/pages/home_page/show_population_dialog.dart';
+import 'package:tempestry/pages/home_page/weather_data_display.dart';
+import 'package:tempestry/theme/gradient_background.dart';
 
 // StateProvider to track if the population dialog has been shown this session
 final populationDialogShownProvider =

@@ -4,11 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_blanket/pages/configure_new_user_page.dart';
-import 'package:weather_blanket/pages/home_page/home_page.dart';
-import 'package:weather_blanket/pages/settings_page.dart';
-import 'package:weather_blanket/pages/weather_blanket_sign_in_screen.dart';
-import 'package:weather_blanket/theme/app_theme.dart';
+import 'package:tempestry/pages/configure_new_user_page.dart';
+import 'package:tempestry/pages/home_page/home_page.dart';
+import 'package:tempestry/pages/settings_page.dart';
+import 'package:tempestry/pages/weather_blanket_sign_in_screen.dart';
+import 'package:tempestry/theme/app_theme.dart';
 import 'url_strategy_non_web.dart'
     if (dart.library.html) 'url_strategy_web.dart';
 import 'firebase_options.dart';
@@ -42,7 +42,7 @@ void main() async {
           routes: [
             GoRoute(
               path: "login",
-              builder: (context, state) => const WeatherBlanketSignInScreen(),
+              builder: (context, state) => const TempestrySignInScreen(),
             ),
             GoRoute(
                 path: "settings",
@@ -76,12 +76,12 @@ void main() async {
   );
 
   runApp(const ProviderScope(
-    child: WeatherBlanketApp(),
+    child: TempestryApp(),
   ));
 }
 
-class WeatherBlanketApp extends StatelessWidget {
-  const WeatherBlanketApp({
+class TempestryApp extends StatelessWidget {
+  const TempestryApp({
     super.key,
   });
 
@@ -89,7 +89,7 @@ class WeatherBlanketApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp.router(
       routerConfig: _router,
-      title: 'Weather Blanket',
+      title: 'Tempestry',
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

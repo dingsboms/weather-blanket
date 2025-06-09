@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/components/location_and_coordinates/location/location_text_field.dart';
+import 'package:tempestry/components/location_and_coordinates/location/location_text_field.dart';
 
 class TemperaturePicker extends StatelessWidget {
   const TemperaturePicker(

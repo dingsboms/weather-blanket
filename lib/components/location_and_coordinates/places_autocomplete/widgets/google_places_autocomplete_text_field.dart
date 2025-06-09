@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/data/google_places_api.dart';
-import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/model/prediction.dart';
+import 'package:tempestry/components/location_and_coordinates/places_autocomplete/data/google_places_api.dart';
+import 'package:tempestry/components/location_and_coordinates/places_autocomplete/model/prediction.dart';
 
 class GooglePlacesAutoCompleteTextFormField extends StatefulWidget {
   const GooglePlacesAutoCompleteTextFormField({

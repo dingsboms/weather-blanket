@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/components/weather_components/weather_list_item.dart';
-import 'package:weather_blanket/models/weather_data.dart';
+import 'package:tempestry/components/weather_components/weather_list_item.dart';
+import 'package:tempestry/models/weather_data.dart';
 
 class WeatherListView extends StatefulWidget {
   final String userId;

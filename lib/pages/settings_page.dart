@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_blanket/components/color/color_segments/color_segments_settings.dart';
-import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
-import 'package:weather_blanket/functions/color_provider.dart';
+import 'package:tempestry/components/color/color_segments/color_segments_settings.dart';
+import 'package:tempestry/components/location_and_coordinates/location_and_autocomplete.dart';
+import 'package:tempestry/functions/color_provider.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});

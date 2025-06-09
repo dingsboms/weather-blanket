@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/model/prediction.dart';
-import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/widgets/google_places_autocomplete_text_field.dart';
+import 'package:tempestry/components/location_and_coordinates/places_autocomplete/model/prediction.dart';
+import 'package:tempestry/components/location_and_coordinates/places_autocomplete/widgets/google_places_autocomplete_text_field.dart';
 
 class MyGoogleAutocompleteTextField extends StatefulWidget {
   const MyGoogleAutocompleteTextField(

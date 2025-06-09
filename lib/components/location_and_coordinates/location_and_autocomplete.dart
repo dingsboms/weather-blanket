@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/components/location_and_coordinates/location/location_box.dart';
-import 'package:weather_blanket/components/location_and_coordinates/location/reverse_geo_code.dart';
-import 'package:weather_blanket/components/location_and_coordinates/places_autocomplete/my_google_autocomplete_text_field.dart';
-import 'package:weather_blanket/models/weather_data.dart';
+import 'package:tempestry/components/location_and_coordinates/location/location_box.dart';
+import 'package:tempestry/components/location_and_coordinates/location/reverse_geo_code.dart';
+import 'package:tempestry/components/location_and_coordinates/places_autocomplete/my_google_autocomplete_text_field.dart';
+import 'package:tempestry/models/weather_data.dart';
 
 class LocationAndAutocomplete extends StatefulWidget {
   const LocationAndAutocomplete({super.key, this.weatherItem});

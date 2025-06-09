@@ -2,9 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/components/color/color_segments/functions/intervals_overlap.dart';
-import 'package:weather_blanket/functions/color_provider.dart';
-import 'package:weather_blanket/models/range_interval.dart';
+import 'package:tempestry/components/color/color_segments/functions/intervals_overlap.dart';
+import 'package:tempestry/functions/color_provider.dart';
+import 'package:tempestry/models/range_interval.dart';
 
 // Returns success true / false
 Future<bool> updateColors(List<RangeInterval> colors, WidgetRef ref) async {

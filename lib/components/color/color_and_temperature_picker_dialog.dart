@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_blanket/components/temperature/temperature_picker.dart';
-import 'package:weather_blanket/models/range_interval.dart';
+import 'package:tempestry/components/temperature/temperature_picker.dart';
+import 'package:tempestry/models/range_interval.dart';
 
 class ColorAndTemperaturePickerDialog extends StatefulWidget {
   final Color initialColor;

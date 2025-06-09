@@ -1,21 +1,21 @@
 {
   "flutter": {
     "platforms": {
-      "ios": {
-        "default": {
-          "projectId": "weather-blanket",
-          "appId": "1:88468625362:ios:59eacb4a95c0b27673da0b",
-          "uploadDebugSymbols": false,
-          "fileOutput": "ios/Runner/GoogleService-Info.plist"
-        }
-      },
       "dart": {
         "lib/firebase_options.dart": {
           "projectId": "weather-blanket",
           "configurations": {
-            "ios": "1:88468625362:ios:59eacb4a95c0b27673da0b",
+            "ios": "1:88468625362:ios:3bda3cb18d6df9ae73da0b",
             "web": "1:88468625362:web:8975cd9c51631ef973da0b"
           }
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "weather-blanket",
+          "appId": "1:88468625362:ios:3bda3cb18d6df9ae73da0b",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
         }
       }
     }
@@ -35,11 +35,6 @@
   "hosting": {
     "public": "build/web",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+    "rewrites": [{ "source": "**", "destination": "/index.html" }]
   }
 }

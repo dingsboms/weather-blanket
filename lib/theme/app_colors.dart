@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-/// Weather Blanket App Colors
+/// Tempestry App Colors
 /// Inspired by the yarn colors in the app logo
 class AppColors {
   // Primary colors from the logo yarn

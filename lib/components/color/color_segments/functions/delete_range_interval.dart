@@ -1,4 +1,4 @@
-import 'package:weather_blanket/models/range_interval.dart';
+import 'package:tempestry/models/range_interval.dart';
 
 Future<List<RangeInterval>> deleteRangeInterval(
     RangeInterval intervalToDelete, List<RangeInterval> ranges) async {

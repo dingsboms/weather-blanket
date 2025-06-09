@@ -54,12 +54,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDrs3yIagams5Yi9sZdu5TcC5ZOFh1LPgA',
-    appId: '1:88468625362:ios:59eacb4a95c0b27673da0b',
+    appId: '1:88468625362:ios:3bda3cb18d6df9ae73da0b',
     messagingSenderId: '88468625362',
     projectId: 'weather-blanket',
     storageBucket: 'weather-blanket.firebasestorage.app',
-    iosClientId:
-        '88468625362-2efdkl917aiaios0mk2vja912a5jjqkg.apps.googleusercontent.com',
-    iosBundleId: 'no.rmax.weatherblanket.app',
+    iosClientId: '88468625362-oglgitob2t4ps7odps9uhk05scttst0b.apps.googleusercontent.com',
+    iosBundleId: 'app.tempestry',
   );
+
 }

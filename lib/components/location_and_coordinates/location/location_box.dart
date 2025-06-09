@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/components/location_and_coordinates/location/location_text_field.dart';
-import 'package:weather_blanket/components/location_and_coordinates/location_and_autocomplete.dart';
-import 'package:weather_blanket/functions/get_user_doc.dart';
-import 'package:weather_blanket/models/weather_data.dart';
+import 'package:tempestry/components/location_and_coordinates/location/location_text_field.dart';
+import 'package:tempestry/components/location_and_coordinates/location_and_autocomplete.dart';
+import 'package:tempestry/functions/get_user_doc.dart';
+import 'package:tempestry/models/weather_data.dart';
 
 class LocationBox extends StatefulWidget {
   const LocationBox(

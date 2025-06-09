@@ -1,7 +1,7 @@
 // lib/functions/color_provider.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/functions/get_user_doc.dart';
+import 'package:tempestry/functions/get_user_doc.dart';
 import '../models/range_interval.dart';
 
 final colorRangesProvider = FutureProvider<List<RangeInterval>>((ref) async {

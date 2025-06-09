@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/models/weather_data.dart';
-import 'package:weather_blanket/theme/app_colors.dart';
+import 'package:tempestry/models/weather_data.dart';
+import 'package:tempestry/theme/app_colors.dart';
 
 // Knitting Checkbox Widget
 class KnittingCheckbox extends StatefulWidget {

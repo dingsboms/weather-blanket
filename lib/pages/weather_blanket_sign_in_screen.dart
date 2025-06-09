@@ -2,11 +2,11 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_blanket/theme/app_colors.dart';
-import 'package:weather_blanket/theme/app_theme.dart';
+import 'package:tempestry/theme/app_colors.dart';
+import 'package:tempestry/theme/app_theme.dart';
 
-class WeatherBlanketSignInScreen extends StatelessWidget {
-  const WeatherBlanketSignInScreen({super.key});
+class TempestrySignInScreen extends StatelessWidget {
+  const TempestrySignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
-                  'assets/WeatherBlanketLogo.png',
+                  'assets/TempestryLogo.png',
                   height: 120,
                   width: 120,
                 ),
@@ -98,7 +98,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                      'assets/WeatherBlanketLogo.png',
+                      'assets/TempestryLogo.png',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -117,7 +117,7 @@ class WeatherBlanketSignInScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    "Create a Weather-Blanket!",
+                    "Create a Tempestry!",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 32,

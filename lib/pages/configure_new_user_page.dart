@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:weather_blanket/theme/gradient_background.dart';
+import 'package:tempestry/theme/gradient_background.dart';
 
 class ConfigureNewUserPage extends StatelessWidget {
   const ConfigureNewUserPage({super.key});

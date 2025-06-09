@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:weather_blanket/models/range_interval.dart';
+import 'package:tempestry/models/range_interval.dart';
 
 Future<List<RangeInterval>> getDefaultColors() async {
   try {

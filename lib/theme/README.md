@@ -1,7 +1,7 @@
-# Weather Blanket App Theme System
+# Tempestry App Theme System
 
 ## Overview
-This theme system provides a comprehensive color palette and styling framework based on the vibrant yarn colors from your Weather Blanket app logo.
+This theme system provides a comprehensive color palette and styling framework based on the vibrant yarn colors from your Tempestry app logo.
 
 ## Color Palette
 The theme extracts colors from your beautiful logo featuring colorful yarn:
@@ -23,7 +23,7 @@ The theme extracts colors from your beautiful logo featuring colorful yarn:
 
 ### 1. Basic Theme Colors
 ```dart
-import 'package:weather_blanket/theme/app_colors.dart';
+import 'package:tempestry/theme/app_colors.dart';
 
 // Use predefined colors
 Container(
@@ -49,7 +49,7 @@ Color weatherColor = AppColors.getWeatherConditionColor('sunny'); // Returns gol
 
 ### 4. Themed Text Styles
 ```dart
-import 'package:weather_blanket/theme/theme_extensions.dart';
+import 'package:tempestry/theme/theme_extensions.dart';
 
 Text('Large Title', style: AppTextStyles.largeTitle),
 Text('Body text', style: AppTextStyles.body),
@@ -90,7 +90,7 @@ Container(
 
 ### 7. Common Decorations
 ```dart
-import 'package:weather_blanket/theme/app_theme.dart';
+import 'package:tempestry/theme/app_theme.dart';
 
 // Pre-defined decorations
 Container(decoration: AppTheme.cardDecoration),

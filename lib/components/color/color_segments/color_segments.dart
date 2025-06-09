@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weather_blanket/components/color/add_new_color_button.dart';
-import 'package:weather_blanket/components/color/color_segments/functions/add_new_range_interval.dart';
-import 'package:weather_blanket/components/color/color_segments/functions/delete_range_interval.dart';
-import 'package:weather_blanket/components/color/color_segments/functions/gap_in_intervals.dart';
-import 'package:weather_blanket/components/color/color_segments/functions/intervals_overlap.dart';
-import 'package:weather_blanket/components/color/color_segments/functions/update_colors.dart';
-import 'package:weather_blanket/components/color/get_default_colors.dart';
-import 'package:weather_blanket/models/range_interval.dart';
+import 'package:tempestry/components/color/add_new_color_button.dart';
+import 'package:tempestry/components/color/color_segments/functions/add_new_range_interval.dart';
+import 'package:tempestry/components/color/color_segments/functions/delete_range_interval.dart';
+import 'package:tempestry/components/color/color_segments/functions/gap_in_intervals.dart';
+import 'package:tempestry/components/color/color_segments/functions/intervals_overlap.dart';
+import 'package:tempestry/components/color/color_segments/functions/update_colors.dart';
+import 'package:tempestry/components/color/get_default_colors.dart';
+import 'package:tempestry/models/range_interval.dart';
 
 class ColorSegments extends ConsumerStatefulWidget {
   const ColorSegments({super.key, required this.segmentBuilder});

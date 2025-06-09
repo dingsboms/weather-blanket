@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'app_colors.dart';
 
 /// App Theme Configuration
-/// Provides centralized theme management for the Weather Blanket app
+/// Provides centralized theme management for the Tempestry app
 class AppTheme {
   /// Sign-in specific gradient - more vibrant and welcoming
   static const LinearGradient signInGradient = LinearGradient(

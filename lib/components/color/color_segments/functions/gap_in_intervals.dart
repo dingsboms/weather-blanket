@@ -1,5 +1,5 @@
 // isGap, sizeGap, fromInterval, toInterval
-import 'package:weather_blanket/models/range_interval.dart';
+import 'package:tempestry/models/range_interval.dart';
 
 (bool, int, RangeInterval?, RangeInterval?) gapInIntervals(
     List<RangeInterval> ranges) {

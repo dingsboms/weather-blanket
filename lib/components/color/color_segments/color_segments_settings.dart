@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_blanket/components/color/color_picker_box.dart';
-import 'package:weather_blanket/components/color/color_segments/color_segments.dart';
+import 'package:tempestry/components/color/color_picker_box.dart';
+import 'package:tempestry/components/color/color_segments/color_segments.dart';
 
 class ColorSegmentsSettings extends StatefulWidget {
   const ColorSegmentsSettings({super.key});

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:weather_blanket/models/weather_data.dart';
+import 'package:tempestry/models/weather_data.dart';
 
 class MigrateDtFromIntToDatetime extends StatefulWidget {
   const MigrateDtFromIntToDatetime({super.key});
