@@ -9,8 +9,7 @@ import 'package:tempestry/pages/home_page/weather_data_display.dart';
 import 'package:tempestry/theme/gradient_background.dart';
 
 // StateProvider to track if the population dialog has been shown this session
-final populationDialogShownProvider =
-    StateProvider.autoDispose<bool>((ref) => false);
+final populationDialogShownProvider = StateProvider<bool>((ref) => false);
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
