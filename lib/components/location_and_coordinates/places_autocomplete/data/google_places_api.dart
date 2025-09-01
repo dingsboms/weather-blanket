@@ -18,7 +18,8 @@ class GooglePlacesApi {
         'sessionToken': sessionToken,
       });
 
-      return PlacesAutocompleteResponse.fromJson(result.data);
+      return PlacesAutocompleteResponse.fromJson(
+          Map<String, dynamic>.from(result.data));
     } catch (e) {
       debugPrint('GooglePlacesApi.getSuggestionsForInput: ${e.toString()}');
       return null;
@@ -37,7 +38,8 @@ class GooglePlacesApi {
         'sessionToken': sessionToken,
       });
 
-      final placeDetails = PlaceDetails.fromJson(result.data);
+      final placeDetails =
+          PlaceDetails.fromJson(Map<String, dynamic>.from(result.data));
       prediction.lat = placeDetails.result!.geometry!.location!.lat.toString();
       prediction.lng = placeDetails.result!.geometry!.location!.lng.toString();
 

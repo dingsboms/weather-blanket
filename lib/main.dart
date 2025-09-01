@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tempestry/pages/configure_new_user_page.dart';
+import 'package:tempestry/pages/configure_new_user.dart/configure_new_user_page.dart';
 import 'package:tempestry/pages/home_page/home_page.dart';
 import 'package:tempestry/pages/settings_page.dart';
 import 'package:tempestry/pages/weather_blanket_sign_in_screen.dart';

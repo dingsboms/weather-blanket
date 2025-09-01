@@ -23,7 +23,7 @@ class SmallTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 65,
+      width: 100,
       child: CupertinoTextField(
         controller: controller,
         style: textStyle,

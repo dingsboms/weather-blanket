@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tempestry/components/color/color_box.dart';
-import 'package:tempestry/components/color/color_segments/color_segments_list_tile.dart';
+import 'package:tempestry/trash/color_segments_list_tile.dart';
 import 'package:tempestry/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:tempestry/functions/color_provider.dart';
 import 'package:tempestry/models/weather_data.dart';

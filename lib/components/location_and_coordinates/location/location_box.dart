@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tempestry/components/location_and_coordinates/location/location_text_field.dart';
 import 'package:tempestry/components/location_and_coordinates/location_and_autocomplete.dart';
@@ -30,7 +31,7 @@ class _LocationBoxState extends State<LocationBox> {
   late double lattitudeBeforeUpdate;
   late double longitudeBeforeUpdate;
   bool isLoading = false;
-  late Future<GeoPoint> _locationFuture;
+  late Future<GeoPoint?> _locationFuture;
 
   @override
   void initState() {
@@ -42,16 +43,14 @@ class _LocationBoxState extends State<LocationBox> {
     lattitudeController.addListener(_onTextChanged);
   }
 
-  Future<GeoPoint> _initializeLocation() async {
+  Future<GeoPoint?> _initializeLocation() async {
     if (widget.weatherItem != null) {
       GeoPoint location = widget.weatherItem!.temperatureLocation;
       _updateLattitudeAndLongitudeBeforeUpdate(location);
       return location;
     } else {
       final fetchedLocation = await _fetchUserData();
-      if (fetchedLocation == null) {
-        throw Exception("Failed to fetch user data location");
-      }
+
       return fetchedLocation;
     }
   }
@@ -84,8 +83,7 @@ class _LocationBoxState extends State<LocationBox> {
         });
         return geoPoint;
       } else {
-        throw Exception(
-            "Failed getting userData Location: doc does not exist or does not contain key temperature_location");
+        return null;
       }
     } catch (e) {
       throw Exception("Failed getting userData Location: $e");
@@ -119,15 +117,13 @@ class _LocationBoxState extends State<LocationBox> {
   Widget build(BuildContext context) {
     bool workingOnDefaultLocation = widget.weatherItem == null;
 
-    return FutureBuilder<GeoPoint>(
+    return FutureBuilder<GeoPoint?>(
       future: _locationFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CupertinoActivityIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData) {
-          return const Center(child: Text('No location data available'));
         }
 
         return Center(
@@ -198,8 +194,7 @@ class _LocationBoxState extends State<LocationBox> {
                                     double.parse(lattitudeController.text),
                                     double.parse(longitudeController.text));
 
-                                await updateDefaultPosition(
-                                    widget.userId, newPosition);
+                                await updateDefaultPosition(newPosition);
                                 await _fetchUserData();
                                 widget.onUpdate?.call(newPosition);
                                 setState(() => isLoading = false);
@@ -249,13 +244,13 @@ class _LocationBoxState extends State<LocationBox> {
       await updatedDoc.updateFirestoreUserDoc();
     });
   }
+}
 
-  Future<void> updateDefaultPosition(
-      String userId, GeoPoint newGeoPoint) async {
-    fetchAddressFromGeoLocation(newGeoPoint).then((address) =>
-        FirebaseFirestore.instance.collection("users").doc(userId).set({
-          "temperature_location_name": address,
-          "temperature_location": newGeoPoint
-        }, SetOptions(merge: true)));
-  }
+Future<void> updateDefaultPosition(GeoPoint newGeoPoint) async {
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  fetchAddressFromGeoLocation(newGeoPoint).then((address) =>
+      FirebaseFirestore.instance.collection("users").doc(userId).set({
+        "temperature_location_name": address,
+        "temperature_location": newGeoPoint
+      }, SetOptions(merge: true)));
 }

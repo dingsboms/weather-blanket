@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tempestry/components/color/add_new_color_button.dart';
+import 'package:tempestry/trash/add_new_color_button.dart';
 import 'package:tempestry/components/color/color_segments/functions/add_new_range_interval.dart';
 import 'package:tempestry/components/color/color_segments/functions/delete_range_interval.dart';
 import 'package:tempestry/components/color/color_segments/functions/gap_in_intervals.dart';

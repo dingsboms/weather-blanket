@@ -12,7 +12,9 @@ class PlacesAutocompleteResponse {
     if (json['predictions'] != null) {
       predictions = [];
       json['predictions'].forEach((v) {
-        predictions!.add(Prediction.fromJson(v));
+        // Convert each prediction item to proper Map<String, dynamic>
+        final predictionMap = Map<String, dynamic>.from(v);
+        predictions!.add(Prediction.fromJson(predictionMap));
       });
     }
   }
@@ -41,9 +43,17 @@ class Prediction {
     description = json['description'];
     placeId = json['place_id'];
     reference = json['reference'];
-    structuredFormatting = json['structured_formatting'] != null
-        ? StructuredFormatting.fromJson(json['structured_formatting'])
-        : null;
+
+    if (json['structured_formatting'] != null) {
+      // Convert the nested map to proper Map<String, dynamic>
+      final structuredFormattingMap =
+          Map<String, dynamic>.from(json['structured_formatting']);
+      structuredFormatting =
+          StructuredFormatting.fromJson(structuredFormattingMap);
+    } else {
+      structuredFormatting = null;
+    }
+
     types = json['types']?.cast<String>();
   }
 }

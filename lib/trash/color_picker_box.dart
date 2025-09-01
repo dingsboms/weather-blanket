@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tempestry/components/color/color_and_temperature_picker_dialog.dart';
+import 'package:tempestry/trash/color_and_temperature_picker_dialog.dart';
 import 'package:tempestry/components/color/color_box.dart';
 import 'package:tempestry/models/range_interval.dart';
 

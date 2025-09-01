@@ -6,12 +6,16 @@ import '../models/range_interval.dart';
 
 final colorRangesProvider = FutureProvider<List<RangeInterval>>((ref) async {
   final doc = await getUserDoc();
-
-  final colorsData = doc.get("colors") as List<dynamic>;
-  return colorsData
-      .map((interval) =>
-          RangeInterval.fromFirestore(interval as Map<String, dynamic>))
+  if (!doc.exists) return [];
+  if (!doc.data()!.containsKey('colors')) return [];
+  final raw = doc.get('colors');
+  if (raw is! List) return [];
+  final list = raw
+      .whereType<Map<String, dynamic>>()
+      .map(RangeInterval.fromFirestore)
       .toList();
+  list.sort((a, b) => a.minTemp.compareTo(b.minTemp));
+  return list;
 });
 
 final colorForTemperatureProvider =

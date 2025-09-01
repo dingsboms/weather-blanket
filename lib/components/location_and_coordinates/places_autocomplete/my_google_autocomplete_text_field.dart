@@ -41,7 +41,7 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
+      width: 260,
       child: Column(
         children: [
           const Text("Location"),
@@ -50,14 +50,6 @@ class _PlacesSearchScreenState extends State<MyGoogleAutocompleteTextField> {
             sessionToken: _sessionToken,
             debounceTime: 500,
             minInputLength: 2,
-            style: const TextStyle(
-              color: CupertinoColors.black,
-              fontSize: 16,
-            ),
-            predictionsStyle: const TextStyle(
-              color: CupertinoColors.black,
-              fontSize: 14,
-            ),
             onSuggestionClicked: (Prediction prediction) {
               setState(() {
                 _selectedPlace = prediction.description;

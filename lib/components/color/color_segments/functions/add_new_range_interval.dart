@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tempestry/components/color/color_and_temperature_picker_dialog.dart';
-import 'package:tempestry/components/color/color_segments/functions/intervals_overlap.dart';
+import 'package:tempestry/components/color/interval_color_picker_dialog.dart';
 import 'package:tempestry/models/range_interval.dart';
 
 Future<List<RangeInterval>> addNewRangeInterval(
@@ -30,16 +29,15 @@ Future<List<RangeInterval>> addNewRangeInterval(
   await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ColorAndTemperaturePickerDialog(
+        return IntervalColorPickerDialog(
           initialColor: newColor,
-          rangeInterval: newRange,
-          onUpdate: (color) async {
-            newRange.color = color;
-          },
           onDelete: () async {
             ranges.remove(newRange);
           },
-          intervalsOverlap: () => intervalsOverlap(ranges),
+          intervalLabel: "${newRange.minTemp}° to ${newRange.maxTemp}°",
+          onSubmit: (Color color) {
+            newRange.color = color;
+          },
         );
       });
 

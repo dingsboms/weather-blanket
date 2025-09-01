@@ -16,6 +16,18 @@ class RangeInterval {
     maxTempController.text = maxTemp.toString();
   }
 
+  RangeInterval copyWith({
+    int? minTemp,
+    int? maxTemp,
+    Color? color,
+  }) {
+    return RangeInterval(
+      minTemp: minTemp ?? this.minTemp,
+      maxTemp: maxTemp ?? this.maxTemp,
+      color: color ?? this.color,
+    );
+  }
+
   toFiretore() {
     return {"minTemp": minTemp, "maxTemp": maxTemp, "color": color.toARGB32()};
   }

@@ -16,13 +16,17 @@ class ReverseGeocode {
 
   /// Create a ReverseGeocode object from a JSON map
   factory ReverseGeocode.fromJson(Map<String, dynamic> json) {
+    // Handle plus_code
     final plusCodeJson = json['plus_code'];
-    final PlusCode? plusCode =
-        plusCodeJson != null ? PlusCode.fromJson(plusCodeJson) : null;
+    final PlusCode? plusCode = plusCodeJson != null
+        ? PlusCode.fromJson(Map<String, dynamic>.from(plusCodeJson))
+        : null;
 
+    // Handle results array with proper type conversion
     final List<dynamic> resultsJson = json['results'] ?? [];
     final List<GeocodingResult> results = resultsJson
-        .map((resultJson) => GeocodingResult.fromJson(resultJson))
+        .map((resultJson) =>
+            GeocodingResult.fromJson(Map<String, dynamic>.from(resultJson)))
         .toList();
 
     final String status = json['status'] ?? '';
@@ -89,21 +93,27 @@ class GeocodingResult {
   });
 
   factory GeocodingResult.fromJson(Map<String, dynamic> json) {
+    // Convert each address component
     final List<dynamic> componentsJson = json['address_components'] ?? [];
     final List<AddressComponent> addressComponents = componentsJson
-        .map((componentJson) => AddressComponent.fromJson(componentJson))
+        .map((componentJson) =>
+            AddressComponent.fromJson(Map<String, dynamic>.from(componentJson)))
         .toList();
 
     final String formattedAddress = json['formatted_address'] ?? '';
 
+    // Convert geometry object
     final geometryJson = json['geometry'] ?? {};
-    final Geometry geometry = Geometry.fromJson(geometryJson);
+    final Geometry geometry =
+        Geometry.fromJson(Map<String, dynamic>.from(geometryJson));
 
     final String placeId = json['place_id'] ?? '';
 
+    // Convert plus_code if present
     final plusCodeJson = json['plus_code'];
-    final PlusCode? plusCode =
-        plusCodeJson != null ? PlusCode.fromJson(plusCodeJson) : null;
+    final PlusCode? plusCode = plusCodeJson != null
+        ? PlusCode.fromJson(Map<String, dynamic>.from(plusCodeJson))
+        : null;
 
     final List<dynamic> typesJson = json['types'] ?? [];
     final List<String> types = typesJson.cast<String>();
@@ -161,16 +171,19 @@ class Geometry {
 
   factory Geometry.fromJson(Map<String, dynamic> json) {
     final boundsJson = json['bounds'];
-    final Bounds? bounds =
-        boundsJson != null ? Bounds.fromJson(boundsJson) : null;
+    final Bounds? bounds = boundsJson != null
+        ? Bounds.fromJson(Map<String, dynamic>.from(boundsJson))
+        : null;
 
     final locationJson = json['location'] ?? {};
-    final Location location = Location.fromJson(locationJson);
+    final Location location =
+        Location.fromJson(Map<String, dynamic>.from(locationJson));
 
     final String locationType = json['location_type'] ?? '';
 
     final viewportJson = json['viewport'] ?? {};
-    final Viewport viewport = Viewport.fromJson(viewportJson);
+    final Viewport viewport =
+        Viewport.fromJson(Map<String, dynamic>.from(viewportJson));
 
     return Geometry(
       bounds: bounds,
@@ -216,10 +229,12 @@ class Bounds {
 
   factory Bounds.fromJson(Map<String, dynamic> json) {
     final northeastJson = json['northeast'] ?? {};
-    final northeast = Location.fromJson(northeastJson);
+    final northeast =
+        Location.fromJson(Map<String, dynamic>.from(northeastJson));
 
     final southwestJson = json['southwest'] ?? {};
-    final southwest = Location.fromJson(southwestJson);
+    final southwest =
+        Location.fromJson(Map<String, dynamic>.from(southwestJson));
 
     return Bounds(
       northeast: northeast,
@@ -240,10 +255,12 @@ class Viewport {
 
   factory Viewport.fromJson(Map<String, dynamic> json) {
     final northeastJson = json['northeast'] ?? {};
-    final northeast = Location.fromJson(northeastJson);
+    final northeast =
+        Location.fromJson(Map<String, dynamic>.from(northeastJson));
 
     final southwestJson = json['southwest'] ?? {};
-    final southwest = Location.fromJson(southwestJson);
+    final southwest =
+        Location.fromJson(Map<String, dynamic>.from(southwestJson));
 
     return Viewport(
       northeast: northeast,

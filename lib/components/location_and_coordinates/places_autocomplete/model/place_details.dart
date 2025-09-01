@@ -6,7 +6,9 @@ class PlaceDetails {
   PlaceDetails({this.result, this.status, this.htmlAttributions});
 
   PlaceDetails.fromJson(Map<String, dynamic> json) {
-    result = json['result'] != null ? Result.fromJson(json['result']) : null;
+    result = json['result'] != null
+        ? Result.fromJson(Map<String, dynamic>.from(json['result']))
+        : null;
     status = json['status'];
     htmlAttributions = json['html_attributions']?.cast<String>();
   }
@@ -29,8 +31,9 @@ class Result {
   Result({this.geometry});
 
   Result.fromJson(Map<String, dynamic> json) {
-    geometry =
-        json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null;
+    geometry = json['geometry'] != null
+        ? Geometry.fromJson(Map<String, dynamic>.from(json['geometry']))
+        : null;
   }
 }
 
@@ -41,10 +44,12 @@ class Geometry {
   Geometry({this.location, this.viewport});
 
   Geometry.fromJson(Map<String, dynamic> json) {
-    location =
-        json['location'] != null ? Location.fromJson(json['location']) : null;
-    viewport =
-        json['viewport'] != null ? Viewport.fromJson(json['viewport']) : null;
+    location = json['location'] != null
+        ? Location.fromJson(Map<String, dynamic>.from(json['location']))
+        : null;
+    viewport = json['viewport'] != null
+        ? Viewport.fromJson(Map<String, dynamic>.from(json['viewport']))
+        : null;
   }
 }
 
@@ -67,9 +72,11 @@ class Viewport {
   Viewport({this.northeast, this.southwest});
 
   Viewport.fromJson(Map<String, dynamic> json) {
-    northeast =
-        json['northeast'] != null ? Location.fromJson(json['northeast']) : null;
-    southwest =
-        json['southwest'] != null ? Location.fromJson(json['southwest']) : null;
+    northeast = json['northeast'] != null
+        ? Location.fromJson(Map<String, dynamic>.from(json['northeast']))
+        : null;
+    southwest = json['southwest'] != null
+        ? Location.fromJson(Map<String, dynamic>.from(json['southwest']))
+        : null;
   }
 }

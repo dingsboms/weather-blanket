@@ -8,8 +8,9 @@ import 'package:tempestry/components/location_and_coordinates/places_autocomplet
 import 'package:tempestry/models/weather_data.dart';
 
 class LocationAndAutocomplete extends StatefulWidget {
-  const LocationAndAutocomplete({super.key, this.weatherItem});
+  const LocationAndAutocomplete({super.key, this.weatherItem, this.onUpdate});
   final WeatherForecast? weatherItem;
+  final Function(GeoPoint)? onUpdate;
 
   @override
   State<LocationAndAutocomplete> createState() =>
@@ -73,6 +74,7 @@ class _LocationAndAutocompleteState extends State<LocationAndAutocomplete> {
             try {
               double lat = double.parse(predicton.lat!);
               double lng = double.parse(predicton.lng!);
+              widget.onUpdate?.call(GeoPoint(lat, lng));
               setState(() {
                 _lattitudeController.text = lat.toStringAsFixed(4);
                 _longitudeController.text = lng.toStringAsFixed(4);
@@ -131,7 +133,8 @@ Future<String> fetchAddressFromGeoLocation(GeoPoint location) async {
       .httpsCallable("getAddressFromGeoLocation")
       .call({"lat": lat, "lon": lon});
 
-  final reverseGeocode = ReverseGeocode.fromJson(res.data);
+  final reverseGeocode =
+      ReverseGeocode.fromJson(Map<String, dynamic>.from(res.data));
   if (reverseGeocode.isSuccess) {
     // Location coordinates available if needed
     // final location = reverseGeocode.results[0].geometry.location;

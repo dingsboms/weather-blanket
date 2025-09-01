@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tempestry/components/color/color_box.dart';
-import 'package:tempestry/components/color/color_segments/color_segments.dart';
+import 'package:tempestry/trash/color_segments.dart';
 import 'package:tempestry/models/weather_data.dart';
 
 class ColorSegmentsListTile extends StatefulWidget {
