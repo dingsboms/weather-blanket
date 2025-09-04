@@ -249,6 +249,47 @@ class _TemperatureMultiSliderState
               }
               return Stack(children: [
                 Positioned(
+                  left: 0,
+                  right: 0,
+                  top: _sliderTop,
+                  child: MultiSlider(
+                    // One value per internal boundary. (Intervals count = values.length + 1)
+                    values: _rangeThumbs,
+                    min: _sliderMin.toDouble(),
+                    max: _sliderMax.toDouble(),
+                    divisions: _computedDivisions,
+                    rangeColors: _rangeColors,
+                    onChanged: (List<double> newValues) {
+                      const double minGap = 1.0;
+                      if (_hasMinGapViolation(newValues, minGap)) return;
+                      setState(() {
+                        _rangeThumbs = List<double>.from(newValues)..sort();
+                        for (int i = 0; i < _rangeThumbs.length; i++) {
+                          final boundary = _rangeThumbs[i].round();
+                          final left = _rangeIntervalColors[i];
+                          final right = _rangeIntervalColors[i + 1];
+                          _rangeIntervalColors[i] =
+                              left.copyWith(maxTemp: boundary);
+                          _rangeIntervalColors[i + 1] =
+                              right.copyWith(minTemp: boundary + 1);
+                        }
+                        for (final ri in _rangeIntervalColors) {
+                          ri.setInt();
+                        }
+                        _updateSliderBounds();
+                      });
+                    },
+                    onChangeEnd: (value) =>
+                        widget.onIntervalsChanged(_rangeIntervalColors),
+                    thumbBuilder: (v) => const ThumbOptions(
+                      color: CupertinoColors.activeBlue,
+                      radius: _thumbRadius,
+                    ),
+                    trackbarBuilder: (r) =>
+                        const TrackbarOptions(isActive: true),
+                  ),
+                ),
+                Positioned(
                   top: addTop,
                   left: 0,
                   child: CupertinoButton(
@@ -270,47 +311,6 @@ class _TemperatureMultiSliderState
                 ),
               ]);
             }),
-            // Slider (lower)
-            Positioned(
-              left: 0,
-              right: 0,
-              top: _sliderTop,
-              child: MultiSlider(
-                // One value per internal boundary. (Intervals count = values.length + 1)
-                values: _rangeThumbs,
-                min: _sliderMin.toDouble(),
-                max: _sliderMax.toDouble(),
-                divisions: _computedDivisions,
-                rangeColors: _rangeColors,
-                onChanged: (List<double> newValues) {
-                  const double minGap = 1.0;
-                  if (_hasMinGapViolation(newValues, minGap)) return;
-                  setState(() {
-                    _rangeThumbs = List<double>.from(newValues)..sort();
-                    for (int i = 0; i < _rangeThumbs.length; i++) {
-                      final boundary = _rangeThumbs[i].round();
-                      final left = _rangeIntervalColors[i];
-                      final right = _rangeIntervalColors[i + 1];
-                      _rangeIntervalColors[i] =
-                          left.copyWith(maxTemp: boundary);
-                      _rangeIntervalColors[i + 1] =
-                          right.copyWith(minTemp: boundary + 1);
-                    }
-                    for (final ri in _rangeIntervalColors) {
-                      ri.setInt();
-                    }
-                    _updateSliderBounds();
-                  });
-                },
-                onChangeEnd: (value) =>
-                    widget.onIntervalsChanged(_rangeIntervalColors),
-                thumbBuilder: (v) => const ThumbOptions(
-                  color: CupertinoColors.activeBlue,
-                  radius: _thumbRadius,
-                ),
-                trackbarBuilder: (r) => const TrackbarOptions(isActive: true),
-              ),
-            ),
           ],
         ),
       );
