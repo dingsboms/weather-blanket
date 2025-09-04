@@ -131,19 +131,6 @@ class _LocationBoxState extends State<LocationBox> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Pin emoji column
-              const Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                    width: 40,
-                  ),
-                  Text(
-                    "📍",
-                    style: TextStyle(color: CupertinoColors.white),
-                  ),
-                ],
-              ),
               // Latitude column
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -80,7 +80,6 @@ class _IntervalColorPickerDialogState extends State<IntervalColorPickerDialog> {
         FilledButton(
           onPressed: () {
             widget.onSubmit(_selectedColor);
-            Navigator.of(context).pop();
           },
           child: const Text('Apply'),
         ),

@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tempestry/components/color/color_box.dart';
-import 'package:tempestry/trash/color_segments_list_tile.dart';
+// import 'package:tempestry/components/color/color_box.dart';
 import 'package:tempestry/components/location_and_coordinates/location_and_autocomplete.dart';
 import 'package:tempestry/functions/color_provider.dart';
 import 'package:tempestry/models/weather_data.dart';
+// import 'package:tempestry/models/range_interval.dart';
 
 class WeatherItemScreen extends StatefulWidget {
   const WeatherItemScreen({
@@ -23,6 +23,7 @@ class WeatherItemScreen extends StatefulWidget {
 
 class _WeatherItemScreenState extends State<WeatherItemScreen> {
   late WeatherForecast forecast;
+  // int? _pickedTemp;
 
   @override
   void initState() {
@@ -34,8 +35,10 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color currentColor =
+    final asyncRanges = widget.ref.watch(colorRangesProvider);
+    final providerColor =
         widget.ref.watch(colorForTemperatureProvider(forecast.temp));
+    // final currentColor = providerColor;
     return CupertinoAlertDialog(
       title: Text(
           "Date: ${forecast.dt.day} / ${forecast.dt.month} - ${forecast.dt.year}"),
@@ -101,28 +104,51 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
           LocationAndAutocomplete(
             weatherItem: widget.item,
           ),
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: GestureDetector(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  content: SingleChildScrollView(
-                    child: ColorSegmentsListTile(
-                      weatherItem: widget.item,
-                      onSegmentPicked: (pickedColor) => setState(() {
-                        currentColor = pickedColor;
-                      }),
-                    ),
-                  ),
+          asyncRanges.when(
+            loading: () => const CupertinoActivityIndicator(),
+            error: (err, st) => const Text('Failed to load colors'),
+            data: (ranges) {
+              return SizedBox(
+                height: 60,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: ranges.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemBuilder: (context, idx) {
+                    final interval = ranges[idx];
+                    return GestureDetector(
+                      onTap: () async {
+                        // Pick a temp in the interval (use mid-point)
+                        final newTemp =
+                            ((interval.minTemp + interval.maxTemp) / 2).round();
+                        final updated = widget.item.copyWith(temp: newTemp);
+                        await updated.updateFirestoreUserDoc();
+                        if (mounted) {
+                          setState(() {
+                            forecast = updated;
+                          });
+                        }
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: interval.color,
+                          border: Border.all(
+                            color: (providerColor == interval.color)
+                                ? Colors.blueAccent
+                                : Colors.transparent,
+                            width: 3,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              ),
-              child: ColorBox(
-                currentColor: currentColor,
-              ),
-            ),
-          )
+              );
+            },
+          ),
         ],
       ),
     );

@@ -242,4 +242,61 @@ class WeatherForecast {
         .doc(docId)
         .set(toFirestore(), SetOptions(merge: true));
   }
+
+  WeatherForecast copyWith({
+    GeoPoint? temperatureLocation,
+    String? temperatureLocationName,
+    String? timezone,
+    int? timezoneOffset,
+    String? docId,
+    DateTime? dt,
+    int? temp,
+    double? feelsLike,
+    int? pressure,
+    int? humidity,
+    double? dewPoint,
+    int? uvi,
+    int? clouds,
+    int? visibility,
+    double? windSpeed,
+    int? windDeg,
+    double? windGust,
+    int? sunrise,
+    int? sunset,
+    int? weatherId,
+    String? weatherMain,
+    String? weatherDescription,
+    String? weatherIcon,
+    bool? isKnitted,
+    String? knittingNote,
+  }) {
+    return WeatherForecast(
+      temperatureLocation: temperatureLocation ?? this.temperatureLocation,
+      temperatureLocationName:
+          temperatureLocationName ?? this.temperatureLocationName,
+      timezone: timezone ?? this.timezone,
+      timezoneOffset: timezoneOffset ?? this.timezoneOffset,
+      docId: docId ?? this.docId,
+      dt: dt ?? this.dt,
+      temp: temp ?? this.temp,
+      feelsLike: feelsLike ?? this.feelsLike,
+      pressure: pressure ?? this.pressure,
+      humidity: humidity ?? this.humidity,
+      dewPoint: dewPoint ?? this.dewPoint,
+      uvi: uvi ?? this.uvi,
+      clouds: clouds ?? this.clouds,
+      visibility: visibility ?? this.visibility,
+      windSpeed: windSpeed ?? this.windSpeed,
+      windDeg: windDeg ?? this.windDeg,
+      windGust: windGust ?? this.windGust,
+      sunrise: sunrise ?? this.sunrise,
+      sunset: sunset ?? this.sunset,
+      weatherId: weatherId ?? this.weatherId,
+      weatherMain: weatherMain ?? this.weatherMain,
+      weatherDescription: weatherDescription ?? this.weatherDescription,
+      weatherIcon: weatherIcon ?? this.weatherIcon,
+      isKnitted: isKnitted ?? this.isKnitted,
+      knittingNote: knittingNote ?? this.knittingNote,
+    );
+  }
 }

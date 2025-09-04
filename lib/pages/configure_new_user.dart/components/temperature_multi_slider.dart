@@ -1,9 +1,9 @@
+import 'package:tempestry/pages/configure_new_user.dart/components/range_interval_color_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tempestry/components/color/color_box.dart';
 import 'package:tempestry/components/color/color_segments/functions/delete_range_interval.dart';
 import 'package:tempestry/components/color/interval_color_picker_dialog.dart';
 import 'package:tempestry/models/range_interval.dart';
@@ -57,33 +57,36 @@ class _TemperatureMultiSliderState
   }
 
   // Add interval at start or end only (static buttons)
-  void _addIntervalAtStart() {
+
+  Future<void> _addInterval({required bool atStart}) async {
     if (_rangeIntervalColors.isEmpty) return;
-    final first = _rangeIntervalColors.first;
-    final newMax = first.minTemp - 1;
-    final newMin = newMax - 3;
+    final refInterval =
+        atStart ? _rangeIntervalColors.first : _rangeIntervalColors.last;
+    final newMin = atStart ? refInterval.minTemp - 4 : refInterval.maxTemp + 1;
+    final newMax = atStart ? refInterval.minTemp - 1 : refInterval.maxTemp + 4;
     final newInterval = RangeInterval(
-        minTemp: newMin, maxTemp: newMax, color: CupertinoColors.inactiveGray);
+      minTemp: newMin,
+      maxTemp: newMax,
+      color: CupertinoColors.inactiveGray,
+    );
+
     setState(() {
-      _rangeIntervalColors.insert(0, newInterval);
+      if (atStart) {
+        _rangeIntervalColors.insert(0, newInterval);
+      } else {
+        _rangeIntervalColors.add(newInterval);
+      }
       _rebuildFromIntervals();
     });
+
+    // Prompt user to pick color for new interval
+    final idx = atStart ? 0 : _rangeIntervalColors.length - 1;
+    await _pickColorForInterval(idx);
     widget.onIntervalsChanged(_rangeIntervalColors);
   }
 
-  void _addIntervalAtEnd() {
-    if (_rangeIntervalColors.isEmpty) return;
-    final last = _rangeIntervalColors.last;
-    final newMin = last.maxTemp + 1;
-    final newMax = newMin + 3;
-    final newInterval = RangeInterval(
-        minTemp: newMin, maxTemp: newMax, color: CupertinoColors.inactiveGray);
-    setState(() {
-      _rangeIntervalColors.add(newInterval);
-      _rebuildFromIntervals();
-    });
-    widget.onIntervalsChanged(_rangeIntervalColors);
-  }
+  void _addIntervalAtStart() => _addInterval(atStart: true);
+  void _addIntervalAtEnd() => _addInterval(atStart: false);
 
   void _rebuildFromIntervals() {
     _rangeIntervalColors.sort((a, b) => a.minTemp.compareTo(b.minTemp));
@@ -150,20 +153,13 @@ class _TemperatureMultiSliderState
     final interval = _rangeIntervalColors[intervalIndex];
     final label = '${interval.minTemp}° to ${interval.maxTemp}°';
     final rangeIntervalColor = _rangeIntervalColors[intervalIndex];
-    await showDialog(
+    final pickedColor = await showDialog<Color?>(
       context: context,
       builder: (ctx) => IntervalColorPickerDialog(
         initialColor: rangeIntervalColor.color,
         intervalLabel: label,
-        onSubmit: (pickedColor) {
-          setState(() {
-            _rangeIntervalColors[intervalIndex] =
-                _rangeIntervalColors[intervalIndex]
-                    .copyWith(color: pickedColor);
-            // Keep separate color list in sync for MultiSlider
-            _rangeColors[intervalIndex] = pickedColor;
-          });
-          widget.onIntervalsChanged(_rangeIntervalColors);
+        onSubmit: (color) {
+          Navigator.of(ctx).pop(color);
         },
         onDelete: () async {
           final updated =
@@ -181,10 +177,20 @@ class _TemperatureMultiSliderState
             _updateSliderBounds();
           });
           widget.onIntervalsChanged(_rangeIntervalColors);
-          context.pop();
+          GoRouter.of(ctx).pop(); // Correct dialog closure
         },
       ),
     );
+    if (mounted) {
+      setState(() {
+        if (pickedColor != null) {
+          _rangeIntervalColors[intervalIndex] =
+              _rangeIntervalColors[intervalIndex].copyWith(color: pickedColor);
+        }
+        _rebuildFromIntervals();
+      });
+      widget.onIntervalsChanged(_rangeIntervalColors);
+    }
   }
 
   @override
@@ -222,16 +228,18 @@ class _TemperatureMultiSliderState
               Positioned(
                 top: 0,
                 left: b.pixelX - _boxHalfSize + _boxCenterAdjust,
-                child: GestureDetector(
-                  onTap: () => _pickColorForInterval(b.index),
-                  child: SizedBox(
-                    width: _boxHalfSize * 2,
-                    height: _boxHalfSize * 2,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: ColorBox(currentColor: b.color),
-                    ),
-                  ),
+                child: RangeIntervalColorBox(
+                  interval: _rangeIntervalColors[b.index],
+                  size: _boxHalfSize * 2,
+                  onColorPicked: (color) {
+                    setState(() {
+                      _rangeIntervalColors[b.index] =
+                          _rangeIntervalColors[b.index].copyWith(color: color);
+                      _rebuildFromIntervals();
+                    });
+                    widget.onIntervalsChanged(_rangeIntervalColors);
+                  },
+                  onDelete: () {}, // Provide a default no-op for onDelete
                 ),
               ),
             // Static add buttons positioned between color boxes and slider
