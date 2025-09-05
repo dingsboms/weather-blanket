@@ -239,7 +239,15 @@ class _TemperatureMultiSliderState
                     });
                     widget.onIntervalsChanged(_rangeIntervalColors);
                   },
-                  onDelete: () {}, // Provide a default no-op for onDelete
+                  onDelete: () async {
+                    await deleteRangeIntervalFromFirestore(
+                        _rangeIntervalColors[b.index], ref);
+
+                    setState(() {
+                      _rangeIntervalColors.removeAt(b.index);
+                      _rebuildFromIntervals();
+                    });
+                  },
                 ),
               ),
             // Static add buttons positioned between color boxes and slider

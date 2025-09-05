@@ -8,6 +8,7 @@ class ColorPickerBox extends StatelessWidget {
   final ValueChanged<Color> onColorPicked;
   final double size;
   final String? dialogTitle;
+  final VoidCallback? onDelete;
 
   const ColorPickerBox({
     super.key,
@@ -15,6 +16,7 @@ class ColorPickerBox extends StatelessWidget {
     required this.onColorPicked,
     this.size = 100,
     this.dialogTitle,
+    this.onDelete,
   });
 
   Future<void> _pickColor(BuildContext context) async {
@@ -39,6 +41,12 @@ class ColorPickerBox extends StatelessWidget {
           ),
         ),
         actions: [
+          TextButton(
+              onPressed: onDelete,
+              child: const Text(
+                'Delete',
+                style: TextStyle(color: Colors.red),
+              )),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Cancel'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tempestry/components/color/color_picker_box.dart';
 import 'package:tempestry/models/range_interval.dart';
 
@@ -25,6 +26,10 @@ class RangeIntervalColorBox extends StatelessWidget {
     return ColorPickerBox(
       currentColor: interval.color,
       onColorPicked: onColorPicked,
+      onDelete: () {
+        onDelete?.call();
+        context.pop();
+      },
       size: size,
       dialogTitle: intervalLabelOverride ??
           '${interval.minTemp}° to ${interval.maxTemp}°',

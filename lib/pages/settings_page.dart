@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ProfileScreen(
+      auth: FirebaseAuth.instance,
       cupertinoNavigationBar: CupertinoNavigationBar(
         enableBackgroundFilterBlur: false,
         backgroundColor: CupertinoColors.transparent,
@@ -42,9 +44,6 @@ class SettingsPage extends ConsumerWidget {
         const LocationAndAutocomplete(),
         const SizedBox(height: 16),
         UserTemperatureMultiSlider(),
-        CupertinoButton(
-            child: const Text("Reconfigure"),
-            onPressed: () => context.go("/configure_new_user")),
       ],
     );
   }

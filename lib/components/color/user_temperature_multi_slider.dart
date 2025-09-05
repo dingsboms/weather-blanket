@@ -74,18 +74,6 @@ class _UserTemperatureMultiSliderState
               onIntervalsChanged: _handleIntervalsChanged,
             ),
             const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 4,
-              children: [
-                CupertinoButton(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  onPressed: () => ref.refresh(colorRangesProvider),
-                  child: const Text('Refresh'),
-                ),
-              ],
-            )
           ],
         );
       },
