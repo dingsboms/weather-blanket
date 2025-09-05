@@ -96,16 +96,6 @@ class AppColors {
     ),
   );
 
-  // Helper method to get color by temperature
-  static Color getTemperatureColor(double temperature) {
-    if (temperature < 0) return freezing; // Below 0°C - Purple
-    if (temperature < 10) return cold; // 0-10°C - Blue
-    if (temperature < 15) return cool; // 10-15°C - Light blue
-    if (temperature < 20) return mild; // 15-20°C - Yellow
-    if (temperature < 25) return warm; // 20-25°C - Orange
-    return hot; // 25°C+ - Pink
-  }
-
   // Helper method to get weather condition color
   static Color getWeatherConditionColor(String condition) {
     switch (condition.toLowerCase()) {

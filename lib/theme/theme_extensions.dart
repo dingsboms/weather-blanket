@@ -6,10 +6,6 @@ extension TempestryTheme on BuildContext {
   /// Quick access to theme colors
   AppColors get colors => AppColors();
 
-  /// Get temperature-based color
-  Color temperatureColor(double temperature) =>
-      AppColors.getTemperatureColor(temperature);
-
   /// Get weather condition color
   Color weatherColor(String condition) =>
       AppColors.getWeatherConditionColor(condition);
@@ -219,46 +215,4 @@ class ThemedWidgets {
       child: child,
     );
   }
-
-  /// Temperature display widget
-  static Widget temperatureDisplay({
-    required double temperature,
-    String? unit = '°C',
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color:
-            AppColors.getTemperatureColor(temperature).withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppBorderRadius.lg),
-        border: Border.all(
-          color: AppColors.getTemperatureColor(temperature),
-          width: 2,
-        ),
-      ),
-      child: RichText(
-        text: TextSpan(
-          text: temperature.toStringAsFixed(1),
-          style: AppTextStyles.temperature.copyWith(
-            color: AppColors.getTemperatureColor(temperature),
-          ),
-          children: [
-            if (unit != null)
-              TextSpan(
-                text: unit,
-                style: AppTextStyles.subheadline.copyWith(
-                  color: AppColors.getTemperatureColor(temperature),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Extension for easy gradient access
-extension GradientExtensions on BuildContext {
-  /// Quick access to app colors
-  AppColors get colors => AppColors();
 }

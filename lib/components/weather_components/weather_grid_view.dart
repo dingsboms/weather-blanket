@@ -35,7 +35,8 @@ class WeatherGridView extends StatelessWidget {
   }
 
   Widget _buildGridItem(WeatherForecast item, double itemHeight) {
-    Color currentColor = ref.watch(colorForTemperatureProvider(item.temp));
+    final Color currentColor = item.backgroundColor ??
+        ref.watch(colorForTemperatureProvider(item.temp));
     return Column(
       children: [
         Container(

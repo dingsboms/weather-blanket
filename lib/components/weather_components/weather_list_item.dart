@@ -21,7 +21,8 @@ class WeatherListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color currentColor = ref.watch(colorForTemperatureProvider(item.temp));
+    final Color currentColor = item.backgroundColor ??
+        ref.watch(colorForTemperatureProvider(item.temp));
     return GestureDetector(
       onLongPress: () => showDialog(
           context: context,

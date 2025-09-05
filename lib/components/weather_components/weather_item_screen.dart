@@ -36,9 +36,9 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
   @override
   Widget build(BuildContext context) {
     final asyncRanges = widget.ref.watch(colorRangesProvider);
-    final providerColor =
+    final Color currentColor = forecast.backgroundColor ??
         widget.ref.watch(colorForTemperatureProvider(forecast.temp));
-    // final currentColor = providerColor;
+    // Use currentColor wherever color is needed
     return CupertinoAlertDialog(
       title: Text(
           "Date: ${forecast.dt.day} / ${forecast.dt.month} - ${forecast.dt.year}"),
@@ -135,7 +135,7 @@ class _WeatherItemScreenState extends State<WeatherItemScreen> {
                         decoration: BoxDecoration(
                           color: interval.color,
                           border: Border.all(
-                            color: (providerColor == interval.color)
+                            color: (currentColor == interval.color)
                                 ? Colors.blueAccent
                                 : Colors.transparent,
                             width: 3,

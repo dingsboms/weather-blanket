@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:tempestry/functions/get_user_doc.dart';
 
 class WeatherForecast {
@@ -30,6 +30,7 @@ class WeatherForecast {
   final String weatherIcon;
   final bool isKnitted;
   final String knittingNote;
+  final Color? backgroundColor;
 
   WeatherForecast({
     this.temperatureLocationName,
@@ -57,6 +58,7 @@ class WeatherForecast {
     required this.weatherIcon,
     required this.isKnitted,
     required this.knittingNote,
+    this.backgroundColor,
   });
 
   DateTime get localDate => dt.toLocal();
@@ -116,6 +118,10 @@ class WeatherForecast {
 
     GeoPoint temperatureLocation = GeoPoint(lat, lon);
     try {
+      Color? backgroundColor;
+      if (data.containsKey('backgroundColor')) {
+        backgroundColor = Color(data['backgroundColor'] as int);
+      }
       final result = WeatherForecast(
         temperatureLocation: temperatureLocation,
         timezone: json['timezone'] as String,
@@ -147,6 +153,7 @@ class WeatherForecast {
         weatherIcon: weather['icon'] as String,
         isKnitted: false,
         knittingNote: '',
+        backgroundColor: backgroundColor,
       );
       return result;
     } catch (e) {
@@ -166,6 +173,12 @@ class WeatherForecast {
     }
 
     int temp = (data['temp'] as num).toInt();
+    Color? backgroundColor;
+    if (data['background_color'] != null && data['background_color'] is int) {
+      backgroundColor = Color(data['background_color'] as int);
+    } else {
+      backgroundColor = null;
+    }
 
     final weatherData = WeatherForecast(
       temperatureLocation: data['temperature_location'] as GeoPoint,
@@ -193,6 +206,7 @@ class WeatherForecast {
       weatherIcon: data['weather_icon'] as String,
       isKnitted: data['is_knitted'] ?? false,
       knittingNote: data['knitting_note'] ?? '',
+      backgroundColor: backgroundColor,
     );
 
     return weatherData;
@@ -223,6 +237,7 @@ class WeatherForecast {
         'weather_icon': weatherIcon,
         'is_knitted': isKnitted,
         'knitting_note': knittingNote,
+        'background_color': backgroundColor?.toARGB32(),
       };
 
   @override
@@ -269,6 +284,7 @@ class WeatherForecast {
     String? weatherIcon,
     bool? isKnitted,
     String? knittingNote,
+    Color? backgroundColor,
   }) {
     return WeatherForecast(
       temperatureLocation: temperatureLocation ?? this.temperatureLocation,
@@ -297,6 +313,7 @@ class WeatherForecast {
       weatherIcon: weatherIcon ?? this.weatherIcon,
       isKnitted: isKnitted ?? this.isKnitted,
       knittingNote: knittingNote ?? this.knittingNote,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
     );
   }
 }
